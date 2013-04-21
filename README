@@ -1,0 +1,14 @@
+Line arrangement implementation
+
+Authors:
+
+Bowen Yu
+Cesar Palomo
+Fabio Miranda
+
+Platform: html, d3.js
+
+Description: interactive UI to show steps of line arrangement algorithm
+as user adds lines. Using a DCEL structure, the algorithm iterate over
+faces intersected by an added line (zone), highlighting interesting elements
+of the DCEL structure as the algorithm proceeds to update the structure.

@@ -1,0 +1,37 @@
+Description of work division
+
+1) DCEL  (Bowen)
+The DCEL data structure is easy to write (some classes). But we need some programming interface here.
+* The DCEL shall support INSERT. The insertion takes an input segment, and connected it to a given existing segment.
+* The DCEL needs to help determine the leftmost intersection point of a new line with the existing lines. Therefore we need a list of inserted lines, as well as the links to its DCEL segments.
+* The DCEL has more display attributes, like whether a face, an edge is currently highlighted.
+
+2) Interface (Fabio)
+* "Forward" button: Once pressed, the algorithm proceeds one step further.
+* Draw line: It would be more intuitive to enable the users to draw lines.
+* Random line: Save some efforts of the user.
+* Delete, undo, etc: Optional. Would be nice but shall not be too unnecessarily fancy and complicated.
+
+3) Line Arrangement (Cesar)
+For a newly inserted line, the algorithm is decomposed into: (suppose the line goes almost horizontal but slightly skewed)
+* Cut the inserted line into a segment in the bounding box.
+* Find the leftmost intersection of the existing lines using DCEL function call, and get a returned intersection point as well as the existing segment it belongs to.
+* Cut the inserted line by that intersection point and get two segments. Insert the left segment into DCEL using DCEL INSERT. Proceed with the right segment.
+* Highlight the faces, edges in zones in DCEL for the above.
+* Traverse the nearby face of DCEL to get the next intersected segment.
+* Keep doing the above until it is done.
+Besides,
+* The algorithm needs breakpoints, so as to comply with the interface's "Forward" button.
+
+
+
+Extensions to items above (all simple, Boris might like)
+1) Have a table showing the data structure (something like this: http://www.ime.usp.br/~coelho/geocomp2000/projetos/noma/dcel-b.jpg)
+
+2) Visualize the steps of the algorithm in the code. We show the code in a table, and highlight the code.
+Maybe save the state of the canvas (to allow for forward/rewind)?
+
+
+
+The above are subject to further refinement and modification. 
+First and second part is about the same workload. The third part is a little bit more complicated but wouldn't be that much complicated if 1) is already set up nicely. 
