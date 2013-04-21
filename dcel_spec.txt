@@ -40,8 +40,8 @@ function constructBoundingBox(var xmin, var xmax, var ymin, var ymax)
 function leftmostEdgeBoundingBox(var a, var b)
 * This function returns a reference to the left most intersected edge on the bounding box. The returned edge shall be used to start a line insertion in the construction of line arrangement.
 
-function insertEdge(var edgeFront, var edgeRear)
-* This function insert a new edge intersecting first with edgeFront and then edgeRear. It updates the edge lists accordingly. Note that edgeFront and edgeRear shall be incident to the same face. Do not pass in their twin edges.
+function insertEdge(var edgeFront, var edgeRear, var a, var b)
+* This function insert a new edge intersecting first with edgeFront and then edgeRear by line ax + by + 1 = 0. It updates the edge lists accordingly. Note that edgeFront and edgeRear shall be incident to the same face. Do not pass in their twin edges.
 
 
 The program flow of inserting a new line L shall be:
