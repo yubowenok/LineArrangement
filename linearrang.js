@@ -19,10 +19,10 @@ function LineArrangement(dcel) {
  */
 LineArrangement.prototype.initialize = function() {
   this.NEXTSTEP = {
-    NOP,
-    SEARCH_REAR_EDGE,
-    SPLIT_FACE,
-    MOVE_TO_NEXT_FACE,
+    NOP: '',
+    SEARCH_REAR_EDGE: '',
+    SPLIT_FACE: '',
+    MOVE_TO_NEXT_FACE: '',
   };
   this.nextStep = this.NEXTSTEP.NOP;
   this.lines = [];
@@ -42,11 +42,13 @@ LineArrangement.prototype.addLine = function(a, b) {
 
   // find leftmost intersection
   this.line     = cgutils.Line(a, b);
-  this.E        = this.dcel.leftmostEdgeBoundingBox(this.line);
-  this.v        = cgutils.intersectEdge(this.E, this.line).point;
-  this.E_prime  = E.next;
+  //this.E        = this.dcel.leftmostEdgeBoundingBox(this.line);
+  //this.v        = cgutils.intersectEdge(this.E, this.line).point;
+  //this.E_prime  = E.next;
   this.v_prime  = null;
   this.nextStep = this.NEXTSTEP.SEARCH_REAR_EDGE;
+
+  this.lines.push(this.line);
 }
 
 /**
@@ -148,5 +150,4 @@ LineArrangement.prototype.intersectEdge = function(edge, line) {
     this.E.next.origin.x,
     this.E.next.origin.y);
   return cgutils.intersectSegment(s, line);		
-  // Bowen: cgutils.func() call shall fail, create a var T = new cgutils() and then do T.func()
 }

@@ -75,14 +75,12 @@ DCEL.prototype.leftmostEdgeBoundingBox = function(line){
 	var ymin = Infinity;
 	var currentEdge = this.unboundedFace.innerComponent;
 	var foundEdge;
-	do{
-		var cgutilsObj = new cgutils();	// to use the prototype functions
-		var startVertex = currentEdge.origin;
+	do{var startVertex = currentEdge.origin;
 		var endVertex = currentEdge.next.origin;
 		
 		// create a segment to test intersection
-		var segment = cgutilsObj.Segment(startVertex.x, startVertex.y, endVertex.x, endVertex.y);
-		var inters = cgutilsObj.intersectSegment(segment, line);
+		var segment = cgutils.Segment(startVertex.x, startVertex.y, endVertex.x, endVertex.y);
+		var inters = cgutils.intersectSegment(segment, line);
 		
 		// if intersects, we record the leftmost (bottommost)
 		if(inters.hasIntersection){
