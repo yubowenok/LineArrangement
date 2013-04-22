@@ -42,3 +42,10 @@ cgutils.intersectEdge = function(s, l) {
   // extremities to same side?
   // get intersection point and return
 }
+
+cgutils.intersectLine = function(l1, l2){
+  var x = (l2.b - l1.b) / (l1.a - l2.a);
+  var y = l1.a * x + l1.b;
+
+  return cgutils.Point(x,y);
+}
