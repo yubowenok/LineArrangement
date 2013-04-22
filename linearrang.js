@@ -29,18 +29,6 @@ LineArrangement.prototype.initialize = function() {
 }
 
 /**
- * Try to intersect edge and line.
- */
-LineArrangement.prototype.intersectEdge = function(edge, line) {
-  var s = cgutils.Segment(
-    this.E.origin.x,
-    this.E.origin.y,
-    this.E.next.origin.x,
-    this.E.next.origin.y);
-  return cgutils.intersectSegment(s, line);
-}
-
-/**
  * Add a line in the form ax + by + 1 = 0
  */
 LineArrangement.prototype.addLine = function(a, b) {
@@ -134,7 +122,7 @@ LineArrangement.prototype.done = function() {
 LineArrangement.prototype.status = function() {
   return {
     'line'    : this.line,
-    'face'    : this.E.face,
+    'face'    : this.E.incidentFace,
     'E'       : this.E,
     'E_prime' : this.E_prime,
     'v'       : this.v,
@@ -148,4 +136,16 @@ LineArrangement.prototype.status = function() {
  */
 LineArrangement.prototype.lines = function() {
   return this.lines;
+}
+
+/**
+ * Try to intersect edge and line.
+ */
+LineArrangement.prototype.intersectEdge = function(edge, line) {
+  var s = cgutils.Segment(
+    this.E.origin.x,
+    this.E.origin.y,
+    this.E.next.origin.x,
+    this.E.next.origin.y);
+  return cgutils.intersectSegment(s, line);
 }

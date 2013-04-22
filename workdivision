@@ -31,7 +31,9 @@ Extensions to items above (all simple, Boris might like)
 2) Visualize the steps of the algorithm in the code. We show the code in a table, and highlight the code.
 Maybe save the state of the canvas (to allow for forward/rewind)?
 
-
+3) Keep a list of added lines in a table. As user hovers line, we show the
+line arrangement status before line insertion and lets user playback insertion
+again.
 
 The above are subject to further refinement and modification. 
 First and second part is about the same workload. The third part is a little bit more complicated but wouldn't be that much complicated if 1) is already set up nicely. 
