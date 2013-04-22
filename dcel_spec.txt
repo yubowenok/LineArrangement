@@ -14,19 +14,21 @@ function DCEL()
 function Face()
 - outerComponent: Outer Component, arbitrarily chosen half-edge on the outer boundary
 - outerComponent: Inner Component, arbitrarily chosen half-edge on the inner boundary (Only used for the unbounded face)
-- isHighlighted: Whether the face is highlighted currently
+*[NOT USED] isHighlighted: Whether the face is highlighted currently
 
 function Vertex()
 - x: x coordinate of vertex v
 - y: y coordinate of vertex v 
 - incidentEdge: reference to an incident Edge arbitrarily chosen with v as its origin
-- isHighlighted: Whether the vertex is highlighted currently
+*[NOT USED] isHighlighted: Whether the vertex is highlighted currently
 
 function Edge()
 - origin: reference to the origin vertex of this edge
 - twin: reference to the twin edge of this edge
 - incidentFace: reference to the incident face that this edge bounds
-- isHighlighted: Whether the edge is highlighted currently
+- next: reference to the next edge
+- prev: reference to the previous edge
+*[NOT USED] isHighlighted: Whether the edge is highlighted currently
 
 
 
