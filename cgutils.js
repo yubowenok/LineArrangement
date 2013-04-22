@@ -34,3 +34,11 @@ cgutils.intersectSegment = function(s, l) {
   // extremities to same side?
   // get intersection point and return
 }
+
+cgutils.intersectEdge = function(s, l) {
+  var s_line = this.LineFromSegment(s);
+  // TODO
+  // coincident lines?
+  // extremities to same side?
+  // get intersection point and return
+}

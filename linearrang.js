@@ -42,11 +42,13 @@ LineArrangement.prototype.addLine = function(a, b) {
 
   // find leftmost intersection
   this.line     = cgutils.Line(a, b);
-  this.E        = this.dcel.leftmostEdgeBoundingBox(this.line);
-  this.v        = cgutils.intersectEdge(this.E, this.line).point;
-  this.E_prime  = E.next;
+  //this.E        = this.dcel.leftmostEdgeBoundingBox(this.line);
+  //this.v        = cgutils.intersectEdge(this.E, this.line).point;
+  //this.E_prime  = E.next;
   this.v_prime  = null;
   this.nextStep = this.NEXTSTEP.SEARCH_REAR_EDGE;
+
+  this.lines.push(this.line);
 }
 
 /**
