@@ -29,6 +29,18 @@ LineArrangement.prototype.initialize = function() {
 }
 
 /**
+ * Try to intersect edge and line.
+ */
+LineArrangement.prototype.intersectEdge = function(edge, line) {
+  var s = cgutils.Segment(
+    this.E.origin.x,
+    this.E.origin.y,
+    this.E.next.origin.x,
+    this.E.next.origin.y);
+  return cgutils.intersectSegment(s, line);
+}
+
+/**
  * Add a line in the form ax + by + 1 = 0
  */
 LineArrangement.prototype.addLine = function(a, b) {
@@ -41,9 +53,9 @@ LineArrangement.prototype.addLine = function(a, b) {
 // Besides, The algorithm needs breakpoints, so as to comply with the interface's "Forward" button.
 
   // find leftmost intersection
-  this.line     = {'a': a, 'b': b};
+  this.line     = cgutils.Line(a, b);
   this.E        = this.dcel.leftmostEdgeBoundingBox(this.line);
-  this.v        = intersectEdge(this.E, this.line).point;
+  this.v        = cgutils.intersectEdge(this.E, this.line).point;
   this.E_prime  = E.next;
   this.v_prime  = null;
   this.nextStep = this.NEXTSTEP.SEARCH_REAR_EDGE;
@@ -69,7 +81,7 @@ LineArrangement.prototype.next = function() {
       }
       else {
         // test intersection with E'
-        var inters = intersectEdge(this.E_prime, this.line);
+        var inters = intersectSegment(this.E_prime, this.line);
         if (inters.hasIntersection) {
           this.v_prime = inters.point;
           this.nextStep = this.NEXTSTEP.SPLIT_FACE;
@@ -88,7 +100,7 @@ LineArrangement.prototype.next = function() {
       break;
     case this.NEXTSTEP.MOVE_TO_NEXT_FACE:
       this.E        = this.E_twin;
-      this.v        = intersectEdge(this.E, this.line).point;
+      this.v        = cgutils.intersectEdge(this.E, this.line).point;
       this.E_prime  = this.E.next;
       this.v_prime  = null;
       this.E_twin   = null;
