@@ -2,22 +2,28 @@
  * Utility functions.
  */
 
+ // Bowen: prototype definition shall be 
+ // class.prototype.func = function(){}
+ // instead of
+ // function class.prototype.func(){}
+ // corrected all through 
+
 function cgutils() {}
 
-function cgutils.prototype.Point(x, y) {
+cgutils.prototype.Point = function(x, y) {
   return {'x': x, 'y': y};
 }
 
-function cgutils.prototype.Segment(x1, y1, x2, y2) {
+cgutils.prototype.Segment = function(x1, y1, x2, y2) {
   return {'v1': cgutils.Point(x1, y1),
           'v2': cgutils.Point(x2, y2)};
 }
 
-function cgutils.prototype.Line(a, b) {
+cgutils.prototype.Line = function(a, b) {
   return {'a': a, 'b': b};
 }
 
-function cgutils.prototype.LineFromSegment(s) {
+cgutils.prototype.LineFromSegment = function(s) {
   // TODO
 }
 
@@ -28,7 +34,7 @@ function cgutils.prototype.LineFromSegment(s) {
  *  hasIntersection: bool, // return flag for existing intersection 
  * }
  */
-function cgutils.prototype.intersectSegment(s, l) {
+cgutils.prototype.intersectSegment = function(s, l) {
   var s_line = this.LineFromSegment(s);
   // TODO
   // coincident lines?

@@ -147,5 +147,6 @@ LineArrangement.prototype.intersectEdge = function(edge, line) {
     this.E.origin.y,
     this.E.next.origin.x,
     this.E.next.origin.y);
-  return cgutils.intersectSegment(s, line);
+  return cgutils.intersectSegment(s, line);		
+  // Bowen: cgutils.func() call shall fail, create a var T = new cgutils() and then do T.func()
 }

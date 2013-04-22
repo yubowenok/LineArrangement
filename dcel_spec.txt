@@ -13,7 +13,7 @@ function DCEL()
 
 function Face()
 - outerComponent: Outer Component, arbitrarily chosen half-edge on the outer boundary
-- outerComponent: Inner Component, arbitrarily chosen half-edge on the inner boundary (Only used for the unbounded face)
+- innerComponent: Inner Component, arbitrarily chosen half-edge on the inner boundary (Only used for the unbounded face)
 *[NOT USED] isHighlighted: Whether the face is highlighted currently
 
 function Vertex()
@@ -39,11 +39,14 @@ The lines are specified by pair <a, b> representing ax + by + 1 = 0. a, b have d
 function constructBoundingBox(var xmin, var xmax, var ymin, var ymax)
 * This function constructs a bounding box with intially 4 segments (8 edges) as [xmin, xmax]X[ymin, ymax]. This function does not return anything. 
 
-function leftmostEdgeBoundingBox(var a, var b)
-* This function returns a reference to the left most intersected edge on the bounding box. The returned edge shall be used to start a line insertion in the construction of line arrangement.
+function leftmostEdgeBoundingBox(var line)
+* This function returns a reference to the left most intersected edge on the bounding box. 
+The returned edge is incident to the UNBOUNDED face.
+The returned edge shall be used to start a line insertion in the construction of line arrangement.
 
-function insertEdge(var edgeFront, var edgeRear, var a, var b)
-* This function insert a new edge intersecting first with edgeFront and then edgeRear by line ax + by + 1 = 0. It updates the edge lists accordingly. Note that edgeFront and edgeRear shall be incident to the same face. Do not pass in their twin edges.
+function insertEdge(var edgeFront, var edgeRear, var vertexFront, var vertexRear)
+* This function insert a new edge intersecting first with edgeFront and then edgeRear at point vertexFront and vertexRear. 
+It updates the edge lists accordingly. Note that edgeFront and edgeRear shall be incident to the same face. Do NOT pass in their twin edges.
 
 
 The program flow of inserting a new line L shall be:
