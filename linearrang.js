@@ -19,10 +19,10 @@ function LineArrangement(dcel) {
  */
 LineArrangement.prototype.initialize = function() {
   this.NEXTSTEP = {
-    NOP,
-    SEARCH_REAR_EDGE,
-    SPLIT_FACE,
-    MOVE_TO_NEXT_FACE,
+    NOP: '',
+    SEARCH_REAR_EDGE: '',
+    SPLIT_FACE: '',
+    MOVE_TO_NEXT_FACE: '',
   };
   this.nextStep = this.NEXTSTEP.NOP;
   this.lines = [];
