@@ -67,7 +67,8 @@ function initializeLayout(){
         .attr("width", width+'px')
         .attr("height", height+'px');
 
-  var dcel = null;//new DCEL();
+  var dcel = new DCEL();
+  //dcel.constructBoundingBox(xmin, xmax, ymin, ymax);
   linearrangement = new LineArrangement(dcel);
 
   randomLines();
