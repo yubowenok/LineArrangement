@@ -6,7 +6,7 @@ function DoublyLinkedList(){
 }
 
 // push an array of elements at the end of the doubly linked list
-DoublyLinkedlist.prototype.pushBackArray = function(array){
+DoublyLinkedList.prototype.pushBackArray = function(array){
 	for(var i=0; i<array.length; i++){
 		element = array[i];
 		this.pushBack(element);
