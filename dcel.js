@@ -172,7 +172,7 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, vertexFront, vertexRea
 		// but how could this be?! the face with only two edges (edgeFront, edgeRear) is not a face!
 		// well, we try to be robust anyway
 		this.linkEdge(edgeFront1, edgeRear1);
-		this.linkEdge(edgeFront2 edgeRear2);
+		this.linkEdge(edgeFront2, edgeRear2);
 	}else{
 		this.linkEdge(edgeFront.prev, edgeFront1);
 		this.linkEdge(edgeFront2, edgeFront.next);
