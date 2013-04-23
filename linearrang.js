@@ -19,10 +19,10 @@ function LineArrangement(dcel) {
  */
 LineArrangement.prototype.initialize = function() {
   this.NEXTSTEP = {
-    NOP: '',
-    SEARCH_REAR_EDGE: '',
-    SPLIT_FACE: '',
-    MOVE_TO_NEXT_FACE: '',
+    NOP: 0,
+    SEARCH_REAR_EDGE: 1,
+    SPLIT_FACE: 2,
+    MOVE_TO_NEXT_FACE: 3,
   };
   this.nextStep = this.NEXTSTEP.NOP;
   this.lines = [];
@@ -32,23 +32,13 @@ LineArrangement.prototype.initialize = function() {
  * Add a line in the form ax + by + 1 = 0
  */
 LineArrangement.prototype.addLine = function(a, b) {
-// Cut the inserted line into a segment in the bounding box.
-// Find the leftmost intersection of the existing lines using DCEL function call, and get a returned intersection point as well as the existing segment it belongs to.
-// Cut the inserted line by that intersection point and get two segments. Insert the left segment into DCEL using DCEL INSERT. Proceed with the right segment.
-// Highlight the faces, edges in zones in DCEL for the above.
-// Traverse the nearby face of DCEL to get the next intersected segment.
-// Keep doing the above until it is done.
-// Besides, The algorithm needs breakpoints, so as to comply with the interface's "Forward" button.
-
   // find leftmost intersection
   this.line     = cgutils.Line(a, b);
-  //this.E        = this.dcel.leftmostEdgeBoundingBox(this.line);
-  //this.v        = cgutils.intersectEdge(this.E, this.line).point;
-  //this.E_prime  = E.next;
+  this.E        = this.dcel.leftmostEdgeBoundingBox(this.line);
+  this.v        = cgutils.intersectEdge(this.E, this.line).point;
+  this.E_prime  = E.next;
   this.v_prime  = null;
   this.nextStep = this.NEXTSTEP.SEARCH_REAR_EDGE;
-
-  this.lines.push(this.line);
 }
 
 /**
@@ -58,7 +48,7 @@ LineArrangement.prototype.next = function() {
   // advance in status machine
   switch (this.nextStep) {
     case this.NEXTSTEP.SEARCH_REAR_EDGE:
-      if (this.E_prime == this.E) {
+      if (this.E_prime == this.dcel.unboundedFace.innerComponent) {
         // reached unbounded face
         this.lines.push(this.line);
         this.line     = null;
