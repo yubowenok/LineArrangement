@@ -1,0 +1,28 @@
+====================================================================================
+cgutils Specification
+====================================================================================
+
+// 2D point
+cgutils.Point = function(x, y)
+
+// 2D vector
+cgutils.Vector2D = function(x, y)
+// create a 2D vector from two 2D points
+cgutils.makeVector2D = function(p1, p2)
+// the 'k' compoment of the cross product of vec1 and vec2. 'i', 'j' components are zero and omitted
+cgutils.crossVector2D = function(vec1, vec2)
+
+// create a segment between (x1, y1) and (x2, y2)
+cgutils.Segment = function(x1, y1, x2, y2)
+
+// create a line ax+by+c = 0
+cgutils.Line = function(a, b, c)
+// create a line from a segment
+cgutils.LineFromSegment = function(s)
+
+// test whether line l intersects with segment s
+// returns {hasIntersection: Boolean, intersection:Point}
+cgutils.intersectLineSegment = function(l, s)
+
+// find the intersection points of two intersecting lines. the two lines cannot be both vertical
+cgutils.intersectLines = function(l1, l2)

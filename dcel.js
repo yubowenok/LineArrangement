@@ -80,16 +80,16 @@ DCEL.prototype.leftmostEdgeBoundingBox = function(line){
 		
 		// create a segment to test intersection
 		var segment = cgutils.Segment(startVertex.x, startVertex.y, endVertex.x, endVertex.y);
-		var inters = cgutils.intersectSegment(segment, line);
+		var inters = cgutils.intersectLineSegment(segment, line);
 		
 		// if intersects, we record the leftmost (bottommost)
-		if(inters.hasIntersection){
-			if(inters.x<xmin){
-				xmin = inters.x;
+		if(inters.hasIntersection==true){
+			if(inters.intersection.x<xmin){
+				xmin = inters.intersection.x;
 				foundEdge = currentEdge;
-			}else if(inters.x==xmin){
-				if(inters.y<ymin){
-					ymin = inters.y;
+			}else if(inters.intersection.x==xmin){
+				if(inters.intersection.y<ymin){
+					ymin = inters.intersection.y;
 					foundEdge = currentEdge;
 				}
 			}

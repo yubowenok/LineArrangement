@@ -34,7 +34,7 @@ function Edge()
 
 [API] ===============================================================================
 
-The lines are specified by pair <a, b> representing ax + by + 1 = 0. a, b have double/float values and cannot both be zero.
+The lines are specified by triple <a, b, c> representing ax + by + c = 0. a, b, c have double/float values and a, b cannot both be zero.
 
 function constructBoundingBox(var xmin, var xmax, var ymin, var ymax)
 * This function constructs a bounding box with intially 4 segments (8 edges) as [xmin, xmax]X[ymin, ymax]. This function does not return anything. 
