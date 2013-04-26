@@ -51,9 +51,13 @@ DCEL.prototype.constructBoundingBox = function(xmin, xmax, ymin, ymax){
 	topRightVertex.incidentEdge = topEdge;
 	topLeftVertex.incidentEdge = leftEdge;
 	
+  // TODO Cesar changed order here
+	// set unbounded face for later search
+	this.unboundedFace = outerFace;
+	this.unboundedFace.innerComponent = topEdgeTwin;
+	this.unboundedFace.outerComponent = null;
+
 	// set face components
-	unboundedFace.innerComponent = topEdgeTwin;
-	unboundedFace.outerComponent = null;
 	boxFace.innerComponent = null;
 	boxFace.outerComponent = topEdge;
 	
@@ -63,8 +67,6 @@ DCEL.prototype.constructBoundingBox = function(xmin, xmax, ymin, ymax){
 	this.listEdge.pushBackContentArray([bottomEdgeTwin, rightEdgeTwin, leftEdgeTwin, topEdgeTwin]);
 	this.listFace.pushBackContentArray([outerFace, boxFace]);
 	
-	// set unbounded face for later search
-	this.unboundedFace = outerFace;
 }
 
 // find the leftmost half edge on the bounding box, the edge is incident to the UNBOUNDED face
@@ -80,7 +82,7 @@ DCEL.prototype.leftmostEdgeBoundingBox = function(line){
 		
 		// create a segment to test intersection
 		var segment = cgutils.Segment(startVertex.x, startVertex.y, endVertex.x, endVertex.y);
-		var inters = cgutils.intersectLineSegment(segment, line);
+		var inters = cgutils.intersectLineSegment(line, segment);
 		
 		// if intersects, we record the leftmost (bottommost)
 		if(inters.hasIntersection==true){

@@ -24,7 +24,7 @@ DoublyLinkedList.prototype.pushBackContentArray = function(array){
 	var elementArray = new Array();
 	for(var i=0; i<array.length; i++){
 		var element = new DoublyLinkedListElement(array[i]);
-		elementArray.pushBack(element);
+		elementArray.push(element);
 	}
 	this.pushBackArray(elementArray);
 }
@@ -38,35 +38,28 @@ DoublyLinkedList.prototype.pushBack = function(element){
 	}else{
 		// insert at the end
 		this.tail.next = element;
-		element.prev = tail;
+		element.prev = this.tail;
+    this.tail = element;
 	}
 }
 
 // remove the element from the doubly linked list
 // the passed in element is also deleted!
 DoublyLinkedList.prototype.remove = function(element){
-	if(element.prev==null){
+	if (element == this.head) {
 		// remove the first element in the list
 		// set head to the element's next
 		this.head = element.next;
 		// in case of only one element in the list
-		if(element.next!=null) element.next.prev = null;
-	}else{
-		// link before to after
-		element.prev.next = element.next;
+		if(element.next != null) element.next.prev = null;
 	}
-	
-	if(element.next==null){
-		// remove the last element in the list
-		// set tail to the element's prev
-		this.tail = element.prev;
-		// in case of only one element in the list
-		if(element.prev!=null) element.prev.next = null;
-	}else{
-		// link after to before
-		element.next.prev = element.prev;
+  if (element == this.tail) {
+		if (element.prev != null) element.prev.next = null; // element.next;
+    this.tail = element.prev;
+  } else {  // element not in extremities
+    element.prev.next = element.next;
+    element.next.prev = element.prev;
 	}
-	
 	// now bidirectional linking is complete
 	
 	// clear the reference so that garbage collection will handle

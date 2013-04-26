@@ -10,7 +10,8 @@ function randomLines(){
     var min = 0;
     var a = Math.random() * (max - min) + min;
     var b = Math.random() * (max - min) + min;
-    linearrangement.addLine(a, b);
+    var c = Math.random() * (max - min) + min;
+    linearrangement.addLine(cgutils.Line(a, b, c));
   }
 
 
@@ -68,7 +69,7 @@ function initializeLayout(){
         .attr("height", height+'px');
 
   var dcel = new DCEL();
-  //dcel.constructBoundingBox(xmin, xmax, ymin, ymax);
+  dcel.constructBoundingBox(0, 1, 0, 1);
   linearrangement = new LineArrangement(dcel);
 
   randomLines();

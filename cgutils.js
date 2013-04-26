@@ -8,16 +8,16 @@ cgutils.Point = function(x, y){
   return {'x': x, 'y': y};
 }
 
-cgutils.Vector2D = function(x, y){
+cgutils.Vector = function(x, y){
 	return {'x': x, 'y': y};
 }
 
-cgutils.makeVector2D = function(p1, p2){
-	return this.Vector2D(p2.x-p1.x, p2.y-p1.y);
+cgutils.makeVector = function(p1, p2){
+	return this.Vector(p2.x-p1.x, p2.y-p1.y);
 }
 
-cgutils.crossVector2D = function(vec1, vec2){
-	return {  vec1.x*vec2.y-vec1.y*vec2.x };
+cgutils.crossVector = function(vec1, vec2){
+	return this.Vector(vec1.x*vec2.y-vec1.y*vec2.x);
 }
 
 cgutils.Segment = function(x1, y1, x2, y2) {
@@ -58,7 +58,7 @@ cgutils.intersectLineSegment = function(l, s) {
   // get intersection point and return
   
   var pl1, pl2;	// two points on the line
-  if(b==0){
+  if(l.b==0){
 	// handle vertical lines
 	pl1 = this.Point(-l.c/l.a, 0.0);
 	pl2 = this.Point(-l.c/l.a, 1.0);
@@ -67,11 +67,11 @@ cgutils.intersectLineSegment = function(l, s) {
 	pl2 = this.Point(1.0, (-l.c-l.a)/l.b);
   }
   // vector of the line, and the vector from the line point to the two endpoints of the segment
-  var vecLine = this.makeVector2D(vl1, vl2);	
-  var vecS1 = this.makeVector2D(vl1, s.v1);	
-  var vecS2 = this.makeVector2D(vl1, s.v2);
+  var vecLine = this.makeVector(pl1, pl2);	
+  var vecS1 = this.makeVector(pl1, s.v1);	
+  var vecS2 = this.makeVector(pl1, s.v2);
   // cross product for intersection detection
-  if(this.crossVector2D(vecS1, vecLine) * this.crossVector2D(vecS2, vecLine) <= 0){
+  if(this.crossVector(vecS1, vecLine) * this.crossVector(vecS2, vecLine) <= 0){
 	// if intersection exists, we use line line intersection to calculate
 	return {'hasIntersection': true, 'intersection': this.intersectLines(l, this.LineFromSegment(s))};
   }else{
