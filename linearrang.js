@@ -31,11 +31,11 @@ LineArrangement.prototype.initialize = function() {
 /**
  * Add a line in the form ax + by + 1 = 0
  */
-LineArrangement.prototype.addLine = function(a, b) {
+LineArrangement.prototype.addLine = function(l) {
   // find leftmost intersection
-  this.line     = cgutils.Line(a, b);
+  this.line     = l
   this.E        = this.dcel.leftmostEdgeBoundingBox(this.line);
-  this.v        = cgutils.intersectEdge(this.E, this.line).point;
+  this.v        = this.intersectEdge(this.E, this.line).point;
   this.E_prime  = E.next;
   this.v_prime  = null;
   this.nextStep = this.NEXTSTEP.SEARCH_REAR_EDGE;
@@ -135,9 +135,9 @@ LineArrangement.prototype.lines = function() {
  */
 LineArrangement.prototype.intersectEdge = function(edge, line) {
   var s = cgutils.Segment(
-    this.E.origin.x,
-    this.E.origin.y,
-    this.E.next.origin.x,
-    this.E.next.origin.y);
+    edge.origin.x,
+    edge.origin.y,
+    edge.next.origin.x,
+    edge.next.origin.y);
   return cgutils.intersectSegment(s, line);		
 }
