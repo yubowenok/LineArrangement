@@ -80,6 +80,20 @@ cgutils.intersectLineSegment = function(l, s) {
   }
 }
 
+
+/**
+ * Try to intersect edge and line.
+ */
+//Fabio: moved from linearrang
+cgutils.intersectEdge = function(edge, line) {
+  var s = cgutils.Segment(
+    edge.origin.x,
+    edge.origin.y,
+    edge.next.origin.x,
+    edge.next.origin.y);
+  return cgutils.intersectLineSegment(line, s);   
+}
+
 cgutils.intersectLines = function(l1, l2){
 
   var x, y;
