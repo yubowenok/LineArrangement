@@ -36,7 +36,7 @@ LineArrangement.prototype.addLine = function(l) {
   this.line     = l
   this.E        = this.dcel.leftmostEdgeBoundingBox(this.line);
   this.v        = this.intersectEdge(this.E, this.line).point;
-  this.E_prime  = E.next;
+  this.E_prime  = this.E.next;
   this.v_prime  = null;
   this.nextStep = this.NEXTSTEP.SEARCH_REAR_EDGE;
 }
@@ -46,6 +46,7 @@ LineArrangement.prototype.addLine = function(l) {
  */
 LineArrangement.prototype.next = function() {
   // advance in status machine
+  console.log(this.nextStep);
   switch (this.nextStep) {
     case this.NEXTSTEP.SEARCH_REAR_EDGE:
       if (this.E_prime == this.dcel.unboundedFace.innerComponent) {
@@ -61,7 +62,7 @@ LineArrangement.prototype.next = function() {
       }
       else {
         // test intersection with E'
-        var inters = intersectSegment(this.E_prime, this.line);
+        var inters = this.intersectEdge(this.E_prime, this.line);
         if (inters.hasIntersection) {
           this.v_prime = inters.point;
           this.nextStep = this.NEXTSTEP.SPLIT_FACE;
@@ -80,7 +81,7 @@ LineArrangement.prototype.next = function() {
       break;
     case this.NEXTSTEP.MOVE_TO_NEXT_FACE:
       this.E        = this.E_twin;
-      this.v        = cgutils.intersectEdge(this.E, this.line).point;
+      this.v        = this.intersectEdge(this.E, this.line).point;
       this.E_prime  = this.E.next;
       this.v_prime  = null;
       this.E_twin   = null;
@@ -139,5 +140,5 @@ LineArrangement.prototype.intersectEdge = function(edge, line) {
     edge.origin.y,
     edge.next.origin.x,
     edge.next.origin.y);
-  return cgutils.intersectSegment(s, line);		
+  return cgutils.intersectLineSegment(line, s);		
 }

@@ -8,10 +8,12 @@ function randomLines(){
   for(var i=0; i<10; i++){
     var max = 1;
     var min = 0;
-    var a = Math.random() * (max - min) + min;
-    var b = Math.random() * (max - min) + min;
-    var c = Math.random() * (max - min) + min;
-    linearrangement.addLine(cgutils.Line(a, b, c));
+    var x1 = Math.random() * (max - min) + min;
+    var x2 = Math.random() * (max - min) + min;
+    var y1 = Math.random() * (max - min) + min;
+    var y2 = Math.random() * (max - min) + min;
+    var segment = cgutils.Segment(x1, y1, x2, y2);
+    linearrangement.addLine(cgutils.LineFromSegment(segment));
   }
 
 
@@ -20,34 +22,35 @@ function randomLines(){
 function draw(){
 
   var lines = linearrangement.lines;
+  console.log(lines);
 
   for(var i=0; i<lines.length; i++){
 
     //intersect width edges
-    var pt_bottom = cgutils.intersectLine(lines[i], cgutils.Line(0,0));
-    var pt_top = cgutils.intersectLine(lines[i], cgutils.Line(0,height));
-    var pt_left = cgutils.intersectLine(lines[i], cgutils.Line(1,0));
-    var pt_right = cgutils.intersectLine(lines[i], cgutils.Line(1,-width));
+    var pt_bottom = cgutils.intersectLineSegment(lines[i], cgutils.Segment(0,0,1,0));
+    var pt_top = cgutils.intersectLineSegment(lines[i], cgutils.Segment(0,1,1,1));
+    var pt_left = cgutils.intersectLineSegment(lines[i], cgutils.Segment(0,0,0,1));
+    var pt_right = cgutils.intersectLineSegment(lines[i], cgutils.Segment(1,0,1,1));
     //console.log(pt_bottom);
     //console.log(pt_top);
     //console.log(pt_left);
     //console.log(pt_right);
     var pts = [];
-    if(pt_bottom.x >= 0 && pt_bottom.x <= width)
+    if(pt_bottom.hasIntersection)
       pts.push(pt_bottom);
-    if(pt_top.x >= 0 && pt_top.x <= width)
+    if(pt_top.hasIntersection)
       pts.push(pt_top);
-    if(pt_left.y >= 0 && pt_left.y <= height)
+    if(pt_left.hasIntersection)
       pts.push(pt_left);
-    if(pt_right.y >= 0 && pt_right.y <= height)
+    if(pt_right.hasIntersection)
       pts.push(pt_right);
-    console.log(pts);
+    //console.log(pts);
     if(pts.length >= 2){
       var line = canvas.append("line")
-        .attr("x1", pts[0].x)
-        .attr("y1", pts[0].y)
-        .attr("x2", pts[1].x)
-        .attr("y2", pts[1].y)
+        .attr("x1", width*pts[0].intersection.x)
+        .attr("y1", height*pts[0].intersection.y)
+        .attr("x2", width*pts[1].intersection.x)
+        .attr("y2", height*pts[1].intersection.y)
         .attr("stroke-width", 2)
         .attr("stroke", "black");
     }
@@ -56,6 +59,7 @@ function draw(){
 
 function lineArrangementNext(){
   linearrangement.next();
+  draw();
 }
 
 function initializeLayout(){
