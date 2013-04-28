@@ -25,6 +25,27 @@ cgutils.Segment = function(x1, y1, x2, y2) {
           'v2': cgutils.Point(x2, y2)};
 }
 
+cgutils.intersectLineBoundingBox = function(line, x1, y1, x2, y2){
+
+  var pt_bottom = cgutils.intersectLineSegment(line, cgutils.Segment(x1,y1,x2,y1));
+  var pt_top = cgutils.intersectLineSegment(line, cgutils.Segment(x1,y2,x2,y2));
+  var pt_left = cgutils.intersectLineSegment(line, cgutils.Segment(x1,y1,x1,y2));
+  var pt_right = cgutils.intersectLineSegment(line, cgutils.Segment(x2,y1,x2,y2));
+
+  var pts = [];
+  if(pt_bottom.hasIntersection)
+    pts.push(pt_bottom);
+  if(pt_top.hasIntersection)
+    pts.push(pt_top);
+  if(pt_left.hasIntersection)
+    pts.push(pt_left);
+  if(pt_right.hasIntersection)
+    pts.push(pt_right);
+
+  return pts;
+
+}
+
 // Bowen: modified, the previous definition is not correct as it cannot handle lines passing (0,0), so 'c' is needed
 cgutils.Line = function(a, b, c) {
   return {'a': a, 'b': b, 'c':c};
