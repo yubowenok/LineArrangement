@@ -1,0 +1,835 @@
+@media screen, projection {
+html {
+  line-height: 20px;
+}
+
+#canvas {
+  width: 700px;
+  height: 300px;
+  border: 2px;
+  solid silver;
+}
+
+#canvas svg rect {
+  stroke: silver;
+  fill: rgba(220, 220, 54, 0.2);
+}
+
+body {
+  margin: 0 auto;
+  max-width: 930px;
+  position: relative;
+}
+
+h1 {
+  margin: 0;
+}
+
+h1 img {
+  margin: 0 22px 0 0;
+}
+
+h1 a {
+  float: left;
+}
+
+h2 {
+  clear: left;
+  margin: 30px 0 20px;
+}
+
+h2, h3 {
+  font-family: 'open sans', arial;
+}
+
+h3, h4 {
+  margin: 20px 0 10px;
+}
+
+h4 {
+  margin-bottom:.5em;
+}
+
+p {
+  margin: 10px 0;
+}
+
+em {
+  font-style: italic;
+}
+
+hr {
+  border: 1px solid #ebebeb;
+  border-width: 1px 0 0;
+  display: block;
+  height: 1px;
+  margin: 1em 0 20px;
+  padding: 0;
+}
+
+#nav {
+  float: none;
+  font: 1em/1.6 'open sans', arial;
+  margin: 10px 0 0;
+  position: absolute;
+  right: 0;
+  top: 16px;
+  width: 70%;
+}
+
+#nav li {
+  color: #222;
+  float: left;
+  font-weight: normal;
+  margin: 0 0 0 2em;
+  position: relative;
+  text-align: right;
+}
+
+#nav li ul {
+  display: none;
+}
+
+#nav-secondary {
+  float: left;
+  margin: 30px 0 0 0;
+  padding: 0;
+  width: 136px;
+}
+
+#nav-secondary li {
+  list-style: none;
+  padding-bottom: 10px;
+}
+
+#nav-secondary + div {
+  margin-left: 166px;
+}
+
+#nav-secondary + div h2 {
+  clear: none;
+}
+
+#crumbs {
+  list-style: none;
+  margin: 10px 0 0 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+#crumbs li {
+  float: left;
+  margin-right: 0.5em;
+}
+
+#crumbs li:after {
+  content: ' > ';
+}
+
+#about {
+  border-top: 1px solid #ebebeb;
+  font-size: 0.846em;
+}
+
+#main {
+  float: left;
+  margin: 7px 30px 20px 0;
+  width: 66%;
+}
+
+#aside {
+  float: left;
+  overflow: hidden;
+  width: 30%;
+}
+
+#aside blockquote {
+  color: #555;
+  font-family: 'open sans';
+  font-size: 12px;
+  font-style: italic;
+  margin: 1em 0;
+  padding-top: 3px;
+}
+
+#aside img,
+#aside iframe {
+  margin: 20px 0 0 0;
+}
+
+#aside iframe {
+  min-width: 187px;
+  width: 100%;
+}
+
+.sections img {
+  -webkit-box-shadow: inset 0px 0px 20px 0px rgba(0, 0, 0, 1);
+  -moz-box-shadow: inset 0px 0px 20px 0px rgba(0, 0, 0, 1);
+  box-shadow: inset 0px 0px 20px 0px rgba(0, 0, 0, 1);
+  max-width: 100%;
+}
+
+#highlights {
+  clear: left;
+  margin: -10px;
+  overflow: hidden;
+  padding: 10px;
+}
+
+#highlights h3 {
+  font-size: 14px;
+}
+
+#highlights div {
+  float: left;
+}
+
+#highlights div:last-child {
+  margin-right: 0;
+}
+
+#highlights a {
+  display: block;
+}
+
+#programs {
+  background: url(/jobs/students/images/programs.jpg);
+}
+
+#scholarships {
+  background: url(/jobs/students/images/scholarships.jpg);
+}
+
+.indent {
+  margin-left: 1em;
+}
+
+.supersubheader {
+  font-size: 23px;
+  line-height: 27px;
+}
+
+.a-video {
+  border: 1px solid #ccc;
+  float: left;
+  height: 216px;
+  margin: 0.5em 0 1.5em;
+  padding: 1px;
+  width: 290px;
+}
+
+.ep-image {
+  margin-top: 15px;
+}
+
+.ep-video {
+  border: 1px solid #ccc;
+  float: left;
+  height: 216px;
+  margin: 0.5em 0 1.5em;
+  padding: 1px;
+  width: 290px;
+}
+
+.camp-video {
+  clear: right;
+  float: right;
+  margin: 0 0 1em 1em;
+}
+
+#cssi-logo {
+  width: 100%;
+}
+
+div.c5 {
+  clear: both;
+}
+
+div.c4 {
+  border-top: 1px solid #ebebeb;
+  border-width: 1px 0 0;
+  margin-bottom: 100px;
+  padding: 10px 0;
+}
+
+ul.c3 {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+img.c2 {
+  float: left;
+  height: 160px;
+  margin-right: 10px;
+  width: 121px;
+}
+
+img.c1 {
+  width: 290px;
+}
+
+div.column {
+  float: left;
+  margin-right: 5px;
+  width: 47%;
+}
+
+#mba-fulltime {
+  background: url(/jobs/students/images/mba-fulltime.jpg);
+}
+
+#mba-intern {
+  background: url(/jobs/students/images/mba-intern.jpg);
+}
+
+#ug-fulltime {
+  background: url(/jobs/students/images/ug-fulltime.jpg);
+}
+
+#ug-intern {
+  background: url(/jobs/students/images/ug-intern.jpg);
+}
+
+#tech-intern {
+  background: url(/jobs/students/images/internships.jpg);
+}
+
+#tech-phd {
+  background: url(/jobs/students/images/phd.jpg);
+}
+
+#tech-fulltime {
+  background: url(/jobs/students/images/tech-fulltime.jpg);
+}
+
+/* life at google*/
+.more-highlights div {
+  margin-right: 2%;
+  width: 18.4%;
+}
+
+.few-highlights {
+  margin-top: 10px;
+}
+
+.few-highlights div {
+  margin-right: 3.2%;
+  width: 31.2%;
+}
+
+.life-benefits {
+  background: url(/jobs/students/images/life-benefits.jpg);
+}
+
+.life-meet {
+  background: url(/jobs/students/images/life-meet.jpg);
+}
+
+.life-culture {
+  background: url(/jobs/students/images/life-culture.jpg);
+}
+
+.life-locations {
+  background: url(/jobs/students/images/life-locations.jpg);
+}
+
+.life-teams {
+  background: url(/jobs/students/images/life-teams.jpg);
+}
+
+.sections a img {
+  -webkit-transition: all 1s ease-in;
+  border-radius: 3px;
+}
+
+.sections a img:hover {
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+}
+
+img.profile {
+  float: left;
+  margin: 0 2em 1em 0;
+  width: 120px;
+}
+
+ul.meet {
+  font-family: 'open sans';
+  list-style: none;
+  margin-left: 2em;
+}
+
+div.meet-text {
+  clear:left;
+}
+
+/* homepage */
+.blog {
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  -o-border-radius: 4px;
+  background: #f5f5f5;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  padding: 0 10px;
+}
+
+h2.opp-header {
+  padding-top: 1.5em;
+}
+
+#feed {
+  color: #666;
+  margin: 18px 0 20px 0;
+  padding-top: 0;
+}
+
+.awesome {
+  background: url(/jobs/students/images/do-cool-things.png) no-repeat;
+  padding-top: 88px;
+}
+
+.home-technical, .home-sga {
+  float: left;
+  margin-right: 30px;
+  max-width: 290px;
+  width: 100%;
+}
+
+.home-sga {
+  margin: 0;
+}
+
+#tech, #sga, #add-nav div a, a.life-meet, a.life-benefits, a.life-culture, .section-fulltime, .section-internships, .section-phd {
+  -webkit-box-shadow: inset 0px 0px 20px 0px rgba(102, 102, 102, 0.7);
+  -moz-box-shadow: inset 0px 0px 20px 0px rgba(102, 102, 102, 0.7);
+  border-radius: 4px;
+  box-shadow: inset 0px 0px 20px 0px rgba(102, 102, 102, 0.7);
+  display: block;
+  min-height: 160px;
+  position: relative;
+  text-decoration: none;
+  width: 100%;
+}
+
+#tech {
+  background: url(/jobs/students/images/technical.jpg);
+}
+
+#sga {
+  background: url(/jobs/students/images/sga.jpg);
+}
+
+#tech:hover, #sga:hover, #add-nav div a:hover, a.life-meet:hover, a.life-benefits:hover, a.life-culture:hover,.section-fulltime:hover, .section-internships:hover, .section-phd:hover {
+  -webkit-box-shadow: inset 0px 0px 20px 0px rgba(102, 102, 102, 0.7), 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5),inset 0px 0px 20px 0px rgba(102, 102, 102, 0.7);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5),inset 0px 0px 20px 0px rgba(102, 102, 102, 0.7);
+  text-decoration: none;
+}
+
+#tech span, #sga span, #add-nav div a span, a.life-meet span, a.life-benefits span, a.life-culture span,  .section-fulltime span, .section-internships span, .section-phd span {
+  -webkit-border-bottom-left-radius: 4px;
+  -moz-border-radius-bottomleft: 4px;
+  background: rgba(0, 0, 0, 0.8);
+  border-bottom-left-radius: 4px;
+  bottom: 0;
+  color: #fff;
+  display: block;
+  left: 0;
+  padding: 0.2em 0.5em;
+  position: absolute;
+}
+
+#add-nav {
+  clear: left;
+  margin: 14px -10px;
+  overflow: hidden;
+  padding: 14px 10px;
+}
+
+#add-nav div {
+  float: left;
+  margin-right: 30px;
+  max-width: 210px;
+  width: 25%;
+}
+
+#add-nav div a {
+  display: block;
+  font: 1.1em/1.6 'open sans', arial;
+  margin: 0 0 10px 0;
+  min-height: 139px;
+}
+
+#add-nav div.home-region {
+  margin-right: 0;
+}
+
+#add-nav div.home-region a {
+  background: url(/jobs/students/images/home-region.jpg);
+}
+
+#add-nav div.home-programs a {
+  background: url(/jobs/students/images/home-programs.jpg);
+}
+
+#add-nav div.home-hiring a {
+  background: url(/jobs/students/images/home-hiring.jpg);
+}
+
+#add-nav div.home-life a {
+  background: url(/jobs/students/images/home-life.jpg);
+}
+
+#add-nav div#ug-ft-sm a {
+  background: url(/jobs/students/images/ug-ft-sm.jpg);
+}
+
+#add-nav div#ug-int-sm a {
+  background: url(/jobs/students/images/ug-int-sm.jpg);
+}
+
+#add-nav div#mba-ft-sm a {
+  background: url(/jobs/students/images/mba-ft-sm.jpg);
+}
+
+#add-nav div#mba-int-sm a {
+  background: url(/jobs/students/images/mba-int-sm.jpg);
+}
+
+#add-nav .subsections {
+  margin: 0;
+  max-width: 490px;
+  width: 50%;
+}
+
+#add-nav .subsections div {
+  max-width: 260px;
+  width: 43%;
+}
+
+#social {
+  list-style: none;
+  margin-top: 25px;
+  padding: 0;
+}
+
+#social a {
+  background: url(//www.google.com/images/icons/thirdparty/sprite_share-16.png) no-repeat;
+  display: block;
+  height: 16px;
+  margin: 0 0 10px 0;
+  padding: 0 0 0 20px;
+}
+
+.facebook {
+  background-position: top left;
+}
+
+#social .google {
+  background: url(//ssl.gstatic.com/images/icons/gplus-16.png) no-repeat;;
+  background-position: 0 0;
+}
+
+#social .twitter {
+  background-position: 0 -48px;
+}
+
+#social .youtube {
+  background-position: 0 -16px;
+}
+
+/* job listings */
+.intro {
+  float: left;
+  margin-right: 30px;
+  max-width: 450px;
+  width: 100%;
+}
+
+.intro + .intro {
+  margin: 0;
+}
+
+.listings, .sections {
+  clear: left;
+}
+
+.listings div, .sections div {
+  float: left;
+  margin-right: 30px;
+  max-width: 290px;
+  width: 100%;
+}
+
+.listings div:nth-child(3), .sections div:nth-child(3) {
+  margin-right: 0;
+}
+
+.listings ul {
+  list-style: none;
+  padding: 0;
+  margin: 30px 0 0 0;
+}
+
+.listings p {
+  margin: 0;
+}
+
+.listings li {
+  margin: 0 0 10px ;
+}
+
+.listings span {
+  color: #666;
+  display: block;
+}
+
+div.below-listing {
+  margin-top: 2.5em;
+}
+
+/* job postings */
+.locations, .position-spec {
+  color: #555;
+}
+
+.add-to-cart {
+  -moz-border-radius: 2px;
+  -o-border-radius: 2px;
+  -webkit-border-radius: 2px;
+  background: #f5f5f5;
+  border: 1px solid #e5e5e5;
+  border-radius: 2px;
+  float: left;
+  padding: 1em;
+  text-align: center;
+  width: 88%;
+}
+
+#aside .add-to-cart {
+  margin: 30px 0 20px
+}
+
+.add-to-cart a {
+  clear: both;
+  display: block;
+  margin: 10px 0 0 0;
+}
+
+.cta {
+  -moz-border-radius: 2px;
+  -moz-text-shadow: -1px -1px 0 rgba(0,20,51,.2);
+  -o-border-radius: 2px;
+  -o-text-shadow: -1px -1px 0 rgba(0,20,51,.2);
+  -webkit-border-radius: 2px;
+  -webkit-text-shadow: -1px -1px 0 rgba(0,20,51,.2);
+  background: #4787ed url('buttonbg.png') repeat-x;
+  background-image: -webkit-gradient(linear,left top,left bottom,from(#4d90fe),to(#4787ed));
+  background-image: -moz-linear-gradient(top,#4d90fe,#4787ed);
+  background-image: -o-linear-gradient(top,#4d90fe,#4787ed);
+  background-image: -webkit-linear-gradient(top,#4d90fe,#4787ed);
+  background-image: linear-gradient(top,#4d90fe,#4787ed);
+  border: 1px solid #3079ed;
+  border-radius: 2px;
+  color: #fff !important;
+  cursor: pointer;
+  display: inline-block;
+  font-family: 'Open Sans',arial,sans-serif;
+  font-size: 13px;
+  font-weight: normal;
+  line-height: 20px;
+  max-width: 100%;
+  padding: 8px 20px;
+  text-align: center;
+  text-decoration: none;
+  text-shadow: -1px -1px 0 rgba(0,20,51,.2);
+}
+
+.cta:hover {
+  -moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+  -o-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+  -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);
+  background: #4787ed url('buttonbg.png') 0 -100px repeat-x;
+  background: #4787ed -webkit-gradient(linear,left top,left bottom,from(#4d90fe),to(#357ae8)) 0 0;
+  background: #4787ed -moz-linear-gradient(top,#4d90fe,#357ae8) 0 0;
+  background: #4787ed -o-linear-gradient(top,#4d90fe,#357ae8) 0 0;
+  background: #4787ed -webkit-linear-gradient(top,#4d90fe,#357ae8) 0 0;
+  background: #4787ed linear-gradient(top,#4d90fe,#357ae8) 0 0;
+  border: 1px solid #2f5bb7;
+  box-shadow: 0 1px 2px rgba(0,0,0,.2)
+}
+
+.cta:active {
+  -moz-box-shadow: inset 0 1px 2px rgba(0,0,0,.2);
+  -o-box-shadow: inset 0 1px 2px rgba(0,0,0,.2);
+  -webkit-box-shadow: inset 0 1px 2px rgba(0,0,0,.2);
+  box-shadow: inset 0 1px 2px rgba(0,0,0,.2)
+}
+
+a.cta{
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+a.cta:hover {
+  text-decoration: none;
+}
+
+.editorial {
+  float: right;
+  margin: 0 0 30px 30px;
+  max-width: 370px;
+}
+
+/* listings */
+.country-listings, .country-single {
+  max-width: 100% !important;
+}
+
+.country-listings h3, .country-single h3 {
+  color: #444;
+  font-size: 1em;
+  font-weight: bold;
+  float: left;
+  margin-right: 2em;
+  margin-top: 15px;
+}
+
+.country-single h3 {
+  margin-right: 4em;
+}
+
+div.country-single {
+  margin-bottom: 2em;
+}
+
+.country-listings ul {
+  float: left;
+  margin-top: 21px;
+}
+
+.country-listings li {
+  float: left;
+  margin-right: 3em;
+}
+
+div.country-listings h3#asiapac {
+  margin-top: 21px;
+}
+
+#country-china {
+  width: 8em;
+}
+
+/* explore regions */
+.regions {
+  list-style: none;
+  overflow: hidden;
+  padding: 0;
+  width: 100%;
+}
+
+.regions li {
+  float: left;
+  margin: 0 10px 0 0;
+  padding: 0 10px;
+  width: 10%;
+}
+
+.regions-main {
+  list-style: none;
+  overflow: hidden;
+  padding: 0;
+  width: 100%;
+}
+
+.regions-main li {
+  float: left;
+  margin: 0 10px 0 0;
+  padding: 0;
+  width: 30%;
+}
+
+.regions-main li.w15 {
+  width: 15%;
+}
+
+.regions-main li.w18 {
+  width: 18%;
+}
+
+.regions-main li.w12 {
+  width: 12%;
+}
+
+.explore-regions {
+  width: 45%;
+  float: left;
+}
+
+.explore-regions ul {
+  list-style: none;
+  margin: 20px 0 0 0;
+  padding: 0;
+}
+
+.explore-regions li {
+  padding: 0 0 10px 0;
+}
+
+.disclaimer {
+  color: #666;
+  margin-top: 40px;
+}
+
+.scholarship-icon {
+  float: left;
+  margin: 6px 20px 0 0;
+}
+
+}
+
+@media screen and (max-width:772px) {
+#nav {
+  left: 16px;
+  margin: 10px 0 0;
+  position: absolute;
+  top: 50px;
+  width: 100%;
+}
+
+#nav li {
+  float: left;
+  margin: 0 2em 0 0;
+  position: relative;
+  text-align: right;
+}
+
+#crumbs {
+  margin-top:60px;
+}
+
+#highlights div {
+  width: 48%;
+}
+
+#main {
+  width: 100%;
+}
+
+#aside {
+  clear: left;
+  width: 60%;
+}
+
+.listings div {
+  float: none;
+  max-width: 100%;
+}
+#add-nav div {
+  width: 50%;
+}
+}
