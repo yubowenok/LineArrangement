@@ -7,10 +7,39 @@
     <script type="text/javascript" src="dsutils.js"></script>
     <script type="text/javascript" src="linearrang.js"></script>
     <script type="text/javascript" src="layout.js"></script>
+    <link type="text/css" rel="stylesheet" href="style.css"></script>
 </head>
 <body>
-    <div id="canvas" style="width: 500px; height: 500px;"></div>
-   <span id='Next' class='button' onclick=lineArrangementNext()>Next</span> 
+    <br/>
+    <center>
+    <h1>Line Arrangement</h1>
+    </center>
+    <h2>Instructions</h2>
+    <p>
+      The application below demonstrates how to build a line arrangement by walking around the zone of the new line [1].<br/>
+      Click the canvas to add a new line to the arrangement, and use the buttons to see the traversal of the zone of the new line as it happens.
+    </p>
+    <h2>Summary</h2>
+    <p>
+      This implementation uses a data structure similar to a DCEL (double-connected edge list) to maintain the line arrangement. After one line is added, its zone is traversed from the left-most intersected edge to right, and the DCEL structure is updated: faces, edges and vertices are created to incorporate the new line.
+    </p>
+    <center>
+    <div id="canvas"></div>
+   <span id='Next' onclick=lineArrangementNext()>
+      <img src="imgs/forwardbutton.png" alt="Forward" width="40" height="40"></img>
+   </span> 
+   </center>
 	 <!-- <button onclick=lineArrangementNext()>Next</button>-->
+   <h2>Authors</h2>
+   <p>
+     Bowen Yu, Cesar Palomo, Fabio Miranda
+     <br/>
+      This demo was made as part of the requirements for the discipline Computation Geometry, taught by professor Boris Aronov at NYU-Poly during Spring of 2013.
+   </p>
+   <h2>References</h2>
+   [1] Mark de Berg, Otfried Cheong, Marc van Kreveld, and Mark Overmars. 2008. Computational Geometry: Algorithms and Applications (3rd ed.). TELOS, Santa Clara, CA, USA.
+  <br/>
+  <br/>
+     <img src="imgs/nyupolylogo.png" alt="NYU-Poly" width="175" height="47" style="float:left"></img>
 </body>
 </html>
