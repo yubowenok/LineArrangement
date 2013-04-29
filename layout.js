@@ -30,22 +30,22 @@ function addRandomLine() {
 
 function draw() {
 
-  //Draw lines
+  // Draw existing lines
   var lines = linearrangement.lines;
   console.log("Lines:");
   console.log(lines);
-  for(var i=0; i<lines.length; i++){
+  canvas.selectAll(".addedLine").remove();
+  for (var i=0; i < lines.length; i++) {
 
     //intersect width bb edges
     var pts = cgutils.intersectLineBoundingBox(lines[i], 0, 0, 1, 1);
     if(pts.length >= 2){
       canvas.append("line")
+        .attr("class", "addedLine")
         .attr("x1", width*pts[0].intersection.x)
         .attr("y1", height*pts[0].intersection.y)
         .attr("x2", width*pts[1].intersection.x)
-        .attr("y2", height*pts[1].intersection.y)
-        .attr("stroke-width", 2)
-        .attr("stroke", "black");
+        .attr("y2", height*pts[1].intersection.y);
     }
   }
 
@@ -60,12 +60,11 @@ function draw() {
       var endVertex = currentEdge.next.origin;
 
       canvas.append("line")
-          .attr("x1", width*startVertex.x)
-          .attr("y1", height*startVertex.y)
-          .attr("x2", width*endVertex.x)
-          .attr("y2", height*endVertex.y)
-          .attr("stroke-width", 3)
-          .attr("stroke", "steelblue");
+        .attr("class", "addedLine")
+        .attr("x1", width*startVertex.x)
+        .attr("y1", height*startVertex.y)
+        .attr("x2", width*endVertex.x)
+        .attr("y2", height*endVertex.y);
 
       currentEdge = currentEdge.next;
       console.log(currentEdge != null);
@@ -75,6 +74,11 @@ function draw() {
     currentFace = currentFace.next;
   }
   while(currentFace.content.innerComponent != null)
+
+
+  // TODO draw vertices
+
+  // TODO draw segments of added line
 
 }
 
@@ -100,6 +104,8 @@ function mouseup(mousePos) {
       points[1] = mousePos;
       d3.select("svg").selectAll("#p1").remove();
       uiStatus = UI_STATUS.ADD_LINE;
+      var line = getLineFromPoints(points);
+      linearrangement.addLine(line);
       break;
     default:
       break;
@@ -124,7 +130,7 @@ function mousemove(mousePos) {
       createOrUpdatePoint(svg, "p1", mousePos, "lineextremity");
       break;
     case UI_STATUS.WAIT_P2:
-      createOrUpdateLine(svg, "newLine", [points[0], mousePos], "addedLine");
+      createOrUpdateLine(svg, "newLine", [points[0], mousePos], "newLine");
       break;
     case UI_STATUS.ADD_LINE:
     
@@ -182,11 +188,15 @@ function createOrUpdatePoint(parentElem, pointId, xy, classname) {
     .attr("cy", function() { return xy[1]; });
 }
 
-function createOrUpdateLine(parentElem, lineId, pts, classname) {
-
+function getLineFromPoints(pts) {
   var segment = cgutils.Segment(pts[0][0]/width, pts[0][1]/height,
                                 pts[1][0]/width, pts[1][1]/height);
-  var line = cgutils.LineFromSegment(segment);
+  return cgutils.LineFromSegment(segment);
+}
+
+function createOrUpdateLine(parentElem, lineId, pts, classname) {
+
+  var line = getLineFromPoints(pts);
   var inters = cgutils.intersectLineBoundingBox(line, 0, 0, 1, 1);
   var bbpts = [[width  * inters[0].intersection.x,
                 height * inters[0].intersection.y],
