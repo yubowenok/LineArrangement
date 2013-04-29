@@ -29,7 +29,7 @@ LineArrangement.prototype.initialize = function() {
 }
 
 /**
- * Add a line in the form ax + by + 1 = 0
+ * Add a line in the form ax + by + c = 0
  */
 LineArrangement.prototype.addLine = function(l) {
   // find leftmost intersection
