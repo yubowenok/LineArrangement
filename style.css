@@ -20,10 +20,15 @@ html {
   fill: "black";
 }
 
-.addedLine {
+.newLine {
   stroke-dasharray: 4, 3;
   stroke: gray;
   stroke-width: 1;
+}
+
+.addedLine {
+  stroke-width: 3;
+  stroke: steelblue;
 }
 
 body {
