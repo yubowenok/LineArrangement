@@ -12,7 +12,18 @@ html {
 
 #canvas svg rect {
   stroke: silver;
-  fill: rgba(220, 220, 54, 0.2);
+  fill: rgba(220, 220, 54, 0.15);
+}
+
+.lineextremity {
+  stroke: gray;
+  fill: "black";
+}
+
+.addedLine {
+  stroke-dasharray: 4, 3;
+  stroke: gray;
+  stroke-width: 1;
 }
 
 body {

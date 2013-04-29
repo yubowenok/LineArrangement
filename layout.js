@@ -2,14 +2,14 @@ var canvas;
 var width;
 var height;
 var linearrangement;
-var pointToInsert = [null, null];
+var points = [null, null];
 var linesToInsert = [];
 var uiStatus;
 
 var UI_STATUS = {
   WAIT_P1: 0,
   WAIT_P2: 1,
-  UPDATE : 2,
+  ADD_LINE : 2,
 };
 
 
@@ -25,7 +25,6 @@ function addRandomLine() {
   var y2 = Math.random() * (max - min) + min;
   var segment = cgutils.Segment(x1, y1, x2, y2);
   linearrangement.addLine(cgutils.LineFromSegment(segment));
-
 
 }
 
@@ -91,7 +90,51 @@ function lineArrangementNext() {
   
 }
 
-function handlemouse() {
+function mouseup(mousePos) {
+  switch (uiStatus) {
+    case UI_STATUS.WAIT_P1:
+      points[0] = mousePos;
+      uiStatus = UI_STATUS.WAIT_P2;
+      break;
+    case UI_STATUS.WAIT_P2:
+      points[1] = mousePos;
+      d3.select("svg").selectAll("#p1").remove();
+      uiStatus = UI_STATUS.ADD_LINE;
+      break;
+    default:
+      break;
+  };
+}
+
+function mouseout(mousePos) {
+  //if (uiStatus == UI_STATUS.WAIT_P1) {
+  //  var svg = d3.select("svg")
+  //    .selectAll("#p1")
+  //    .remove();
+  //}
+}
+
+function mousemove(mousePos) {
+
+  var svg = d3.select("svg");
+
+  // TODO highlight faces/edges or update inserted line
+  switch (uiStatus) {
+    case UI_STATUS.WAIT_P1:
+      createOrUpdatePoint(svg, "p1", mousePos, "lineextremity");
+      break;
+    case UI_STATUS.WAIT_P2:
+      createOrUpdateLine(svg, "newLine", [points[0], mousePos], "addedLine");
+      break;
+    case UI_STATUS.ADD_LINE:
+    
+      break;
+    default:
+      break;
+  };
+
+
+  /*
   mousepos = d3.mouse(this);
   console.log(mousepos);
 
@@ -118,8 +161,59 @@ function handlemouse() {
     pointToInsert = [null, null];
     linesToInsert.push(line);
   }
-  
+  */
+
 }
+
+function createOrUpdatePoint(parentElem, pointId, xy, classname) {
+  var point = parentElem.selectAll("#"+pointId)
+    .data([pointId])
+    .attr("cx", function() { return xy[0]; })
+    .attr("cy", function() { return xy[1]; });
+
+  point.exit().remove();
+
+  point.enter()
+    .append("circle")
+    .attr("class", classname)
+    .attr("id", pointId)
+    .attr("r", 2)
+    .attr("cx", function() { return xy[0]; })
+    .attr("cy", function() { return xy[1]; });
+}
+
+function createOrUpdateLine(parentElem, lineId, pts, classname) {
+
+  var segment = cgutils.Segment(pts[0][0]/width, pts[0][1]/height,
+                                pts[1][0]/width, pts[1][1]/height);
+  var line = cgutils.LineFromSegment(segment);
+  var inters = cgutils.intersectLineBoundingBox(line, 0, 0, 1, 1);
+  var bbpts = [[width  * inters[0].intersection.x,
+                height * inters[0].intersection.y],
+               [width  * inters[1].intersection.x,
+                height * inters[1].intersection.y]];
+
+  var newLine = parentElem.selectAll("#"+lineId)
+    .data([pts])
+    .attr("x1", bbpts[0][0])
+    .attr("y1", bbpts[0][1])
+    .attr("x2", bbpts[1][0])
+    .attr("y2", bbpts[1][1])
+
+  newLine.exit()
+    .remove();
+
+  newLine.enter()
+    .append("line")
+    .attr("class", classname)
+    .attr("id", lineId)
+    .attr("x1", bbpts[0][0])
+    .attr("y1", bbpts[0][1])
+    .attr("x2", bbpts[1][0])
+    .attr("y2", bbpts[1][1]);
+}
+
+      
 
 function initializeLayout() {
 
@@ -131,11 +225,18 @@ function initializeLayout() {
   canvas = d3.select("#canvas")
         .append("svg:svg")
         .attr("width",  widthStyle)
-        .attr("height", heightStyle)
-        .on("click", handlemouse);
+        .attr("height", heightStyle);
   canvas.append("svg:rect")
         .attr("width",  width)
         .attr("height", height);
+  canvas
+        .on("mousedown", function() {
+          mouseup(d3.mouse(this));})
+        .on("mouseout", function() {
+          mouseout(d3.mouse(this));})
+        .on("mousemove", function() {
+          mousemove(d3.mouse(this));});
+
 
   var dcel = new DCEL();
   dcel.constructBoundingBox(0, 1, 0, 1);
