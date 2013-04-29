@@ -4,8 +4,18 @@ var height;
 var linearrangement;
 var pointToInsert = [null, null];
 var linesToInsert = [];
+var uiStatus;
 
-function addRandomLine(){
+var UI_STATUS = {
+  WAIT_P1: 0,
+  WAIT_P2: 1,
+  UPDATE : 2,
+};
+
+
+
+
+function addRandomLine() {
 
   var max = 1;
   var min = 0;
@@ -19,7 +29,7 @@ function addRandomLine(){
 
 }
 
-function draw(){
+function draw() {
 
   //Draw lines
   var lines = linearrangement.lines;
@@ -56,7 +66,7 @@ function draw(){
           .attr("x2", width*endVertex.x)
           .attr("y2", height*endVertex.y)
           .attr("stroke-width", 3)
-          .attr("stroke", "red");
+          .attr("stroke", "steelblue");
 
       currentEdge = currentEdge.next;
       console.log(currentEdge != null);
@@ -69,7 +79,7 @@ function draw(){
 
 }
 
-function lineArrangementNext(){
+function lineArrangementNext() {
   var index = linearrangement.lines.length;
   var totalLines = linesToInsert.length
   if(linearrangement.done() && index < totalLines){
@@ -81,7 +91,7 @@ function lineArrangementNext(){
   
 }
 
-function handlemouse(){
+function handlemouse() {
   mousepos = d3.mouse(this);
   console.log(mousepos);
 
@@ -111,24 +121,31 @@ function handlemouse(){
   
 }
 
-function initializeLayout(){
+function initializeLayout() {
 
-  width = 500;//d3.select("#canvas").attr('width');
-  height = 500;//d3.select("#canvas").attr('height');
+  var widthStyle  = d3.select("#canvas").style('width');
+  var heightStyle = d3.select("#canvas").style('height');
+  width  = widthStyle.substring(0, widthStyle.length-2);
+  height = heightStyle.substring(0, heightStyle.length-2);
 
   canvas = d3.select("#canvas")
-        .append("svg")
-        .attr("width", width+'px')
-        .attr("height", height+'px')
+        .append("svg:svg")
+        .attr("width",  widthStyle)
+        .attr("height", heightStyle)
         .on("click", handlemouse);
+  canvas.append("svg:rect")
+        .attr("width",  width)
+        .attr("height", height);
 
   var dcel = new DCEL();
   dcel.constructBoundingBox(0, 1, 0, 1);
   linearrangement = new LineArrangement(dcel);
 
+  // waiting for first point
+  uiStatus = UI_STATUS.WAIT_P1;
+
   //randomLines();
   draw();
-
 }
 
 window.onload = initializeLayout;
