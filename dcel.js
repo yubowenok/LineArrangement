@@ -109,7 +109,10 @@ DCEL.prototype.leftmostEdgeBoundingBox = function(line){
 
 // insert the segment on the line into the DCEL, between edgeFront and edgeRear
 // the line intersects with edgeFront at vertexFront, and with edgeRear at vertexRear
-DCEL.prototype.insertEdge = function(edgeFront, edgeRear, vertexFront, vertexRear){
+DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
+
+	var vertexFront = cgutils.intersectEdge(edgeFront, line).intersection;
+	var vertexRear = cgutils.intersectEdge(edgeRear, line).intersection;
 	// fetch the face in question
 	var face1 = edgeFront.incidentFace;
 	// create a new face
@@ -212,14 +215,14 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, vertexFront, vertexRea
 	}
 	
 	// insert new vertices
-	listVertex.pushBackContent(vertex1);
-	listVertex.pushBackContent(vertex2);
+	this.listVertex.pushBackContent(vertex1);
+	this.listVertex.pushBackContent(vertex2);
 	// remove edgeRear and edgeFront and insert new edges
-	listEdge.remove(edgeFront);
-	listEdge.remove(edgeRear);
-	listEdge.pushBackContentArray([edge1, edge2, edgeFront1, edgeFront2, edgeRear1, edgeRear2]);
+	this.listEdge.remove(edgeFront);
+	this.listEdge.remove(edgeRear);
+	this.listEdge.pushBackContentArray([edge1, edge2, edgeFront1, edgeFront2, edgeRear1, edgeRear2]);
 	// insert new faces. note that face1 is just changed. it is not deleted
-	listFace.pushBackContent(face2);
+	this.listFace.pushBackContent(face2);
 }
 
 function Face(outerComponent, innerComponent){

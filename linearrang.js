@@ -35,7 +35,7 @@ LineArrangement.prototype.addLine = function(l) {
   // find leftmost intersection
   this.line     = l
   this.E        = this.dcel.leftmostEdgeBoundingBox(this.line);
-  this.v        = this.intersectEdge(this.E, this.line).point;
+  this.v        = cgutils.intersectEdge(this.E, this.line).point;
   this.E_prime  = this.E.next;
   this.v_prime  = null;
   this.nextStep = this.NEXTSTEP.SEARCH_REAR_EDGE;
@@ -62,7 +62,7 @@ LineArrangement.prototype.next = function() {
       }
       else {
         // test intersection with E'
-        var inters = this.intersectEdge(this.E_prime, this.line);
+        var inters = cgutils.intersectEdge(this.E_prime, this.line);
         if (inters.hasIntersection) {
           this.v_prime = inters.point;
           this.nextStep = this.NEXTSTEP.SPLIT_FACE;
@@ -81,7 +81,7 @@ LineArrangement.prototype.next = function() {
       break;
     case this.NEXTSTEP.MOVE_TO_NEXT_FACE:
       this.E        = this.E_twin;
-      this.v        = this.intersectEdge(this.E, this.line).point;
+      this.v        = cgutils.intersectEdge(this.E, this.line).point;
       this.E_prime  = this.E.next;
       this.v_prime  = null;
       this.E_twin   = null;
@@ -131,14 +131,3 @@ LineArrangement.prototype.lines = function() {
   return this.lines;
 }
 
-/**
- * Try to intersect edge and line.
- */
-LineArrangement.prototype.intersectEdge = function(edge, line) {
-  var s = cgutils.Segment(
-    edge.origin.x,
-    edge.origin.y,
-    edge.next.origin.x,
-    edge.next.origin.y);
-  return cgutils.intersectLineSegment(line, s);		
-}
