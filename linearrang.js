@@ -50,8 +50,11 @@ LineArrangement.prototype.next = function() {
   // advance in status machine
   switch (this.nextStep) {
     case this.NEXTSTEP.SEARCH_REAR_EDGE:
-      if (this.E_prime == this.dcel.unboundedFace.innerComponent) {
-        // reached unbounded face
+      if (this.E.incidentFace === this.dcel.unboundedFace) {  
+	  //  Bowen: "this.E_prime == this.dcel.unboundedFace.innerComponent" is incorrect, 
+	  //  innerComponent can be any edge incident to the unbounded face
+        
+		// reached unbounded face
         this.lines.push(this.line);
         this.line     = null;
         this.E        = null;
