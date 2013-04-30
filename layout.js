@@ -118,9 +118,9 @@ function lineArrangementNext() {
     .attr("y1", height*status.E_prime.origin.y)
     .attr("x2", width*status.E_prime.next.origin.x)
     .attr("y2", height*status.E_prime.next.origin.y);
-
-
-  /* Draw face */
+  
+  /*
+  //Draw face
   var currentFace = status.face;
   var currentEdge = currentFace.outerComponent;
   while(currentEdge != null){
@@ -136,6 +136,7 @@ function lineArrangementNext() {
 
     currentEdge = currentEdge.next;
   }
+  */
 }
 
 function mouseup(mousePos) {
