@@ -39,6 +39,8 @@ LineArrangement.prototype.addLine = function(l) {
   this.E_prime  = this.E.next;
   this.v_prime  = null;
   this.nextStep = this.NEXTSTEP.SEARCH_REAR_EDGE;
+  this.splitface1 = null;
+  this.splitface2 = null;
 }
 
 /**
@@ -46,7 +48,6 @@ LineArrangement.prototype.addLine = function(l) {
  */
 LineArrangement.prototype.next = function() {
   // advance in status machine
-  console.log(this.nextStep);
   switch (this.nextStep) {
     case this.NEXTSTEP.SEARCH_REAR_EDGE:
       if (this.E_prime == this.dcel.unboundedFace.innerComponent) {
@@ -59,6 +60,8 @@ LineArrangement.prototype.next = function() {
         this.v_prime  = null;
         this.E_twin   = null;
         this.nextStep = this.NEXTSTEP.NOP;
+        this.splitface1 = null;
+        this.splitface2 = null;
       }
       else {
         // test intersection with E'
@@ -76,7 +79,9 @@ LineArrangement.prototype.next = function() {
     case this.NEXTSTEP.SPLIT_FACE:
       // TODO have steps for insertEdge like here?
       this.E_twin = this.E_prime.twin;
-      this.dcel.insertEdge(this.E, this.E_prime, this.line);
+      var newfaces = this.dcel.insertEdge(this.E, this.E_prime, this.line);
+      this.splitface1 = newfaces[0];
+      this.splitface2 = newfaces[1];
       this.nextStep = this.NEXTSTEP.MOVE_TO_NEXT_FACE;
       break;
     case this.NEXTSTEP.MOVE_TO_NEXT_FACE:
@@ -86,6 +91,8 @@ LineArrangement.prototype.next = function() {
       this.v_prime  = null;
       this.E_twin   = null;
       this.nextStep = this.NEXTSTEP.SEARCH_REAR_EDGE;
+      this.splitface1 = null;
+      this.splitface2 = null;
       break;
     case this.NEXTSTEP.NOP:
     default:
@@ -103,24 +110,28 @@ LineArrangement.prototype.done = function() {
 /**
  * Access to elements involved in current algorithm step in the format:
  * {line    : [a,b],
- *  face    : Face,        // current face
+ *  curface : Face,        // current face
  *  E       : Edge,        // front edge
  *  E_prime : Edge,        // candidate/actual rear edge
  *  v       : Vertex,      // intersection between line and E
  *  v_prime : Vertex,      // intersection between line and E'
  *  E_twin  : Edge,        // twinEdge to check next
+ *  splitface1 : Face,     // split face 1
+ *  splitface2 : Face,     // split face 2 (when status=MOVE_TO_NEXT_FACE)
  * }  
  * 
  */
 LineArrangement.prototype.status = function() {
   return {
     'line'    : this.line,
-    'face'    : this.E.incidentFace,
+    'curface'    : this.E.incidentFace,
     'E'       : this.E,
     'E_prime' : this.E_prime,
     'v'       : this.v,
     'v_prime' : this.v_prime,
     'E_twin'  : this.E_twin,
+    'splitface1': this.splitface1,
+    'splitface2': this.splitface2,
   };
 }
 
