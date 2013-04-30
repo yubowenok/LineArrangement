@@ -210,7 +210,7 @@ function createOrUpdateFace(parentElem, polyId, face, classname){
 
   //Traverse the face
 
-  createOrUpdatePolygon(parentElem, polyId, [[300, 0], [0, 300]], classname);
+  //createOrUpdatePolygon(parentElem, polyId, [[300, 0], [0, 300]], classname);
 }
 
 function createOrUpdatePolygon(parentElem, polyId, points, classname){
