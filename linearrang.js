@@ -81,7 +81,7 @@ LineArrangement.prototype.next = function() {
       break;
     case this.NEXTSTEP.SPLIT_FACE:
       // TODO have steps for insertEdge like here?
-      this.E_twin = this.E_prime.twin;
+      this.E_twin = this.E.twin;
       var newfaces = this.dcel.insertEdge(this.E, this.E_prime, this.line);
       this.splitface1 = newfaces[0];
       this.splitface2 = newfaces[1];

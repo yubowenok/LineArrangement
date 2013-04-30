@@ -87,6 +87,9 @@ function draw() {
 
 function lineArrangementNext() {
 
+  if (linearrangement.done())
+    return;
+
   var status = linearrangement.status();
 
   //Check if we have to draw the new faces
@@ -99,20 +102,26 @@ function lineArrangementNext() {
 
     linearrangement.next();
 
-    //Draw edges to be splitted
-    createOrUpdateEdge(canvas, "currentEdge", status.E, "searchingEdge");
-    createOrUpdateEdge(canvas, "currentEdgePrime", status.E_prime, "searchingEdge");
+    if(linearrangement.done()){
+      // TODO Fabio, handle this case: insertion is done:
+      // maybe delete all temporary elements?
+    }
+    else{
 
-    //Found the edges, so change color
-    if(linearrangement.nextStep==linearrangement.NEXTSTEP.MOVE_TO_NEXT_FACE){
-      createOrUpdateEdge(canvas, "currentEdge", status.E, "foundEdge");
-      createOrUpdateEdge(canvas, "currentEdgePrime", status.E_prime, "foundEdge");
+      //Draw edges to be splitted
+      createOrUpdateEdge(canvas, "currentEdge", status.E, "searchingEdge");
+      createOrUpdateEdge(canvas, "currentEdgePrime", status.E_prime, "searchingEdge");
 
-      //Next step, draw the new faces
-      drawNewFaces = true;
+      //Found the edges, so change color
+      if(linearrangement.nextStep==linearrangement.NEXTSTEP.MOVE_TO_NEXT_FACE){
+        createOrUpdateEdge(canvas, "currentEdge", status.E, "foundEdge");
+        createOrUpdateEdge(canvas, "currentEdgePrime", status.E_prime, "foundEdge");
+
+        //Next step, draw the new faces
+        drawNewFaces = true;
+      }
     }
   }
-
 }
 
 function mouseup(mousePos) {
@@ -128,8 +137,9 @@ function mouseup(mousePos) {
       var line = getLineFromPoints(points);
       linearrangement.addLine(line);
       
-      createOrUpdateEdge(canvas, "currentEdge", linearrangement.status().E, "searchingEdge");
-      createOrUpdateEdge(canvas, "currentEdgePrime", linearrangement.status().E_prime, "searchingEdge");
+      var status = linearrangement.status();
+      createOrUpdateEdge(canvas, "currentEdge", status.E, "searchingEdge");
+      createOrUpdateEdge(canvas, "currentEdgePrime", status.E_prime, "searchingEdge");
 
       break;
     default:
