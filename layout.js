@@ -209,8 +209,22 @@ function createOrUpdateFace(parentElem, polyId, face, classname){
   var points = [];
 
   //Traverse the face
+  var currentEdge = face.outerComponent;
+  do{
 
-  //createOrUpdatePolygon(parentElem, polyId, [[300, 0], [0, 300]], classname);
+    var startVertex = currentEdge.origin;
+    var endVertex = currentEdge.next.origin;
+
+    points.push([width*startVertex.x, height*startVertex.y]);
+    points.push([width*endVertex.x, height*endVertex.y]);
+
+    currentEdge = currentEdge.next;
+  }
+  while(currentEdge != face.outerComponent)
+
+
+  createOrUpdatePolygon(parentElem, polyId, points, classname);
+
 }
 
 function createOrUpdatePolygon(parentElem, polyId, points, classname){

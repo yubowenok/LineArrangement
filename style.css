@@ -42,13 +42,17 @@ html {
 }
 
 .splitFace1 {
-  stroke-width: 3;
-  stroke: green;
+  stroke-width: 1;
+  stroke: black;
+  fill: red;
+  fill-opacity: 0.1;
 }
 
 .splitFace2 {
-  stroke-width: 3;
-  stroke: green;
+  stroke-width: 1;
+  stroke: black;
+  fill: blue;
+  fill-opacity: 0.1;
 }
 
 .addedEdge {
