@@ -223,7 +223,7 @@ function createOrUpdateFace(parentElem, polyId, face, classname){
   while(currentEdge != face.outerComponent)
 
 
-  createOrUpdatePolygon(parentElem, polyId, points, classname);
+  //createOrUpdatePolygon(parentElem, polyId, points, classname);
 
 }
 
