@@ -39,6 +39,7 @@ DoublyLinkedList.prototype.pushBack = function(element){
 		// insert at the end
 		this.tail.next = element;
 		element.prev = this.tail;
+<<<<<<< HEAD
     this.tail = element;
 	}
 }
@@ -47,6 +48,13 @@ DoublyLinkedList.prototype.pushBack = function(element){
 // the passed in element is also deleted!
 DoublyLinkedList.prototype.removeContent = function(content){
 	var element = content.element;
+=======
+		this.tail = element;
+	}
+}
+
+DoublyLinkedList.prototype.remove = function(element){
+>>>>>>> b04db971728c8b0fd551cc6f6e24e8a06447b4f3
 	if (element == this.head) {
 		// remove the first element in the list
 		// set head to the element's next
@@ -54,6 +62,7 @@ DoublyLinkedList.prototype.removeContent = function(content){
 		// in case of only one element in the list
 		if(element.next != null) element.next.prev = null;
 	}
+<<<<<<< HEAD
   else if (element == this.tail) {
 		if (element.prev != null) element.prev.next = null; // element.next;
     this.tail = element.prev;
@@ -64,6 +73,20 @@ DoublyLinkedList.prototype.removeContent = function(content){
 
 	content.prev.next = content.next;
   content.next.prev = content.prev;
+=======
+	else if (element == this.tail) {
+		// remove the last element in the list
+		if (element.prev != null) element.prev.next = null; // element.next;
+		this.tail = element.prev;
+	} else {  
+		// element not in extremities
+		element.prev.next = element.next;
+		element.next.prev = element.prev;
+	}
+	// Bowen: What is these two lines for?
+	//content.prev.next = content.next;
+	//content.next.prev = content.prev;
+>>>>>>> b04db971728c8b0fd551cc6f6e24e8a06447b4f3
 
 	// now bidirectional linking is complete
 	
@@ -72,10 +95,20 @@ DoublyLinkedList.prototype.removeContent = function(content){
 	// element = null;
 }
 
+// remove the element from the doubly linked list
+// the passed in element is also deleted!
+DoublyLinkedList.prototype.removeContent = function(content){
+	this.remove(content.element);
+}
+
 // to create a doubly linked list element, call this constructor and set the content
 function DoublyLinkedListElement(content){
 	this.content = content;
+<<<<<<< HEAD
 	this.content.element = this;
+=======
+	this.content.element = this;	// self pointer from the content to the list element
+>>>>>>> b04db971728c8b0fd551cc6f6e24e8a06447b4f3
 	this.next = null;
 	this.prev = null;
 }
