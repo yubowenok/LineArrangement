@@ -6,6 +6,7 @@ var points = [null, null];
 var uiStatus;
 var edgesNotFinal = [];
 var edgesFinal = [];
+var drawNewFaces = false;
 
 var UI_STATUS = {
   WAIT_P1: 0,
@@ -86,31 +87,31 @@ function draw() {
 
 function lineArrangementNext() {
 
-  linearrangement.next();
-  //console.log('lineArrangementNext');
-  //console.log(linearrangement.status());
-
-  //var status = linearrangement.status();
-  //console.log(status);
-
   var status = linearrangement.status();
 
-  /* Draw edges to be splitted*/
-  createOrUpdateEdge(canvas, "currentEdge", status.E, "searchingEdge");
-  createOrUpdateEdge(canvas, "currentEdgePrime", status.E_prime, "searchingEdge");
-
-  console.log(linearrangement.nextStep);
-  console.log(linearrangement.status().splitface1);
-  console.log(linearrangement.status().splitface2);
-
-  if(linearrangement.nextStep==linearrangement.NEXTSTEP.MOVE_TO_NEXT_FACE){
-    createOrUpdateEdge(canvas, "currentEdge", status.E, "foundEdge");
-    createOrUpdateEdge(canvas, "currentEdgePrime", status.E_prime, "foundEdge");
-
+  //Check if we have to draw the new faces
+  if(drawNewFaces){
     createOrUpdateFace(canvas, "splitFace1", status.splitface1, "splitFace1");
     createOrUpdateFace(canvas, "splitFace2", status.splitface2, "splitFace2");
+    drawNewFaces = false;
   }
+  else{
 
+    linearrangement.next();
+
+    //Draw edges to be splitted
+    createOrUpdateEdge(canvas, "currentEdge", status.E, "searchingEdge");
+    createOrUpdateEdge(canvas, "currentEdgePrime", status.E_prime, "searchingEdge");
+
+    //Found the edges, so change color
+    if(linearrangement.nextStep==linearrangement.NEXTSTEP.MOVE_TO_NEXT_FACE){
+      createOrUpdateEdge(canvas, "currentEdge", status.E, "foundEdge");
+      createOrUpdateEdge(canvas, "currentEdgePrime", status.E_prime, "foundEdge");
+
+      //Next step, draw the new faces
+      drawNewFaces = true;
+    }
+  }
 
 }
 
@@ -184,7 +185,7 @@ function createOrUpdateFace(parentElem, polyId, face, classname){
   while(currentEdge != face.outerComponent)
 
 
-  //createOrUpdatePolygon(parentElem, polyId, points, classname);
+  createOrUpdatePolygon(parentElem, polyId, points, classname);
 
 }
 
