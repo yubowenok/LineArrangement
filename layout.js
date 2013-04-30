@@ -86,6 +86,10 @@ function draw() {
 
 function lineArrangementNext() {
 
+  if (linearrangement.done()) {
+    return;
+  }
+
   linearrangement.next();
   //console.log('lineArrangementNext');
   //console.log(linearrangement.status());
@@ -93,25 +97,29 @@ function lineArrangementNext() {
   //var status = linearrangement.status();
   //console.log(status);
 
-  var status = linearrangement.status();
-
-  /* Draw edges to be splitted*/
-  createOrUpdateEdge(canvas, "currentEdge", status.E, "searchingEdge");
-  createOrUpdateEdge(canvas, "currentEdgePrime", status.E_prime, "searchingEdge");
-
-  console.log(linearrangement.nextStep);
-  console.log(linearrangement.status().splitface1);
-  console.log(linearrangement.status().splitface2);
-
-  if(linearrangement.nextStep==linearrangement.NEXTSTEP.MOVE_TO_NEXT_FACE){
-    createOrUpdateEdge(canvas, "currentEdge", status.E, "foundEdge");
-    createOrUpdateEdge(canvas, "currentEdgePrime", status.E_prime, "foundEdge");
-
-    createOrUpdateFace(canvas, "splitFace1", status.splitface1, "splitFace1");
-    createOrUpdateFace(canvas, "splitFace2", status.splitface2, "splitFace2");
+  if (linearrangement.done()) {
+    // TODO Fabio, handle this case: insertion is done:
+    // maybe delete all temporary elements?
   }
+  else {
+    var status = linearrangement.status();
 
+    /* Draw edges to be splitted*/
+    createOrUpdateEdge(canvas, "currentEdge", status.E, "searchingEdge");
+    createOrUpdateEdge(canvas, "currentEdgePrime", status.E_prime, "searchingEdge");
 
+    console.log(linearrangement.nextStep);
+    console.log(status.splitface1);
+    console.log(status.splitface2);
+
+    if(linearrangement.nextStep==linearrangement.NEXTSTEP.MOVE_TO_NEXT_FACE){
+      createOrUpdateEdge(canvas, "currentEdge", status.E, "foundEdge");
+      createOrUpdateEdge(canvas, "currentEdgePrime", status.E_prime, "foundEdge");
+
+      createOrUpdateFace(canvas, "splitFace1", status.splitface1, "splitFace1");
+      createOrUpdateFace(canvas, "splitFace2", status.splitface2, "splitFace2");
+    }
+  }
 }
 
 function mouseup(mousePos) {
@@ -127,8 +135,9 @@ function mouseup(mousePos) {
       var line = getLineFromPoints(points);
       linearrangement.addLine(line);
       
-      createOrUpdateEdge(canvas, "currentEdge", linearrangement.status().E, "searchingEdge");
-      createOrUpdateEdge(canvas, "currentEdgePrime", linearrangement.status().E_prime, "searchingEdge");
+      var status = linearrangement.status();
+      createOrUpdateEdge(canvas, "currentEdge", status.E, "searchingEdge");
+      createOrUpdateEdge(canvas, "currentEdgePrime", status.E_prime, "searchingEdge");
 
       break;
     default:
