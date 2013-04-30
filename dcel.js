@@ -236,6 +236,9 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	this.listEdge.pushBackContentArray([edgeFront1Twin, edgeFront2Twin, edgeRear1Twin, edgeRear2Twin]);
 	// insert new faces. note that face1 is just changed. it is not deleted
 	this.listFace.pushBackContent(face2);
+
+
+	return [face1, face2];
 }
 
 function Face(outerComponent, innerComponent){

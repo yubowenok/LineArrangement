@@ -51,6 +51,7 @@ function draw() {
     }
   }
 
+  /*
   //Draw edges
   var currentFace = linearrangement.dcel.listFace.head;
   do{
@@ -76,7 +77,7 @@ function draw() {
     currentFace = currentFace.next;
   }
   while(currentFace.content.innerComponent != null)
-
+  */
 
   // TODO draw vertices
 
@@ -95,48 +96,31 @@ function lineArrangementNext() {
   }
   */
   linearrangement.next();
-  console.log('lineArrangementNext');
-  console.log(linearrangement.status());
+  //console.log('lineArrangementNext');
+  //console.log(linearrangement.status());
+
+  //var status = linearrangement.status();
+  //console.log(status);
 
   var status = linearrangement.status();
-  console.log(status);
 
   /* Draw edges to be splitted*/
-  canvas.selectAll(".currentEdge").remove();
-  canvas.selectAll(".currentEdgePrime").remove();
+  createOrUpdateEdge(canvas, "currentEdge", status.E, "searchingEdge");
+  createOrUpdateEdge(canvas, "currentEdgePrime", status.E_prime, "searchingEdge");
 
-  canvas.append("line")
-    .attr("class", "currentEdge")
-    .attr("x1", width*status.E.origin.x)
-    .attr("y1", height*status.E.origin.y)
-    .attr("x2", width*status.E.next.origin.x)
-    .attr("y2", height*status.E.next.origin.y);
+  console.log(linearrangement.nextStep);
+  console.log(linearrangement.status().splitface1);
+  console.log(linearrangement.status().splitface2);
 
-  canvas.append("line")
-    .attr("class", "currentEdgePrime")
-    .attr("x1", width*status.E_prime.origin.x)
-    .attr("y1", height*status.E_prime.origin.y)
-    .attr("x2", width*status.E_prime.next.origin.x)
-    .attr("y2", height*status.E_prime.next.origin.y);
-  
-  /*
-  //Draw face
-  var currentFace = status.face;
-  var currentEdge = currentFace.outerComponent;
-  while(currentEdge != null){
-    var startVertex = currentEdge.origin;
-    var endVertex = currentEdge.next.origin;
+  if(linearrangement.nextStep==linearrangement.NEXTSTEP.MOVE_TO_NEXT_FACE){
+    createOrUpdateEdge(canvas, "currentEdge", status.E, "foundEdge");
+    createOrUpdateEdge(canvas, "currentEdgePrime", status.E_prime, "foundEdge");
 
-    canvas.append("line")
-      .attr("class", "addedEdge")
-      .attr("x1", width*startVertex.x)
-      .attr("y1", height*startVertex.y)
-      .attr("x2", width*endVertex.x)
-      .attr("y2", height*endVertex.y);
-
-    currentEdge = currentEdge.next;
+    createOrUpdateFace(canvas, "splitFace1", status.splitface1, "splitFace1");
+    createOrUpdateFace(canvas, "splitFace2", status.splitface2, "splitFace2");
   }
-  */
+
+
 }
 
 function mouseup(mousePos) {
@@ -151,6 +135,10 @@ function mouseup(mousePos) {
       uiStatus = UI_STATUS.ADD_LINE;
       var line = getLineFromPoints(points);
       linearrangement.addLine(line);
+      
+      createOrUpdateEdge(canvas, "currentEdge", linearrangement.status().E, "searchingEdge");
+      createOrUpdateEdge(canvas, "currentEdgePrime", linearrangement.status().E_prime, "searchingEdge");
+
       break;
     default:
       break;
@@ -216,6 +204,36 @@ function mousemove(mousePos) {
 
 }
 
+function createOrUpdateFace(parentElem, polyId, face, classname){
+
+  var points = [];
+
+  //Traverse the face
+
+  createOrUpdatePolygon(parentElem, polyId, [[300, 0], [0, 300]], classname);
+}
+
+function createOrUpdatePolygon(parentElem, polyId, points, classname){
+
+
+  var line = d3.svg.line()
+    .x(function(d) { return d[0]; })
+    .y(function(d) { return d[1]; })
+    .interpolate("linear");
+
+  var path = parentElem.selectAll("#"+polyId)
+    .data(points)
+    .attr("d", line(points));
+
+  path.exit().remove();
+
+  path.enter()
+    .append("path")
+    .attr("class", classname)
+    .attr("d", line(points));
+
+}
+
 function createOrUpdatePoint(parentElem, pointId, xy, classname) {
   var point = parentElem.selectAll("#"+pointId)
     .data([pointId])
@@ -239,6 +257,15 @@ function getLineFromPoints(pts) {
   return cgutils.LineFromSegment(segment);
 }
 
+function createOrUpdateEdge(parentElem, lineId, edge, classname){
+
+  var pts = [[width * edge.origin.x, height * edge.origin.y],
+             [width * edge.next.origin.x, height * edge.next.origin.y]];
+
+  createOrUpdateSegment(parentElem, lineId, pts, classname);
+
+}
+
 function createOrUpdateLine(parentElem, lineId, pts, classname) {
 
   var line = getLineFromPoints(pts);
@@ -248,12 +275,20 @@ function createOrUpdateLine(parentElem, lineId, pts, classname) {
                [width  * inters[1].intersection.x,
                 height * inters[1].intersection.y]];
 
+  createOrUpdateSegment(parentElem, lineId, bbpts, classname);
+
+}
+
+function createOrUpdateSegment(parentElem, lineId, pts, classname){
+
+
   var newLine = parentElem.selectAll("#"+lineId)
     .data([pts])
-    .attr("x1", bbpts[0][0])
-    .attr("y1", bbpts[0][1])
-    .attr("x2", bbpts[1][0])
-    .attr("y2", bbpts[1][1])
+    .attr("class", classname)
+    .attr("x1", pts[0][0])
+    .attr("y1", pts[0][1])
+    .attr("x2", pts[1][0])
+    .attr("y2", pts[1][1])
 
   newLine.exit()
     .remove();
@@ -262,10 +297,11 @@ function createOrUpdateLine(parentElem, lineId, pts, classname) {
     .append("line")
     .attr("class", classname)
     .attr("id", lineId)
-    .attr("x1", bbpts[0][0])
-    .attr("y1", bbpts[0][1])
-    .attr("x2", bbpts[1][0])
-    .attr("y2", bbpts[1][1]);
+    .attr("x1", pts[0][0])
+    .attr("y1", pts[0][1])
+    .attr("x2", pts[1][0])
+    .attr("y2", pts[1][1]);
+
 }
 
       
@@ -301,7 +337,7 @@ function initializeLayout() {
   uiStatus = UI_STATUS.WAIT_P1;
 
   //randomLines();
-  draw();
+  //draw();
 }
 
 window.onload = initializeLayout;

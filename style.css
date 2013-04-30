@@ -31,9 +31,24 @@ html {
   stroke: steelblue;
 }
 
-.currentEdge {
+.searchingEdge {
   stroke-width: 3;
   stroke: red;
+}
+
+.foundEdge {
+  stroke-width: 3;
+  stroke: green;
+}
+
+.splitFace1 {
+  stroke-width: 3;
+  stroke: green;
+}
+
+.splitFace2 {
+  stroke-width: 3;
+  stroke: green;
 }
 
 .addedEdge {
