@@ -69,7 +69,7 @@ DCEL.prototype.constructBoundingBox = function(xmin, xmax, ymin, ymax){
 	
 }
 
-// find the leftmost half edge on the bounding box, the edge is incident to the UNBOUNDED face
+// find the leftmost half edge on the bounding box, the edge is incident to the INNER face
 DCEL.prototype.leftmostEdgeBoundingBox = function(line){
 	// starting from the innerComponent of the unbounded face (an edge on the bounding box)
 	// we iterate all the edges incident to the unbounded face until we find one that is intersected by the line
@@ -104,14 +104,14 @@ DCEL.prototype.leftmostEdgeBoundingBox = function(line){
 		alert("ERROR: leftmostEdgeBoundingBox failed");
 	}
 	
-	return foundEdge;
+	return foundEdge.twin;
 }
 
 // insert the segment on the line into the DCEL, between edgeFront and edgeRear
 // the line intersects with edgeFront at vertexFront, and with edgeRear at vertexRear
 // edgeFront and edgeRear shall be incident to the inner face
 DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
-
+	console.log("insertEdge called");
 	var vertexFront = cgutils.intersectEdge(edgeFront, line).intersection;
 	var vertexRear = cgutils.intersectEdge(edgeRear, line).intersection;
 	// fetch the face in question
@@ -174,7 +174,7 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	this.linkEdge(edge2, edgeFront2);
 	this.linkEdge(edgeFront2Twin, edgeFront1Twin);
 	this.linkEdge(edgeRear1Twin, edgeRear2Twin);
-	if(edgeFront.prev == edgeRear){
+	if(edgeFront.prev === edgeRear){
 		// careful! both edgeFront and edgeRear will be deleted
 		// so we link manually here
 		// but how could this be?! the face with only two edges (edgeFront, edgeRear) is not a face!
@@ -233,6 +233,7 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	this.listEdge.removeContent(edgeFront);
 	this.listEdge.removeContent(edgeRear);
 	this.listEdge.pushBackContentArray([edge1, edge2, edgeFront1, edgeFront2, edgeRear1, edgeRear2]);
+	this.listEdge.pushBackContentArray([edgeFront1Twin, edgeFront2Twin, edgeRear1Twin, edgeRear2Twin]);
 	// insert new faces. note that face1 is just changed. it is not deleted
 	this.listFace.pushBackContent(face2);
 }

@@ -41,7 +41,7 @@ function constructBoundingBox(var xmin, var xmax, var ymin, var ymax)
 
 function leftmostEdgeBoundingBox(var line)
 * This function returns a reference to the left most intersected edge on the bounding box. 
-The returned edge is incident to the UNBOUNDED face.
+The returned edge is incident to the INNER face.
 The returned edge shall be used to start a line insertion in the construction of line arrangement.
 
 function insertEdge(var edgeFront, var edgeRear, var vertexFront, var vertexRear)

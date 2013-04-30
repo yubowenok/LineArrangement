@@ -44,17 +44,26 @@ DoublyLinkedList.prototype.pushBack = function(element){
 }
 
 DoublyLinkedList.prototype.remove = function(element){
-	if (element == this.head) {
+	if (element === this.head) {
 		// remove the first element in the list
 		// set head to the element's next
 		this.head = element.next;
 		// in case of only one element in the list
-		if(element.next != null) element.next.prev = null;
+		if(element.next != null){
+			element.next.prev = null;
+		}else{
+			this.tail = null;
+		}
 	}
-	else if (element == this.tail) {
+	else if (element === this.tail) {
 		// remove the last element in the list
-		if (element.prev != null) element.prev.next = null; // element.next;
 		this.tail = element.prev;
+		// in case of only one element in the list
+		if (element.prev != null){
+			element.prev.next = null; // element.next;
+		}else{
+			this.head = null;
+		}
 	} else {  
 		// element not in extremities
 		element.prev.next = element.next;
