@@ -27,24 +27,7 @@ function draw(){
   for(var i=0; i<lines.length; i++){
 
     //intersect width edges
-    var pt_bottom = cgutils.intersectLineSegment(lines[i], cgutils.Segment(0,0,1,0));
-    var pt_top = cgutils.intersectLineSegment(lines[i], cgutils.Segment(0,1,1,1));
-    var pt_left = cgutils.intersectLineSegment(lines[i], cgutils.Segment(0,0,0,1));
-    var pt_right = cgutils.intersectLineSegment(lines[i], cgutils.Segment(1,0,1,1));
-    //console.log(pt_bottom);
-    //console.log(pt_top);
-    //console.log(pt_left);
-    //console.log(pt_right);
-    var pts = [];
-    if(pt_bottom.hasIntersection)
-      pts.push(pt_bottom);
-    if(pt_top.hasIntersection)
-      pts.push(pt_top);
-    if(pt_left.hasIntersection)
-      pts.push(pt_left);
-    if(pt_right.hasIntersection)
-      pts.push(pt_right);
-    //console.log(pts);
+    var pts = cgutils.intersectLineBoundingBox(lines[i], 0, 0, 1, 1);
     if(pts.length >= 2){
       var line = canvas.append("line")
         .attr("x1", width*pts[0].intersection.x)
