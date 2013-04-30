@@ -45,7 +45,8 @@ DoublyLinkedList.prototype.pushBack = function(element){
 
 // remove the element from the doubly linked list
 // the passed in element is also deleted!
-DoublyLinkedList.prototype.remove = function(element){
+DoublyLinkedList.prototype.removeContent = function(content){
+	var element = content.element;
 	if (element == this.head) {
 		// remove the first element in the list
 		// set head to the element's next
@@ -53,13 +54,17 @@ DoublyLinkedList.prototype.remove = function(element){
 		// in case of only one element in the list
 		if(element.next != null) element.next.prev = null;
 	}
-  if (element == this.tail) {
+  else if (element == this.tail) {
 		if (element.prev != null) element.prev.next = null; // element.next;
     this.tail = element.prev;
   } else {  // element not in extremities
     element.prev.next = element.next;
     element.next.prev = element.prev;
 	}
+
+	content.prev.next = content.next;
+  content.next.prev = content.prev;
+
 	// now bidirectional linking is complete
 	
 	// clear the reference so that garbage collection will handle
@@ -70,6 +75,7 @@ DoublyLinkedList.prototype.remove = function(element){
 // to create a doubly linked list element, call this constructor and set the content
 function DoublyLinkedListElement(content){
 	this.content = content;
+	this.content.element = this;
 	this.next = null;
 	this.prev = null;
 }

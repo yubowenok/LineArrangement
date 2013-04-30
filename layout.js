@@ -83,6 +83,7 @@ function draw() {
 }
 
 function lineArrangementNext() {
+  /*
   var index = linearrangement.lines.length;
   var totalLines = linesToInsert.length
   if(linearrangement.done() && index < totalLines){
@@ -90,7 +91,10 @@ function lineArrangementNext() {
     linearrangement.addLine(linesToInsert[index]);
     draw();
   }
+  */
   linearrangement.next();
+  console.log('lineArrangementNext');
+  console.log(linearrangement.status());
   
 }
 

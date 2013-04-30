@@ -218,8 +218,8 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	this.listVertex.pushBackContent(vertex1);
 	this.listVertex.pushBackContent(vertex2);
 	// remove edgeRear and edgeFront and insert new edges
-	this.listEdge.remove(edgeFront);
-	this.listEdge.remove(edgeRear);
+	this.listEdge.removeContent(edgeFront);
+	this.listEdge.removeContent(edgeRear);
 	this.listEdge.pushBackContentArray([edge1, edge2, edgeFront1, edgeFront2, edgeRear1, edgeRear2]);
 	// insert new faces. note that face1 is just changed. it is not deleted
 	this.listFace.pushBackContent(face2);

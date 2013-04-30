@@ -81,7 +81,7 @@ LineArrangement.prototype.next = function() {
       break;
     case this.NEXTSTEP.MOVE_TO_NEXT_FACE:
       this.E        = this.E_twin;
-      this.v        = cgutils.intersectEdge(this.E, this.line).point;
+      this.v        = cgutils.intersectEdge(this.E, this.line).intersection;
       this.E_prime  = this.E.next;
       this.v_prime  = null;
       this.E_twin   = null;
