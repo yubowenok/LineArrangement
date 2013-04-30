@@ -39,14 +39,11 @@ DoublyLinkedList.prototype.pushBack = function(element){
 		// insert at the end
 		this.tail.next = element;
 		element.prev = this.tail;
-    this.tail = element;
+		this.tail = element;
 	}
 }
 
-// remove the element from the doubly linked list
-// the passed in element is also deleted!
-DoublyLinkedList.prototype.removeContent = function(content){
-	var element = content.element;
+DoublyLinkedList.prototype.remove = function(element){
 	if (element == this.head) {
 		// remove the first element in the list
 		// set head to the element's next
@@ -54,16 +51,18 @@ DoublyLinkedList.prototype.removeContent = function(content){
 		// in case of only one element in the list
 		if(element.next != null) element.next.prev = null;
 	}
-  else if (element == this.tail) {
+	else if (element == this.tail) {
+		// remove the last element in the list
 		if (element.prev != null) element.prev.next = null; // element.next;
-    this.tail = element.prev;
-  } else {  // element not in extremities
-    element.prev.next = element.next;
-    element.next.prev = element.prev;
+		this.tail = element.prev;
+	} else {  
+		// element not in extremities
+		element.prev.next = element.next;
+		element.next.prev = element.prev;
 	}
-
-	content.prev.next = content.next;
-  content.next.prev = content.prev;
+	// Bowen: What is these two lines for?
+	//content.prev.next = content.next;
+	//content.next.prev = content.prev;
 
 	// now bidirectional linking is complete
 	
@@ -72,10 +71,16 @@ DoublyLinkedList.prototype.removeContent = function(content){
 	// element = null;
 }
 
+// remove the element from the doubly linked list
+// the passed in element is also deleted!
+DoublyLinkedList.prototype.removeContent = function(content){
+	this.remove(content.element);
+}
+
 // to create a doubly linked list element, call this constructor and set the content
 function DoublyLinkedListElement(content){
 	this.content = content;
-	this.content.element = this;
+	this.content.element = this;	// self pointer from the content to the list element
 	this.next = null;
 	this.prev = null;
 }

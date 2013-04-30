@@ -245,6 +245,9 @@ function Edge(origin, face){
 	this.twin = null;
 	this.next = null;
 	this.prev = null;
+	
+	// used for deletion in the doubly linked list
+	// this.element = null;
 }
 
 DCEL.prototype.setTwin = function(edge1, edge2){
