@@ -109,6 +109,7 @@ DCEL.prototype.leftmostEdgeBoundingBox = function(line){
 
 // insert the segment on the line into the DCEL, between edgeFront and edgeRear
 // the line intersects with edgeFront at vertexFront, and with edgeRear at vertexRear
+// edgeFront and edgeRear shall be incident to the inner face
 DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 
 	var vertexFront = cgutils.intersectEdge(edgeFront, line).intersection;
@@ -171,19 +172,28 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	this.linkEdge(edge1, edgeRear1);
 	this.linkEdge(edgeRear2, edge2);
 	this.linkEdge(edge2, edgeFront2);
-	if(edgeFront.prev = edgeRear){
+	this.linkEdge(edgeFront2Twin, edgeFront1Twin);
+	this.linkEdge(edgeRear1Twin, edgeRear2Twin);
+	if(edgeFront.prev == edgeRear){
 		// careful! both edgeFront and edgeRear will be deleted
 		// so we link manually here
 		// but how could this be?! the face with only two edges (edgeFront, edgeRear) is not a face!
 		// well, we try to be robust anyway
 		this.linkEdge(edgeFront1, edgeRear1);
 		this.linkEdge(edgeFront2, edgeRear2);
+		this.linkEdge(edgeFront1Twin, edgeRear1Twin);
+		this.linkEdge(edgeRear2Twin, edgeFront2Twin);
 	}else{
 		this.linkEdge(edgeFront.prev, edgeFront1);
 		this.linkEdge(edgeFront2, edgeFront.next);
 		this.linkEdge(edgeRear.prev, edgeRear2);
 		this.linkEdge(edgeRear1, edgeRear.next);
+		this.linkEdge(edgeFront1Twin, edgeFront.twin.next);
+		this.linkEdge(edgeFront.twin.prev, edgeFront2Twin);
+		this.linkEdge(edgeRear2Twin, edgeRear.twin.next);
+		this.linkEdge(edgeRear.twin.prev, edgeRear1Twin);
 	}
+	
 	
 	// set incident face
 	edgeFront1.incidentFace = face1;
@@ -218,6 +228,8 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	this.listVertex.pushBackContent(vertex1);
 	this.listVertex.pushBackContent(vertex2);
 	// remove edgeRear and edgeFront and insert new edges
+	this.listEdge.removeContent(edgeFront.twin);
+	this.listEdge.removeContent(edgeRear.twin);
 	this.listEdge.removeContent(edgeFront);
 	this.listEdge.removeContent(edgeRear);
 	this.listEdge.pushBackContentArray([edge1, edge2, edgeFront1, edgeFront2, edgeRear1, edgeRear2]);

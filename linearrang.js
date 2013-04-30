@@ -76,7 +76,7 @@ LineArrangement.prototype.next = function() {
     case this.NEXTSTEP.SPLIT_FACE:
       // TODO have steps for insertEdge like here?
       this.E_twin = this.E_prime.twin;
-      this.dcel.insertEdge(this.E, this.E_prime, this.line);
+      this.dcel.insertEdge(this.E.twin, this.E_prime.twin, this.line);
       this.nextStep = this.NEXTSTEP.MOVE_TO_NEXT_FACE;
       break;
     case this.NEXTSTEP.MOVE_TO_NEXT_FACE:
