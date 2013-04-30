@@ -21,15 +21,16 @@ function addRandomLine(){
 
 function draw(){
 
+  //Draw lines
   var lines = linearrangement.lines;
+  console.log("Lines:");
   console.log(lines);
-
   for(var i=0; i<lines.length; i++){
 
-    //intersect width edges
+    //intersect width bb edges
     var pts = cgutils.intersectLineBoundingBox(lines[i], 0, 0, 1, 1);
     if(pts.length >= 2){
-      var line = canvas.append("line")
+      canvas.append("line")
         .attr("x1", width*pts[0].intersection.x)
         .attr("y1", height*pts[0].intersection.y)
         .attr("x2", width*pts[1].intersection.x)
@@ -38,6 +39,34 @@ function draw(){
         .attr("stroke", "black");
     }
   }
+
+  //Draw edges
+  var currentFace = linearrangement.dcel.listFace.head;
+  do{
+    var currentEdge = currentFace.content.innerComponent;
+
+    do{
+
+      var startVertex = currentEdge.origin;
+      var endVertex = currentEdge.next.origin;
+
+      canvas.append("line")
+          .attr("x1", width*startVertex.x)
+          .attr("y1", height*startVertex.y)
+          .attr("x2", width*endVertex.x)
+          .attr("y2", height*endVertex.y)
+          .attr("stroke-width", 3)
+          .attr("stroke", "red");
+
+      currentEdge = currentEdge.next;
+      console.log(currentEdge != null);
+    }
+    while(currentEdge != currentFace.content.innerComponent)
+
+    currentFace = currentFace.next;
+  }
+  while(currentFace.content.innerComponent != null)
+
 }
 
 function lineArrangementNext(){
@@ -46,9 +75,10 @@ function lineArrangementNext(){
   if(linearrangement.done() && index < totalLines){
     //addRandomLine();
     linearrangement.addLine(linesToInsert[index]);
+    draw();
   }
   linearrangement.next();
-  draw();
+  
 }
 
 function handlemouse(){
