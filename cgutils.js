@@ -17,7 +17,7 @@ cgutils.makeVector = function(p1, p2){
 }
 
 cgutils.crossVector = function(vec1, vec2){
-	return this.Vector(vec1.x*vec2.y-vec1.y*vec2.x);
+	return vec1.x*vec2.y-vec1.y*vec2.x;
 }
 
 cgutils.Segment = function(x1, y1, x2, y2) {
@@ -49,6 +49,7 @@ cgutils.LineFromSegment = function(s) {
 
 // Bowen: this function returns true/false, and the intersection point
 // based on whether line l intersects with s
+// Fabio: crossVector was wrong. It was returning a vector, instead of a scalar.
 cgutils.intersectLineSegment = function(l, s) {
   
   // Bowen: what is the following two questions refer to?
@@ -71,7 +72,7 @@ cgutils.intersectLineSegment = function(l, s) {
   var vecS1 = this.makeVector(pl1, s.v1);	
   var vecS2 = this.makeVector(pl1, s.v2);
   // cross product for intersection detection
-  if(this.crossVector(vecS1, vecLine) * this.crossVector(vecS2, vecLine) <= 0){
+  if(this.crossVector(vecLine, vecS1) * this.crossVector(vecLine, vecS2) <= 0){
 	// if intersection exists, we use line line intersection to calculate
 	return {'hasIntersection': true, 'intersection': this.intersectLines(l, this.LineFromSegment(s))};
   }else{
@@ -79,37 +80,23 @@ cgutils.intersectLineSegment = function(l, s) {
   }
 }
 
-// Bowen: this is mainly the same as intersectLineSegment
-// not sure if this is necessary
-// call intersectLineSegment(line, this.Segment(edge.origin, edge.next.origin)) is sufficient 
-/*
-cgutils.intersectEdge = function(s, l) {
-  var s_line = this.LineFromSegment(s);
-  // TODO
-  // coincident lines?
-  // extremities to same side?
-  // get intersection point and return
-}
-*/
-
 cgutils.intersectLines = function(l1, l2){
 
-	// Bowen: vertical lines handling added
-	var x, y;
-	if(l1.b==0 && l2.b!=0){
-		x = -l1.c/l1.a;
-		y = (-l2.c-l2.a*x)/l2.b;
-	}else if(l1.b!=0 && l2.b==0){
-		x = -l2.c/l2.a;
-		y = (-l1.c-l1.a*x)/l1.b;
-	}else if(l1.b!=0 && l2.b!=0){
-		y = (l2.c*l1.a-l1.c*l2.a)/(l1.b*l2.a-l2.b*l1.a);
-		x = (-l1.c-l1.b*y)/l1.a;
-	}else{
-		alert("ERROR: try to intersect two vertical lines. intersectLines failed.")
-	}
-	// var x = (l2.b - l1.b) / (l1.a - l2.a);
-	// var y = l1.a * x + l1.b;
+  var x, y;
+  if(l1.b==0 && l2.b!=0){
+    x = -l1.c/l1.a;
+    y = (-l2.c-l2.a*x)/l2.b;
+  }else if(l1.b!=0 && l2.b==0){
+    x = -l2.c/l2.a;
+    y = (-l1.c-l1.a*x)/l1.b;
+  }else if(l1.b!=0 && l2.b!=0){
+    y = (l2.c*l1.a-l1.c*l2.a)/(l1.b*l2.a-l2.b*l1.a);
+    x = (-l1.c-l1.b*y)/l1.a;
+  }else{
+    alert("ERROR: try to intersect two vertical lines. intersectLines failed.")
+  }
+  // var x = (l2.b - l1.b) / (l1.a - l2.a);
+  // var y = l1.a * x + l1.b;
 
   return cgutils.Point(x, y);
 }
