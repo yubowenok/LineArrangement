@@ -3,18 +3,16 @@ var width;
 var height;
 var linearrangement;
 
-function randomLines(){
+function addRandomLine(){
 
-  for(var i=0; i<10; i++){
-    var max = 1;
-    var min = 0;
-    var x1 = Math.random() * (max - min) + min;
-    var x2 = Math.random() * (max - min) + min;
-    var y1 = Math.random() * (max - min) + min;
-    var y2 = Math.random() * (max - min) + min;
-    var segment = cgutils.Segment(x1, y1, x2, y2);
-    linearrangement.addLine(cgutils.LineFromSegment(segment));
-  }
+  var max = 1;
+  var min = 0;
+  var x1 = Math.random() * (max - min) + min;
+  var x2 = Math.random() * (max - min) + min;
+  var y1 = Math.random() * (max - min) + min;
+  var y2 = Math.random() * (max - min) + min;
+  var segment = cgutils.Segment(x1, y1, x2, y2);
+  linearrangement.addLine(cgutils.LineFromSegment(segment));
 
 
 }
@@ -58,6 +56,8 @@ function draw(){
 }
 
 function lineArrangementNext(){
+  if(linearrangement.done())
+    addRandomLine();
   linearrangement.next();
   draw();
 }
@@ -76,7 +76,7 @@ function initializeLayout(){
   dcel.constructBoundingBox(0, 1, 0, 1);
   linearrangement = new LineArrangement(dcel);
 
-  randomLines();
+  //randomLines();
   draw();
 
 }
