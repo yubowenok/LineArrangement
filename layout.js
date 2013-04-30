@@ -3,7 +3,6 @@ var width;
 var height;
 var linearrangement;
 var points = [null, null];
-var linesToInsert = [];
 var uiStatus;
 var edgesNotFinal = [];
 var edgesFinal = [];
@@ -86,15 +85,7 @@ function draw() {
 }
 
 function lineArrangementNext() {
-  /*
-  var index = linearrangement.lines.length;
-  var totalLines = linesToInsert.length
-  if(linearrangement.done() && index < totalLines){
-    //addRandomLine();
-    linearrangement.addLine(linesToInsert[index]);
-    draw();
-  }
-  */
+
   linearrangement.next();
   //console.log('lineArrangementNext');
   //console.log(linearrangement.status());
@@ -171,36 +162,6 @@ function mousemove(mousePos) {
     default:
       break;
   };
-
-
-  /*
-  mousepos = d3.mouse(this);
-  console.log(mousepos);
-
-  if(pointToInsert[0] == null)
-    pointToInsert[0] = mousepos;
-  else {
-    pointToInsert[1] = mousepos;
-
-    var segment = cgutils.Segment(pointToInsert[0][0]/width, pointToInsert[0][1]/height,
-       pointToInsert[1][0]/width, pointToInsert[1][1]/height);
-
-    var line = cgutils.LineFromSegment(segment);
-
-    var pts = cgutils.intersectLineBoundingBox(line, 0, 0, 1, 1);
-
-    var svg = canvas.append("line")
-          .attr("x1", width*pts[0].intersection.x)
-          .attr("y1", height*pts[0].intersection.y)
-          .attr("x2", width*pts[1].intersection.x)
-          .attr("y2", height*pts[1].intersection.y)
-          .attr("stroke-width", 2)
-          .attr("stroke", "grey");
-
-    pointToInsert = [null, null];
-    linesToInsert.push(line);
-  }
-  */
 
 }
 
