@@ -35,7 +35,7 @@ LineArrangement.prototype.addLine = function(l) {
   // find leftmost intersection
   this.line     = l
   this.E        = this.dcel.leftmostEdgeBoundingBox(this.line);
-  this.v        = cgutils.intersectEdge(this.E, this.line).point;
+  this.v        = cgutils.intersectEdge(this.E, this.line).intersection;
   this.E_prime  = this.E.next;
   this.v_prime  = null;
   this.nextStep = this.NEXTSTEP.SEARCH_REAR_EDGE;

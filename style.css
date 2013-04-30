@@ -31,6 +31,21 @@ html {
   stroke: steelblue;
 }
 
+.currentEdge {
+  stroke-width: 3;
+  stroke: red;
+}
+
+.addedEdge {
+  stroke-width: 3;
+  stroke: green;
+}
+
+.currentEdgePrime {
+  stroke-width: 3;
+  stroke: red;
+}
+
 body {
   margin: 0 auto;
   max-width: 930px;

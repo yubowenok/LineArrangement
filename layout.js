@@ -5,6 +5,8 @@ var linearrangement;
 var points = [null, null];
 var linesToInsert = [];
 var uiStatus;
+var edgesNotFinal = [];
+var edgesFinal = [];
 
 var UI_STATUS = {
   WAIT_P1: 0,
@@ -95,7 +97,45 @@ function lineArrangementNext() {
   linearrangement.next();
   console.log('lineArrangementNext');
   console.log(linearrangement.status());
-  
+
+  var status = linearrangement.status();
+  console.log(status);
+
+  /* Draw edges to be splitted*/
+  canvas.selectAll(".currentEdge").remove();
+  canvas.selectAll(".currentEdgePrime").remove();
+
+  canvas.append("line")
+    .attr("class", "currentEdge")
+    .attr("x1", width*status.E.origin.x)
+    .attr("y1", height*status.E.origin.y)
+    .attr("x2", width*status.E.next.origin.x)
+    .attr("y2", height*status.E.next.origin.y);
+
+  canvas.append("line")
+    .attr("class", "currentEdgePrime")
+    .attr("x1", width*status.E_prime.origin.x)
+    .attr("y1", height*status.E_prime.origin.y)
+    .attr("x2", width*status.E_prime.next.origin.x)
+    .attr("y2", height*status.E_prime.next.origin.y);
+
+
+  /* Draw face */
+  var currentFace = status.face;
+  var currentEdge = currentFace.outerComponent;
+  while(currentEdge != null){
+    var startVertex = currentEdge.origin;
+    var endVertex = currentEdge.next.origin;
+
+    canvas.append("line")
+      .attr("class", "addedEdge")
+      .attr("x1", width*startVertex.x)
+      .attr("y1", height*startVertex.y)
+      .attr("x2", width*endVertex.x)
+      .attr("y2", height*endVertex.y);
+
+    currentEdge = currentEdge.next;
+  }
 }
 
 function mouseup(mousePos) {
