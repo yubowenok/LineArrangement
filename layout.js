@@ -68,7 +68,14 @@ function lineArrangementNext() {
       splitFaces.length = 0;
       highlightEdges.length = 0;
       linearrangement.next();
-      uiStatus = UI_STATUS.WAIT_P1;
+	  if(linearrangement.nextStep==linearrangement.NEXTSTEP.NOP){
+		uiStatus = UI_STATUS.WAIT_P1;
+	  }else{
+	  // Bowen: continue searching
+		searchingEdges[0] = status.E;
+		searchingEdges[1] = status.E_prime;
+		uiStatus = UI_STATUS.SEARCH_EDGE_PRIME;
+	  }
       break;
 
 
