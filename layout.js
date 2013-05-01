@@ -96,10 +96,14 @@ function draw() {
 
 function lineArrangementNext() {
 
+  console.log(linearrangement.nextStep);
+
   if (linearrangement.done()){
     updateCanvas();
     return;
   }
+
+  console.log(linearrangement.nextStep);
 
   var status = linearrangement.status();
 
@@ -128,30 +132,21 @@ function lineArrangementNext() {
       break;
 
     case UI_STATUS.ADD_LINE:
-
+      console.log('addline');
       linearrangement.next();
 
-      if(linearrangement.done()){
+      //Draw edges to be splitted
+      searchingEdges[0] = status.E ;
+      searchingEdges[1] = status.E_prime;
+
+      //Found the edges, so change color
+      if(linearrangement.nextStep==linearrangement.NEXTSTEP.MOVE_TO_NEXT_FACE){
+        foundEdges[0] = status.E;
+        foundEdges[1] = status.E_prime;
         searchingEdges.length = 0;
-        foundEdges.length = 0;
-        splitFaces.length = 0;
-        highlightEdges.length = 0;
-      }
-      else{
 
-        //Draw edges to be splitted
-        searchingEdges[0] = status.E ;
-        searchingEdges[1] = status.E_prime;
-
-        //Found the edges, so change color
-        if(linearrangement.nextStep==linearrangement.NEXTSTEP.MOVE_TO_NEXT_FACE){
-          foundEdges[0] = status.E;
-          foundEdges[1] = status.E_prime;
-          searchingEdges.length = 0;
-
-          //Next step, highlight the edge
-          uiStatus = UI_STATUS.HIGHLIGHT_EDGE;
-        }
+        //Next step, highlight the edge
+        uiStatus = UI_STATUS.HIGHLIGHT_EDGE;
       }
 
       break;

@@ -47,6 +47,7 @@ LineArrangement.prototype.addLine = function(l) {
  * Advance one step in the algorithm.
  */
 LineArrangement.prototype.next = function() {
+  console.log(this.nextStep);
   // advance in status machine
   switch (this.nextStep) {
     case this.NEXTSTEP.SEARCH_REAR_EDGE:
