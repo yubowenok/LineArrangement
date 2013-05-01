@@ -23,7 +23,42 @@ var UI_STATUS = {
   REMOVE: 5,
 };
 
+function updateStatusTable() {
 
+  var statusList = [
+    "Waiting new line",
+    "Searching intersection with BB",
+    "Searching E'",
+    "Split face",
+  ];
+
+  // map uiStatus -> statusList item
+  var uiStatusEquiv = {
+    0: 0,
+    1: 0,
+    2: 1,
+    3: 2,
+    4: 3,
+    5: 3,
+  };
+
+  // row for each status
+  // cell in each row
+  var tbody = d3.select(".statustable tbody");
+  tbody
+    .selectAll("tr")
+    .data(statusList)
+    .attr("class", function(d, i) {
+      return (uiStatusEquiv[uiStatus] == i) ? "bold" : "normal";
+    })
+  .enter()
+    .append("tr")
+    .attr("class", function(d, i) {
+      return (uiStatusEquiv[uiStatus] == i) ? "bold" : "normal";
+    })
+    .append("td")
+    .text(function(d) { return d; });
+}
 
 
 function addRandomLine() {
@@ -106,6 +141,8 @@ function lineArrangementNext() {
 
 
 function updateCanvas(){
+
+  updateStatusTable();
 
   createOrUpdateEdges(canvas, "searchingEdge", searchingEdges, "searchingEdge");
   createOrUpdateEdges(canvas, "foundEdge", foundEdges, "foundEdge");
