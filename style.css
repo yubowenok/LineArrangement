@@ -31,6 +31,11 @@ html {
   stroke: steelblue;
 }
 
+.addedEdge {
+  stroke-width: 3;
+  stroke: steelblue;
+}
+
 .searchingEdge {
   stroke-width: 3;
   stroke: red;
@@ -39,6 +44,11 @@ html {
 .foundEdge {
   stroke-width: 3;
   stroke: green;
+}
+
+.highlightEdge {
+  stroke-width: 4;
+  stroke: red;
 }
 
 .splitFace1 {
@@ -55,9 +65,11 @@ html {
   fill-opacity: 0.1;
 }
 
-.addedEdge {
-  stroke-width: 3;
-  stroke: green;
+.insertedFace {
+  stroke-width: 1;
+  stroke: black;
+  fill: blue;
+  fill-opacity: 0.0;
 }
 
 .currentEdgePrime {
