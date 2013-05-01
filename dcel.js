@@ -177,9 +177,8 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	if(edgeFront.prev === edgeRear){
 		// careful! both edgeFront and edgeRear will be deleted
 		// so we link manually here
-		// but how could this be?! the face with only two edges (edgeFront, edgeRear) is not a face!
-		// well, we try to be robust anyway
-		this.linkEdge(edgeFront1, edgeRear1);
+		// but how could this be?! Yes it could be. The line cuts a corner of a face.
+		this.linkEdge(edgeRear1, edgeFront1);
 		this.linkEdge(edgeFront2, edgeRear2);
 		this.linkEdge(edgeFront1Twin, edgeRear1Twin);
 		this.linkEdge(edgeRear2Twin, edgeFront2Twin);
