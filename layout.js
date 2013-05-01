@@ -69,7 +69,6 @@ function lineArrangementNext() {
       splitFaces.length = 0;
       highlightEdges.length = 0;
       linearrangement.next();
-      
       if(linearrangement.done())
         uiStatus = UI_STATUS.WAIT_P1;
       else
