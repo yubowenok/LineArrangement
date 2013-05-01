@@ -174,23 +174,29 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	this.linkEdge(edge2, edgeFront2);
 	this.linkEdge(edgeFront2Twin, edgeFront1Twin);
 	this.linkEdge(edgeRear1Twin, edgeRear2Twin);
+	// careful! edgeFront connects to edgeRear
 	if(edgeFront.prev === edgeRear){
-		// careful! both edgeFront and edgeRear will be deleted
-		// so we link manually here
-		// but how could this be?! Yes it could be. The line cuts a corner of a face.
+		// face1 side, edgeRear->edgeFront
 		this.linkEdge(edgeRear1, edgeFront1);
-		this.linkEdge(edgeFront2, edgeRear2);
 		this.linkEdge(edgeFront1Twin, edgeRear1Twin);
-		this.linkEdge(edgeRear2Twin, edgeFront2Twin);
 	}else{
 		this.linkEdge(edgeFront.prev, edgeFront1);
-		this.linkEdge(edgeFront2, edgeFront.next);
-		this.linkEdge(edgeRear.prev, edgeRear2);
 		this.linkEdge(edgeRear1, edgeRear.next);
+		
 		this.linkEdge(edgeFront1Twin, edgeFront.twin.next);
+		this.linkEdge(edgeRear.twin.prev, edgeRear1Twin);
+	}
+	
+	if(edgeRear.prev === edgeFront){
+		// face2 side, edgeFront->edgeRear
+		this.linkEdge(edgeFront2, edgeRear2);
+		this.linkEdge(edgeRear2Twin, edgeFront2Twin);
+	}else{
+		this.linkEdge(edgeRear.prev, edgeRear2);
+		this.linkEdge(edgeFront2, edgeFront.next);
+		
 		this.linkEdge(edgeFront.twin.prev, edgeFront2Twin);
 		this.linkEdge(edgeRear2Twin, edgeRear.twin.next);
-		this.linkEdge(edgeRear.twin.prev, edgeRear1Twin);
 	}
 	
 	
