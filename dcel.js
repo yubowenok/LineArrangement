@@ -196,13 +196,18 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	this.linkEdge(edgeRear2Twin, edgeRear.twin.next);
 	
 	
-	// set incident face
-	edgeFront1.incidentFace = face1;
-	edge1.incidentFace = face1;
-	edgeRear1.incidentFace = face1;
-	edgeRear2.incidentFace = face2;
-	edge2.incidentFace = face2;
-	edgeFront2.incidentFace = face2;
+	// set incident face, need to traverse for face1, face2!
+	currentEdge = edge1;
+	do{
+		currentEdge.incidentFace = face1;
+		currentEdge = currentEdge.next;
+	}while(currentEdge!==edge1);
+	currentEdge = edge2;
+	do{
+		currentEdge.incidentFace = face2;
+		currentEdge = currentEdge.next;
+	}while(currentEdge!==edge2);
+	
 	// do not forget faceFront and faceRear
 	edgeFront1Twin.incidentFace = faceFront;
 	edgeFront2Twin.incidentFace = faceFront;
@@ -241,7 +246,7 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	this.listFace.pushBackContent(face2);
 
 
-	return [edge1, edge2, face1, face2, edgeRear1Twin];
+	return [edge1, edge2, face1, face2, edgeRear2Twin];
 }
 
 function Face(outerComponent, innerComponent){

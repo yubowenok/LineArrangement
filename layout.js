@@ -103,15 +103,15 @@ function lineArrangementNext() {
       splitFaces.length = 0;
       highlightEdges.length = 0;
       linearrangement.next();
-      if(linearrangement.nextStep==linearrangement.NEXTSTEP.NOP){
-        uiStatus = UI_STATUS.WAIT_P1;
-      }
+  	  if(linearrangement.nextStep==linearrangement.NEXTSTEP.NOP){
+  		  uiStatus = UI_STATUS.WAIT_P1;
+  	  }
       else{
-        // Bowen: continue searching
-        searchingEdges[0] = status.E;
-        searchingEdges[1] = status.E_prime;
-        uiStatus = UI_STATUS.SEARCH_EDGE_PRIME;
-      }
+    	  // Bowen: continue searching
+    		searchingEdges[0] = status.E;
+    		searchingEdges[1] = status.E_prime;
+    		uiStatus = UI_STATUS.SEARCH_EDGE_PRIME;
+  	  }
       break;
 
 
@@ -192,15 +192,15 @@ function mouseout(mousePos) {
 
 function mousemove(mousePos) {
 
-  var svg = d3.select("svg");
+  //var svg = d3.select("svg");
 
   // TODO highlight faces/edges or update inserted line
   switch (uiStatus) {
     case UI_STATUS.WAIT_P1:
-      createOrUpdatePoint(svg, "p1", mousePos, "lineextremity");
+      createOrUpdatePoint(canvas, "p1", mousePos, "lineextremity");
       break;
     case UI_STATUS.WAIT_P2:
-      createOrUpdateLine(svg, "newLine", [points[0], mousePos], "newLine");
+      createOrUpdateLine(canvas, "newLine", [points[0], mousePos], "newLine");
       break;
     case UI_STATUS.ADD_LINE:
     
@@ -347,13 +347,17 @@ function initializeLayout() {
 
   var widthStyle  = d3.select("#canvas").style('width');
   var heightStyle = d3.select("#canvas").style('height');
-  width  = widthStyle.substring(0, widthStyle.length-2);
-  height = heightStyle.substring(0, heightStyle.length-2);
+  width  = widthStyle.substring(0, widthStyle.length-2)-10;
+  height = heightStyle.substring(0, heightStyle.length-2)-10;
 
-  canvas = d3.select("#canvas")
-        .append("svg:svg")
-        .attr("width",  widthStyle)
-        .attr("height", heightStyle);
+  var svg = d3.select("#canvas")
+    .append("svg:svg")
+    .attr("width",  widthStyle)
+    .attr("height", heightStyle);
+
+  canvas = svg.append("svg:g")
+    .attr("transform", "translate(5,5)");
+
   canvas.append("svg:rect")
         .attr("width",  width)
         .attr("height", height);
