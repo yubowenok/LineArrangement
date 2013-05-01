@@ -12,10 +12,11 @@ DCEL.prototype.constructBoundingBox = function(xmin, xmax, ymin, ymax){
 	var boxFace = new Face();
 	
 	// construct four vertices
-	var bottomLeftVertex = new Vertex(xmin, ymin);
-	var bottomRightVertex = new Vertex(xmax, ymin);
-	var topLeftVertex = new Vertex(xmin, ymax);
-	var topRightVertex = new Vertex(xmax, ymax);
+	// Confusion: shall revert due to rendering y axis reversion
+	var bottomLeftVertex = new Vertex(xmin, ymax);
+	var bottomRightVertex = new Vertex(xmax, ymax);
+	var topLeftVertex = new Vertex(xmin, ymin);
+	var topRightVertex = new Vertex(xmax, ymin);
 	
 	// construct inner edges
 	var bottomEdge = new Edge(bottomLeftVertex, boxFace);
@@ -46,10 +47,10 @@ DCEL.prototype.constructBoundingBox = function(xmin, xmax, ymin, ymax){
 	this.setTwin(leftEdge, leftEdgeTwin);
 	
 	// set incident edges for vertices
-	bottomLeftVertex.incidentEdge = bottomEdge;
-	bottomRightVertex.incidentEdge = rightEdge;
-	topRightVertex.incidentEdge = topEdge;
-	topLeftVertex.incidentEdge = leftEdge;
+	//bottomLeftVertex.incidentEdge = bottomEdge;
+	//bottomRightVertex.incidentEdge = rightEdge;
+	//topRightVertex.incidentEdge = topEdge;
+	//topLeftVertex.incidentEdge = leftEdge;
 	
   // TODO Cesar changed order here
 	// set unbounded face for later search
@@ -98,7 +99,7 @@ DCEL.prototype.leftmostEdgeBoundingBox = function(line){
 		}
 		currentEdge = currentEdge.next;
 	}
-	while(currentEdge != this.unboundedFace.innerComponent);
+	while(currentEdge !== this.unboundedFace.innerComponent);
 	
 	if(xmin==Infinity && ymin==Infinity){
 		alert("ERROR: leftmostEdgeBoundingBox failed");
@@ -131,8 +132,8 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	var edge2 = new Edge(vertex2, face2);
 	
 	// set vertex incident edge
-	vertex1.incidentEdge = edge1;
-	vertex2.incidentEdge = edge2;
+	//vertex1.incidentEdge = edge1;
+	//vertex2.incidentEdge = edge2;
 	
 	// split edgeFront and edgeRear into four new pairs of edges
 	var edgeFront1 = new Edge(edgeFront.origin);
@@ -163,7 +164,6 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 			 |  |             edge2              |  |
 			 |  | edgeFront2           edgeRear2 |  |
 			 | \|/            face2              | \|/
-		
 	*/
 	
 	// EXTRA CAREFUL: link the mess
@@ -174,7 +174,7 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	this.linkEdge(edge2, edgeFront2);
 	this.linkEdge(edgeFront2Twin, edgeFront1Twin);
 	this.linkEdge(edgeRear1Twin, edgeRear2Twin);
-	// careful! edgeFront connects to edgeRear
+	// careful! connect edgeFront1,2 and edgeRear1,2
 	if(edgeFront.prev === edgeRear){
 		// face1 side, edgeRear->edgeFront
 		this.linkEdge(edgeRear1, edgeFront1);
@@ -216,7 +216,9 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	// set components
 	// as any edge will do, in case of the original component is deleted, we just set the components to the new edges
 	face1.outerComponent = edge1;
+	face1.innerComponent = null;
 	face2.outerComponent = edge2;
+	face2.innerComponent = null;
 	// careful: faceFront and faceRear may be the unbounded face
 	if(faceFront !== this.unboundedFace){
 		faceFront.outerComponent = edgeFront1Twin;
@@ -243,7 +245,7 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	this.listFace.pushBackContent(face2);
 
 
-	return [edge1, edge2, face1, face2, edgeRear1];
+	return [edge1, edge2, face1, face2, edgeRear1Twin];
 }
 
 function Face(outerComponent, innerComponent){
@@ -251,10 +253,10 @@ function Face(outerComponent, innerComponent){
 	this.innerComponent = innerComponent;
 }
 
-function Vertex(x, y, edge){
+function Vertex(x, y){
 	this.x = x;
 	this.y = y;
-	this.incidentEdge = edge;
+	//this.incidentEdge = edge;
 }
 
 function Edge(origin, face){
