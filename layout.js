@@ -55,7 +55,7 @@ function lineArrangementNext() {
   switch(uiStatus){
     case UI_STATUS.HIGHLIGHT_EDGE:
       //TODO: fix it
-      //highlightEdges.push(currentLine);
+      highlightEdges.push(linearrangement.edge1);
       uiStatus = UI_STATUS.DRAW_FACES;
       break;
 

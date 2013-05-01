@@ -41,6 +41,8 @@ LineArrangement.prototype.addLine = function(l) {
   this.nextStep = this.NEXTSTEP.SEARCH_REAR_EDGE;
   this.splitface1 = null;
   this.splitface2 = null;
+  this.edge1 = null;
+  this.edge2 = null;
 }
 
 /**
@@ -66,6 +68,8 @@ LineArrangement.prototype.next = function() {
         this.nextStep = this.NEXTSTEP.NOP;
         this.splitface1 = null;
         this.splitface2 = null;
+        this.edge1 = null;
+        this.edge2 = null;
       }
       else {
         // test intersection with E'
@@ -83,9 +87,11 @@ LineArrangement.prototype.next = function() {
     case this.NEXTSTEP.SPLIT_FACE:
       // TODO have steps for insertEdge like here?
       this.E_twin = this.E.twin;
-      var newfaces = this.dcel.insertEdge(this.E, this.E_prime, this.line);
-      this.splitface1 = newfaces[0];
-      this.splitface2 = newfaces[1];
+      var newedgesfaces = this.dcel.insertEdge(this.E, this.E_prime, this.line);
+      this.edge1 = newedgesfaces[0];
+      this.edge2 = newedgesfaces[1];
+      this.splitface1 = newedgesfaces[2];
+      this.splitface2 = newedgesfaces[3];
       this.nextStep = this.NEXTSTEP.MOVE_TO_NEXT_FACE;
       break;
     case this.NEXTSTEP.MOVE_TO_NEXT_FACE:
@@ -97,6 +103,8 @@ LineArrangement.prototype.next = function() {
       this.nextStep = this.NEXTSTEP.SEARCH_REAR_EDGE;
       this.splitface1 = null;
       this.splitface2 = null;
+      this.edge1 = null;
+      this.edge2 = null;
       break;
     case this.NEXTSTEP.NOP:
     default:
@@ -122,6 +130,8 @@ LineArrangement.prototype.done = function() {
  *  E_twin  : Edge,        // twinEdge to check next
  *  splitface1 : Face,     // split face 1
  *  splitface2 : Face,     // split face 2 (when status=MOVE_TO_NEXT_FACE)
+ *  edge1   : Edge,        // edge from splitface1 to splitface2
+ *  edge2   : Edge,        // edge from splitface2 to splitface1
  * }  
  * 
  */
@@ -136,6 +146,8 @@ LineArrangement.prototype.status = function() {
     'E_twin'  : this.E_twin,
     'splitface1': this.splitface1,
     'splitface2': this.splitface2,
+    'edge1': this.edge1,
+    'edge2': this.edge2,
   };
 }
 

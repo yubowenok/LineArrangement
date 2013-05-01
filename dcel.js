@@ -237,7 +237,7 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	this.listFace.pushBackContent(face2);
 
 
-	return [face1, face2];
+	return [edge1, edge2, face1, face2];
 }
 
 function Face(outerComponent, innerComponent){
