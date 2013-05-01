@@ -21,7 +21,6 @@ var UI_STATUS = {
   SEARCH_EDGE_PRIME : 3,
   DRAW_FACES: 4,
   REMOVE: 5,
-  NEXT_FACE: 6,
 };
 
 
@@ -43,19 +42,19 @@ function addRandomLine() {
 function lineArrangementNext() {
 
   console.log(linearrangement.nextStep);
-  /*
+
   if (linearrangement.done()){
-    uiStatus = UI_STATUS.WAIT_P1;
     updateCanvas();
     return;
   }
-  */
+
   console.log(linearrangement.nextStep);
+
+  var status = linearrangement.status();
 
   switch(uiStatus){
 
     case UI_STATUS.DRAW_FACES:
-      var status = linearrangement.status();
       splitFaces[0] = status.splitface1;
       splitFaces[1] = status.splitface2;
       highlightEdges.length = 0;
@@ -69,28 +68,25 @@ function lineArrangementNext() {
       splitFaces.length = 0;
       highlightEdges.length = 0;
       linearrangement.next();
-      if(linearrangement.done())
+      if(linearrangement.nextStep==linearrangement.NEXTSTEP.NOP){
         uiStatus = UI_STATUS.WAIT_P1;
-      else
-        uiStatus = UI_STATUS.NEXT_FACE;
+      }
+      else{
+        // Bowen: continue searching
+        searchingEdges[0] = status.E;
+        searchingEdges[1] = status.E_prime;
+        uiStatus = UI_STATUS.SEARCH_EDGE_PRIME;
+      }
       break;
 
-    case UI_STATUS.NEXT_FACE:
-      if(linearrangement.done())
-        uiStatus = UI_STATUS.WAIT_P1;
-      else
-        linearrangement.next();
-      break;
 
     case UI_STATUS.SEARCH_EDGE:
-      var status = linearrangement.status();
       searchingEdges[0] = status.E ;
       uiStatus = UI_STATUS.SEARCH_EDGE_PRIME;
       break;
 
 
     case UI_STATUS.SEARCH_EDGE_PRIME:
-      var status = linearrangement.status();
       searchingEdges[1] = status.E_prime;
       uiStatus = UI_STATUS.SEARCH_EDGE_PRIME;
       linearrangement.next();
