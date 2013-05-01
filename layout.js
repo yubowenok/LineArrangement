@@ -17,8 +17,8 @@ var splitFaces = [];
 var UI_STATUS = {
   WAIT_P1: 0,
   WAIT_P2: 1,
-  ADD_LINE : 2,
-  HIGHLIGHT_EDGE : 3,
+  SEARCH_EDGE : 2,
+  SEARCH_EDGE_PRIME : 3,
   DRAW_FACES: 4,
   REMOVE: 5,
 };
@@ -53,11 +53,6 @@ function lineArrangementNext() {
   var status = linearrangement.status();
 
   switch(uiStatus){
-    case UI_STATUS.HIGHLIGHT_EDGE:
-      //TODO: fix it
-      highlightEdges.push(linearrangement.edge1);
-      uiStatus = UI_STATUS.DRAW_FACES;
-      break;
 
     case UI_STATUS.DRAW_FACES:
       splitFaces[0] = status.splitface1;
@@ -76,24 +71,25 @@ function lineArrangementNext() {
       uiStatus = UI_STATUS.WAIT_P1;
       break;
 
-    case UI_STATUS.ADD_LINE:
-      console.log('addline');
-      linearrangement.next();
 
-      //Draw edges to be splitted
+    case UI_STATUS.SEARCH_EDGE:
       searchingEdges[0] = status.E ;
-      searchingEdges[1] = status.E_prime;
+      uiStatus = UI_STATUS.SEARCH_EDGE_PRIME;
+      break;
 
-      //Found the edges, so change color
+
+    case UI_STATUS.SEARCH_EDGE_PRIME:
+      searchingEdges[1] = status.E_prime;
+      uiStatus = UI_STATUS.SEARCH_EDGE_PRIME;
+      linearrangement.next();
+      //Found the edges
       if(linearrangement.nextStep==linearrangement.NEXTSTEP.MOVE_TO_NEXT_FACE){
         foundEdges[0] = status.E;
         foundEdges[1] = status.E_prime;
+        highlightEdges.push(linearrangement.edge1);
         searchingEdges.length = 0;
-
-        //Next step, highlight the edge
-        uiStatus = UI_STATUS.HIGHLIGHT_EDGE;
+        uiStatus = UI_STATUS.DRAW_FACES;
       }
-
       break;
   }
 
@@ -129,13 +125,10 @@ function mouseup(mousePos) {
     case UI_STATUS.WAIT_P2:
       points[1] = mousePos;
       d3.select("svg").selectAll("#p1").remove();
-      uiStatus = UI_STATUS.ADD_LINE;
+      uiStatus = UI_STATUS.SEARCH_EDGE;
       currentLine = getLineFromPoints(points);
       linearrangement.addLine(currentLine);
-      
-      var status = linearrangement.status();
-      searchingEdges[0] = status.E ;
-      searchingEdges[1] = status.E_prime;
+
       updateCanvas();
 
       break;
