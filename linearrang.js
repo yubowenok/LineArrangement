@@ -92,10 +92,11 @@ LineArrangement.prototype.next = function() {
       this.edge2 = newedgesfaces[1];
       this.splitface1 = newedgesfaces[2];
       this.splitface2 = newedgesfaces[3];
+	  this.nextEdge = newedgesfaces[4];
       this.nextStep = this.NEXTSTEP.MOVE_TO_NEXT_FACE;
       break;
     case this.NEXTSTEP.MOVE_TO_NEXT_FACE:
-      this.E        = this.E_twin;
+      this.E        = this.nextEdge; //this.E_twin;		Bowen: not wise to add this.nextEdge, but why putting E_twin here?
       this.v        = cgutils.intersectEdge(this.E, this.line).intersection;
       this.E_prime  = this.E.next;
       this.v_prime  = null;

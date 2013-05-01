@@ -218,15 +218,15 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	face1.outerComponent = edge1;
 	face2.outerComponent = edge2;
 	// careful: faceFront and faceRear may be the unbounded face
-	if(faceFront!=this.unboundedFace){
-		faceFront.outerComponent = edgeFront1;
+	if(faceFront !== this.unboundedFace){
+		faceFront.outerComponent = edgeFront1Twin;
 	}else{
-		faceFront.innerComponetn = edgeFront1;
+		faceFront.innerComponent = edgeFront1Twin;
 	}
-	if(faceRear!=this.unboundedFace){
-		faceRear.outerComponent = edgeRear2;
+	if(faceRear !== this.unboundedFace){
+		faceRear.outerComponent = edgeRear2Twin;
 	}else{
-		faceRear.innerComponent = edgeRear2;
+		faceRear.innerComponent = edgeRear2Twin;
 	}
 	
 	// insert new vertices
@@ -243,7 +243,7 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	this.listFace.pushBackContent(face2);
 
 
-	return [edge1, edge2, face1, face2];
+	return [edge1, edge2, face1, face2, edgeRear1];
 }
 
 function Face(outerComponent, innerComponent){
