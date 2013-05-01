@@ -74,7 +74,8 @@ LineArrangement.prototype.next = function() {
       else {
         // test intersection with E'
         var inters = cgutils.intersectEdge(this.E_prime, this.line);
-        if (inters.hasIntersection && cgutils.samePoint(inters.intersection, this.E_prime.origin)==false) {
+        if (inters.hasIntersection) {
+		// && cgutils.samePoint(inters.intersection, this.E_prime.origin)==false
           this.v_prime = inters.intersection;	// Bowen: this shall be inters.intersection?? but v_prime is not used
           this.nextStep = this.NEXTSTEP.SPLIT_FACE;
         }
