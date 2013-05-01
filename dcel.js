@@ -178,26 +178,22 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	if(edgeFront.prev === edgeRear){
 		// face1 side, edgeRear->edgeFront
 		this.linkEdge(edgeRear1, edgeFront1);
-		this.linkEdge(edgeFront1Twin, edgeRear1Twin);
 	}else{
 		this.linkEdge(edgeFront.prev, edgeFront1);
 		this.linkEdge(edgeRear1, edgeRear.next);
-		
-		this.linkEdge(edgeFront1Twin, edgeFront.twin.next);
-		this.linkEdge(edgeRear.twin.prev, edgeRear1Twin);
 	}
+	this.linkEdge(edgeFront1Twin, edgeFront.twin.next);
+	this.linkEdge(edgeRear.twin.prev, edgeRear1Twin);
 	
 	if(edgeRear.prev === edgeFront){
 		// face2 side, edgeFront->edgeRear
 		this.linkEdge(edgeFront2, edgeRear2);
-		this.linkEdge(edgeRear2Twin, edgeFront2Twin);
 	}else{
 		this.linkEdge(edgeRear.prev, edgeRear2);
 		this.linkEdge(edgeFront2, edgeFront.next);
-		
-		this.linkEdge(edgeFront.twin.prev, edgeFront2Twin);
-		this.linkEdge(edgeRear2Twin, edgeRear.twin.next);
 	}
+	this.linkEdge(edgeFront.twin.prev, edgeFront2Twin);
+	this.linkEdge(edgeRear2Twin, edgeRear.twin.next);
 	
 	
 	// set incident face

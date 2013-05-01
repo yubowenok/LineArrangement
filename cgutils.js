@@ -93,7 +93,7 @@ cgutils.intersectLineSegment = function(l, s) {
   var vecS1 = this.makeVector(pl1, s.v1);	
   var vecS2 = this.makeVector(pl1, s.v2);
   // cross product for intersection detection
-  if(this.crossVector(vecLine, vecS1) * this.crossVector(vecLine, vecS2) < -1E-9){
+  if(this.crossVector(vecLine, vecS1) * this.crossVector(vecLine, vecS2) <= 0){
 	// if intersection exists, we use line line intersection to calculate
 	return {'hasIntersection': true, 'intersection': this.intersectLines(l, this.LineFromSegment(s))};
   }else{
@@ -134,4 +134,9 @@ cgutils.intersectLines = function(l1, l2){
   // var y = l1.a * x + l1.b;
 
   return cgutils.Point(x, y);
+}
+
+cgutils.samePoint = function(p1, p2){
+	var d = Math.sqrt((p1.x-p2.x)*(p1.x-p2.x)+(p1.y-p2.y)*(p1.y-p2.y))
+	return d<1E-9?true:false;
 }
