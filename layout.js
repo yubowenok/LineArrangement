@@ -23,12 +23,69 @@ var UI_STATUS = {
   REMOVE: 5,
 };
 
+function updateTables() {
+  updateStatusTable();
+  updateVerticesDCELTable();
+  updateEdgesDCELTable();
+  updateFacesDCELTable();
+}
+
+function updateVerticesDCELTable() {
+
+  var vertices = [];
+  var curV = linearrangement.dcel.listVertex.head;
+  var vi = 1;
+  while (curV != null) {
+    var vertex = curV.content;
+    vertices.push({
+      'vertex' : "v" + vi,
+      'x'      : vertex.x.toFixed(2),
+      'y'      : vertex.y.toFixed(2),
+      'incedge': 'enn',      // TODO
+    });
+    curV = curV.next;
+    vi += 1;
+  }
+  
+  var columns = ["vertex", "x", "y", "incedge"];
+
+  // row for each status
+  // cell in each row
+  var rows = d3.select("#verticestable tbody")
+    .selectAll("tr")
+    .data(vertices);
+  // add new rows
+  rows.enter()
+    .append("tr")
+    .selectAll("td")
+    .data(function(vertex) {
+      var cols = columns.map(function(column) {
+        return {column: column, value: vertex[column]};
+      });
+      return cols;
+    })
+    .enter()
+    .append("td")
+    .text(function(d) { return d.value; });
+  // delete missing rows
+  rows.exit().remove();
+  // TODO should redraw columns?
+}
+
+function updateEdgesDCELTable() {
+  // TODO
+}
+
+function updateFacesDCELTable() {
+  // TODO
+}
+
 function updateStatusTable() {
 
   var statusList = [
-    "Waiting new line",
-    "Searching intersection with BB",
-    "Searching E'",
+    "Wait new line",
+    "Search intersection with BB",
+    "Search exit edge",
     "Split face",
   ];
 
@@ -44,19 +101,20 @@ function updateStatusTable() {
 
   // row for each status
   // cell in each row
-  var tbody = d3.select(".statustable tbody");
-  tbody
+  var rows = d3.select("#statustable tbody")
     .selectAll("tr")
-    .data(statusList)
+    .data(statusList);
+  rows
+    .select("td")
     .attr("class", function(d, i) {
       return (uiStatusEquiv[uiStatus] == i) ? "bold" : "normal";
-    })
-  .enter()
+    });
+  rows.enter()
     .append("tr")
+    .append("td")
     .attr("class", function(d, i) {
       return (uiStatusEquiv[uiStatus] == i) ? "bold" : "normal";
     })
-    .append("td")
     .text(function(d) { return d; });
 }
 
@@ -142,7 +200,7 @@ function lineArrangementNext() {
 
 function updateCanvas(){
 
-  updateStatusTable();
+  updateTables();
 
   createOrUpdateEdges(canvas, "searchingEdge", searchingEdges, "searchingEdge");
   createOrUpdateEdges(canvas, "foundEdge", foundEdges, "foundEdge");
