@@ -491,8 +491,8 @@ function initializeLayout() {
 
   var widthStyle  = d3.select("#canvas").style('width');
   var heightStyle = d3.select("#canvas").style('height');
-  width  = widthStyle.substring(0, widthStyle.length-2)-80;
-  height = heightStyle.substring(0, heightStyle.length-2)-80;
+  width  = widthStyle.substring(0, widthStyle.length-2) - 5;
+  height = heightStyle.substring(0, heightStyle.length-2) - 5;
 
   var svg = d3.select("#canvas")
     .append("svg:svg")
@@ -500,7 +500,7 @@ function initializeLayout() {
     .attr("height", heightStyle);
 
   canvas = svg.append("svg:g")
-    .attr("transform", "translate(40,40)");
+    .attr("transform", "translate(2.5,2.5)");
 
   canvas.append("svg:rect")
         .attr("width",  width)
