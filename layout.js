@@ -24,9 +24,9 @@ var UI_STATUS = {
 
 function updateTables() {
   updateStatusTable();
-  updateVerticesDCELTable();
-  updateEdgesDCELTable();
-  updateFacesDCELTable();
+  //updateVerticesDCELTable();
+  //updateEdgesDCELTable();
+  //updateFacesDCELTable();
 }
 
 function updateVerticesDCELTable() {
@@ -374,13 +374,13 @@ function createOrUpdateEdges(parentElem, edgesId, edgesList, classname){
 
 function createOrUpdateHalfEdges(parentElem, edgesId, edgesList, classname){
 
-
+  var mult = 2;
   var path = parentElem.selectAll("#"+edgesId)
     .data(edgesList)
     .attr("d", function(d) {
       var dx = width*d.next.origin.x - width*d.origin.x,
           dy = height*d.next.origin.y - height*d.origin.y,
-          dr = Math.sqrt(dx * dx + dy * dy);
+          dr = mult*Math.sqrt(dx * dx + dy * dy);
       return "M" + width*d.origin.x + "," + height*d.origin.y + "A" + dr + "," + dr + " 0 0,1 " + width*d.next.origin.x + "," + height*d.next.origin.y;
     });
 
@@ -394,7 +394,7 @@ function createOrUpdateHalfEdges(parentElem, edgesId, edgesList, classname){
     .attr("d", function(d) {
       var dx = width*d.next.origin.x - width*d.origin.x,
           dy = height*d.next.origin.y - height*d.origin.y,
-          dr = Math.sqrt(dx * dx + dy * dy);
+          dr = mult*Math.sqrt(dx * dx + dy * dy);
       return "M" + width*d.origin.x + "," + height*d.origin.y + "A" + dr + "," + dr + " 0 0,1 " + width*d.next.origin.x + "," + height*d.next.origin.y;
     });
 }
