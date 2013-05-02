@@ -1,0 +1,91 @@
+% 
+% sample.tex
+%
+%   This is LaTeX template to get you started
+%   making problem-set solutions
+%
+ 
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage[ruled,vlined]{algorithm2e}
+\usepackage{graphicx}
+
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textheight}{9in}
+\setlength{\textwidth}{6.5in}
+\setlength{\topmargin}{-0.5in}
+
+% Sample macros -- how you define new commands
+% My own set of frequently-used macros has grown to many hundreds of lines
+\newcommand{\Adv}{{\mathbf{Adv}}}       
+\newcommand{\prp}{{\mathrm{prp}}}                  % How to define new commands 
+\newcommand{\calK}{{\cal K}}
+\newcommand{\outputs}{{\Rightarrow}}                
+\newcommand{\getsr}{{\:\stackrel{{\scriptscriptstyle\hspace{0.2em}\$}}{\leftarrow}\:}}
+\newcommand{\andthen}{{\::\;\;}}    % \, \: \; for thinspace, medspace, thickspace
+\newcommand{\Rand}[1]{{\mathrm{Rand}[{#1}]}}       % A command with one argument
+\newcommand{\Perm}[1]{{\mathrm{Perm}[{#1}]}}       
+\newcommand{\Randd}[2]{{\mathrm{Rand}[{#1},{#2}]}} % and with two arguments
+
+\newcommand{\sym}[1]{{\tt \bf {#1}}}
+\newcommand{\abs}[1]{{$\left|{#1}\right|$}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{\bf Programming Project 8 - Line Arrangement\\[2ex] 
+       \rm\Large CS6703 - Computational Geometry}
+\author{Bowen Yu, 0487810\\
+		Cesar Palomo, 0486507\\
+		Fabio Markus Miranda, ??????}
+\date{\today}
+
+
+\begin{document}
+\maketitle
+\large
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+
+We write a javascript application that demonstrates how to build a line arrangement by walking around the zone of the new line. The demo shows the detailed steps of the line arrangement algorithm. Users insert lines interactively and step through the algorithm procedure to view the updates of the line arrangement. 
+
+\section{Using the Application}
+Unzip the source code package and open {\tt index.html} in a modern browser.\\
+Click two points in the bounding box to define a new line to be inserted.\\
+Click the {\tt Forward} button to view the changes of the line arrangement.
+
+\section{Code Components}
+\begin{itemize}
+\item {\bf cgutils.js}\\
+Code of basic geometry calculations, including point, vector, intersection computation, etc.
+\item {\bf dcel.js}\\
+Code of DCEL data structure and its update functions.
+\item {\bf dsutils.js}\\
+Code of doubly linked list used for storing lists of graph elements in DCEL. 
+\item {\bf layout.js}\\
+Code of the user interface. It supports line arrangement rendering and user interactions. It passes user inputs to the algorithm code.
+\item {\bf linearrang.js}\\
+Code that controls the construction procedure of the line arrangement, which communicates with the layout and the DCEL data structure. It is also responsible for the zone traversal of the inserted line.
+\item {\bf style.css}\\
+Web page style specification.
+\item {\bf d3.v3.min.js}\\
+External library for javascript rendering.
+\end{itemize}
+
+\section{Application Workflow}
+The user interface reads user input (line) and passes it to the line arrangement control code. The control code determines the stage of the algorithm and acts accordingly. It first finds the leftmost intersection point of the inserted line with the bounding box. Then it traverses the zone of the inserted line and call DCEL update function to insert new edges into the DCEL. The result of the insertion is passed back to the interface for rendering so that edges and faces that are affected are highlighted. After the insertion of a line is complete, the application waits for another input line.
+
+\section{Who Did What}
+\begin{itemize}
+\item {\bf Bowen Yu}\\
+Geometry functions in cgutils.js.\\
+DCEL data structure and its supporting functions in dcel.js, dsutils.js.
+\item {\bf Cesar Palomo}\\
+Line arrangement construction control in linearrang.js.\\
+Web page style design in style.css.
+\item {\bf Fabio Markus Miranda}\\
+User interface and rendering in layout.js.\\
+\end{itemize}
+\noindent* All group members take part in the design, debug and test of the application. 
+\end{document}
+
