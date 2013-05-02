@@ -36,6 +36,13 @@ html {
   stroke: steelblue;
 }
 
+.halfEdge {
+  stroke-dasharray: 4, 3;
+  stroke: steelblue;
+  stroke-width: 2;
+  fill: none;
+}
+
 .searchingEdge {
   stroke-width: 3;
   stroke: red;
@@ -49,6 +56,13 @@ html {
 .highlightEdge {
   stroke-width: 4;
   stroke: red;
+}
+
+.face {
+  stroke-width: 3;
+  stroke: steelblue;
+  fill: white;
+  fill-opacity: 0.0;
 }
 
 .splitFace1 {

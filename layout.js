@@ -7,7 +7,6 @@ var points = [null, null];
 var uiStatus;
 var edgesNotFinal = [];
 var edgesFinal = [];
-var drawNewFaces = false;
 
 var searchingEdges = [];
 var foundEdges = [];
@@ -106,21 +105,34 @@ function lineArrangementNext() {
 
 
 function updateCanvas(){
+  
+  var currentFace = linearrangement.dcel.listFace.head;
+  var i = 0;
+  while(currentFace != null){
+
+    if(currentFace.content.outerComponent != null)
+      createOrUpdateFace(canvas, "face"+i, currentFace.content, "face");
+    i++;
+    
+    currentFace = currentFace.next;
+  }
+
+
+  createOrUpdateFace(canvas, "splitFace1", splitFaces[0], "splitFace1");
+  createOrUpdateFace(canvas, "splitFace2", splitFaces[1], "splitFace2");
 
   createOrUpdateEdges(canvas, "searchingEdge", searchingEdges, "searchingEdge");
   createOrUpdateEdges(canvas, "foundEdge", foundEdges, "foundEdge");
   createOrUpdateEdges(canvas, "highlightEdge", highlightEdges, "highlightEdge");
-  createOrUpdateFace(canvas, "splitFace1", splitFaces[0], "splitFace1");
-  createOrUpdateFace(canvas, "splitFace2", splitFaces[1], "splitFace2");
+  
 
-  //Draw every added edge so far
   var currentEdge = linearrangement.dcel.listEdge.head;
   var addedEdges = [];
   while(currentEdge != null){
     addedEdges.push(currentEdge.content);
     currentEdge = currentEdge.next;
   }
-  createOrUpdateEdges(canvas, "addedEdge", addedEdges, "addedEdge");
+  createOrUpdateHalfEdges(canvas, "halfEdge", addedEdges, "halfEdge");
 
 }
 
@@ -178,7 +190,6 @@ function createOrUpdateFace(parentElem, polyId, face, classname){
 
   var points = [];
 
-  //Traverse the face
   if(face != null){
     var currentEdge = face.outerComponent;
     do{
@@ -264,6 +275,33 @@ function createOrUpdateEdges(parentElem, edgesId, edgesList, classname){
   newEdges.exit()
     .remove();
 
+}
+
+function createOrUpdateHalfEdges(parentElem, edgesId, edgesList, classname){
+
+
+  var path = parentElem.selectAll("#"+edgesId)
+    .data(edgesList)
+    .attr("d", function(d) {
+      var dx = width*d.next.origin.x - width*d.origin.x,
+          dy = height*d.next.origin.y - height*d.origin.y,
+          dr = Math.sqrt(dx * dx + dy * dy);
+      return "M" + width*d.origin.x + "," + height*d.origin.y + "A" + dr + "," + dr + " 0 0,1 " + width*d.next.origin.x + "," + height*d.next.origin.y;
+    });
+
+  path.exit().remove();
+
+  path.enter()
+    .append("path")
+    .attr("class", classname)
+    .attr("marker-end", function(d) { return "url(#" + d.type + ")"; })
+    .attr("id", edgesId)
+    .attr("d", function(d) {
+      var dx = width*d.next.origin.x - width*d.origin.x,
+          dy = height*d.next.origin.y - height*d.origin.y,
+          dr = Math.sqrt(dx * dx + dy * dy);
+      return "M" + width*d.origin.x + "," + height*d.origin.y + "A" + dr + "," + dr + " 0 0,1 " + width*d.next.origin.x + "," + height*d.next.origin.y;
+    });
 }
 
 function createOrUpdateLine(parentElem, lineId, pts, classname) {
