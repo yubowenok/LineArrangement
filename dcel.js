@@ -105,6 +105,11 @@ DCEL.prototype.leftmostEdgeBoundingBox = function(line){
 		alert("ERROR: leftmostEdgeBoundingBox failed");
 	}
 	
+	// prevent edge and vertex duplication
+	this.lastInsertedEdge = null;
+	this.lastInsertedVertex = null;
+	this.firstInsertion = true;
+	
 	return foundEdge.twin;
 }
 
@@ -113,7 +118,12 @@ DCEL.prototype.leftmostEdgeBoundingBox = function(line){
 // edgeFront and edgeRear shall be incident to the inner face
 DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	console.log("insertEdge called");
-	var vertexFront = cgutils.intersectEdge(edgeFront, line).intersection;
+	var vertexFront;
+	if(this.firstInsertion==true){
+		vertexFront = cgutils.intersectEdge(edgeFront, line).intersection;
+	}else{
+		vertexFront = this.lastInsertedVertex;
+	}
 	var vertexRear = cgutils.intersectEdge(edgeRear, line).intersection;
 	// fetch the face in question
 	var face1 = edgeFront.incidentFace;
@@ -124,7 +134,12 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	var faceRear = edgeRear.twin.incidentFace;
 	
 	// create new vertices for the DCEL
-	var vertex1 = new Vertex(vertexFront.x, vertexFront.y);
+	var vertex1;
+	if(this.firstInsertion==true){
+		vertex1 = new Vertex(vertexFront.x, vertexFront.y);
+	}else{
+		vertex1 = this.lastInsertedVertex;
+	}
 	var vertex2 = new Vertex(vertexRear.x, vertexRear.y);
 	
 	// create two paried new edges that are on the line
@@ -136,10 +151,18 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	//vertex2.incidentEdge = edge2;
 	
 	// split edgeFront and edgeRear into four new pairs of edges
-	var edgeFront1 = new Edge(edgeFront.origin);
-	var edgeFront1Twin = new Edge(vertex1);
-	var edgeFront2 = new Edge(vertex1);
-	var edgeFront2Twin = new Edge(edgeFront.next.origin);
+	var edgeFront1, edgeFront1Twin, edgeFront2, edgeFront2Twin;
+	if(this.firstInsertion==true){
+		edgeFront1 = new Edge(edgeFront.origin);
+		edgeFront1Twin = new Edge(vertex1);
+		edgeFront2 = new Edge(vertex1);
+		edgeFront2Twin = new Edge(edgeFront.next.origin);
+	}else{
+		edgeFront1 = this.lastInsertedEdge.prev;
+		edgeFront1Twin = edgeFront1.twin;
+		edgeFront2 = this.lastInsertedEdge;
+		edgeFront2Twin = edgeFront2.twin;
+	}
 	var edgeRear1 = new Edge(vertex2);
 	var edgeRear1Twin = new Edge(edgeRear.next.origin);
 	var edgeRear2 = new Edge(edgeRear.origin);
@@ -172,27 +195,41 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	this.linkEdge(edge1, edgeRear1);
 	this.linkEdge(edgeRear2, edge2);
 	this.linkEdge(edge2, edgeFront2);
-	this.linkEdge(edgeFront2Twin, edgeFront1Twin);
+	if(this.firstInsertion==true){
+		this.linkEdge(edgeFront2Twin, edgeFront1Twin);
+	}
 	this.linkEdge(edgeRear1Twin, edgeRear2Twin);
 	// careful! connect edgeFront1,2 and edgeRear1,2
-	if(edgeFront.prev === edgeRear){
+	if( (this.firstInsertion==true && edgeFront.prev === edgeRear) ||
+		(this.firstInsertion==false && edgeFront1.prev === edgeRear) )
+	{
 		// face1 side, edgeRear->edgeFront
 		this.linkEdge(edgeRear1, edgeFront1);
 	}else{
-		this.linkEdge(edgeFront.prev, edgeFront1);
+		if(this.firstInsertion==true){
+			this.linkEdge(edgeFront.prev, edgeFront1);
+		}
 		this.linkEdge(edgeRear1, edgeRear.next);
 	}
-	this.linkEdge(edgeFront1Twin, edgeFront.twin.next);
+	if(this.firstInsertion==true){
+		this.linkEdge(edgeFront1Twin, edgeFront.twin.next);
+	}
 	this.linkEdge(edgeRear.twin.prev, edgeRear1Twin);
 	
-	if(edgeRear.prev === edgeFront){
+	if( (this.firstInsertion==true && edgeRear.prev === edgeFront) || 
+		(this.firstInsertion==false && edgeRear.prev === edgeFront2) )
+	{
 		// face2 side, edgeFront->edgeRear
 		this.linkEdge(edgeFront2, edgeRear2);
 	}else{
 		this.linkEdge(edgeRear.prev, edgeRear2);
-		this.linkEdge(edgeFront2, edgeFront.next);
+		if(this.firstInsertion==true){
+			this.linkEdge(edgeFront2, edgeFront.next);
+		}
 	}
-	this.linkEdge(edgeFront.twin.prev, edgeFront2Twin);
+	if(this.firstInsertion==true){
+		this.linkEdge(edgeFront.twin.prev, edgeFront2Twin);
+	}
 	this.linkEdge(edgeRear2Twin, edgeRear.twin.next);
 	
 	
@@ -209,8 +246,10 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	}while(currentEdge!==edge2);
 	
 	// do not forget faceFront and faceRear
-	edgeFront1Twin.incidentFace = faceFront;
-	edgeFront2Twin.incidentFace = faceFront;
+	if(this.firstInsertion==true){
+		edgeFront1Twin.incidentFace = faceFront;
+		edgeFront2Twin.incidentFace = faceFront;
+	}
 	edgeRear1Twin.incidentFace = faceRear;
 	edgeRear2Twin.incidentFace = faceRear;
 	
@@ -221,10 +260,12 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	face2.outerComponent = edge2;
 	face2.innerComponent = null;
 	// careful: faceFront and faceRear may be the unbounded face
-	if(faceFront !== this.unboundedFace){
-		faceFront.outerComponent = edgeFront1Twin;
-	}else{
-		faceFront.innerComponent = edgeFront1Twin;
+	if(this.firstInsertion==true){
+		if(faceFront !== this.unboundedFace){
+			faceFront.outerComponent = edgeFront1Twin;
+		}else{
+			faceFront.innerComponent = edgeFront1Twin;
+		}
 	}
 	if(faceRear !== this.unboundedFace){
 		faceRear.outerComponent = edgeRear2Twin;
@@ -233,18 +274,28 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	}
 	
 	// insert new vertices
-	this.listVertex.pushBackContent(vertex1);
+	if(this.firstInsertion==true){
+		this.listVertex.pushBackContent(vertex1);
+	}
 	this.listVertex.pushBackContent(vertex2);
 	// remove edgeRear and edgeFront and insert new edges
-	this.listEdge.removeContent(edgeFront.twin);
+	if(this.firstInsertion==true){
+		this.listEdge.removeContent(edgeFront.twin);
+		this.listEdge.removeContent(edgeFront);
+	}
 	this.listEdge.removeContent(edgeRear.twin);
-	this.listEdge.removeContent(edgeFront);
 	this.listEdge.removeContent(edgeRear);
-	this.listEdge.pushBackContentArray([edge1, edge2, edgeFront1, edgeFront2, edgeRear1, edgeRear2]);
-	this.listEdge.pushBackContentArray([edgeFront1Twin, edgeFront2Twin, edgeRear1Twin, edgeRear2Twin]);
+	if(this.firstInsertion==true){
+		this.listEdge.pushBackContentArray([edgeFront1, edgeFront1Twin, edgeFront2, edgeFront2Twin])
+	}
+	this.listEdge.pushBackContentArray([edge1, edge2, edgeRear1, edgeRear1Twin, edgeRear2, edgeRear2Twin]);
 	// insert new faces. note that face1 is just changed. it is not deleted
 	this.listFace.pushBackContent(face2);
 
+	// record last inserted edge and vertex
+	this.firstInsertion = false;
+	this.lastInsertedEdge = edgeRear2Twin;
+	this.lastInsertedVertex = vertex2;
 
 	return [edge1, edge2, face1, face2, edgeRear2Twin];
 }
