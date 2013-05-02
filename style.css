@@ -5,7 +5,7 @@ html {
 
 #vis {
   width: 930px;
-  height: 600px;
+  height: 300px;
   border: 2px solid #D4D2D2;
   border-radius: 10px;
   display: inline-block;
@@ -86,7 +86,7 @@ html {
 .halfEdge {
   stroke-dasharray: 4, 3;
   stroke: steelblue;
-  stroke-width: 2;
+  stroke-width: 1;
   fill: none;
 }
 

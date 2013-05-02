@@ -25,9 +25,9 @@ var UI_STATUS = {
 
 function updateTables() {
   updateStatusTable();
-  updateVerticesDCELTable();
-  updateEdgesDCELTable();
-  updateFacesDCELTable();
+  //updateVerticesDCELTable();
+  //updateEdgesDCELTable();
+  //updateFacesDCELTable();
 }
 
 function updateVerticesDCELTable() {
@@ -412,19 +412,20 @@ function createOrUpdateHalfEdges(parentElem, edgesId, edgesList, classname){
     .attr("viewBox", "0 -5 10 10")
     .attr("refX", 10)
     .attr("refY", 0)
-    .attr("markerWidth", 5)
-    .attr("markerHeight", 5)
+    .attr("markerWidth", 10)
+    .attr("markerHeight", 10)
     .attr("orient", "auto")
     .append("svg:path")
     .attr("d", "M0,-5L10,0L0,5");
 
 
+  var mult = 2;
   var path = parentElem.selectAll("#"+edgesId)
     .data(edgesList)
     .attr("d", function(d) {
       var dx = width*d.next.origin.x - width*d.origin.x,
           dy = height*d.next.origin.y - height*d.origin.y,
-          dr = Math.sqrt(dx * dx + dy * dy);
+          dr = mult*Math.sqrt(dx * dx + dy * dy);
       return "M" + width*d.origin.x + "," + height*d.origin.y + "A" + dr + "," + dr + " 0 0,1 " + width*d.next.origin.x + "," + height*d.next.origin.y;
     });
 
@@ -439,7 +440,7 @@ function createOrUpdateHalfEdges(parentElem, edgesId, edgesList, classname){
     .attr("d", function(d) {
       var dx = width*d.next.origin.x - width*d.origin.x,
           dy = height*d.next.origin.y - height*d.origin.y,
-          dr = Math.sqrt(dx * dx + dy * dy);
+          dr = mult*Math.sqrt(dx * dx + dy * dy);
       return "M" + width*d.origin.x + "," + height*d.origin.y + "A" + dr + "," + dr + " 0 0,1 " + width*d.next.origin.x + "," + height*d.next.origin.y;
     });
 
