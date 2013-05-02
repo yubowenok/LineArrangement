@@ -22,7 +22,100 @@ var UI_STATUS = {
   REMOVE: 5,
 };
 
+function updateTables() {
+  updateStatusTable();
+  updateVerticesDCELTable();
+  updateEdgesDCELTable();
+  updateFacesDCELTable();
+}
 
+function updateVerticesDCELTable() {
+
+  var vertices = [];
+  var curV = linearrangement.dcel.listVertex.head;
+  var vi = 1;
+  while (curV != null) {
+    var vertex = curV.content;
+    vertices.push({
+      'vertex' : "v" + vi,
+      'x'      : vertex.x.toFixed(2),
+      'y'      : vertex.y.toFixed(2),
+      'incedge': 'enn',      // TODO
+    });
+    curV = curV.next;
+    vi += 1;
+  }
+  
+  var columns = ["vertex", "x", "y", "incedge"];
+
+  // row for each status
+  // cell in each row
+  var rows = d3.select("#verticestable tbody")
+    .selectAll("tr")
+    .data(vertices);
+  // add new rows
+  rows.enter()
+    .append("tr")
+    .selectAll("td")
+    .data(function(vertex) {
+      var cols = columns.map(function(column) {
+        return {column: column, value: vertex[column]};
+      });
+      return cols;
+    })
+    .enter()
+    .append("td")
+    .text(function(d) { return d.value; });
+  // delete missing rows
+  rows.exit().remove();
+  // TODO should redraw columns?
+}
+
+function updateEdgesDCELTable() {
+  // TODO
+}
+
+function updateFacesDCELTable() {
+  // TODO
+}
+
+function updateStatusTable() {
+
+  var statusList = [
+    "Wait new line",
+    "Search intersection with BB",
+    "Search exit edge",
+    "Split face",
+  ];
+
+  // map uiStatus -> statusList item
+  var uiStatusEquiv = {
+    0: 0,
+    1: 0,
+    2: 1,
+    3: 2,
+    4: 3,
+    5: 3,
+  };
+
+  // row for each status
+  // cell in each row
+  var rows = d3.select("#statustable tbody")
+    .selectAll("tr")
+    .data(statusList);
+  rows
+    .select("td")
+    .attr("class", function(d, i) {
+      return (uiStatusEquiv[uiStatus] == i) ? "bold" : "normal";
+    });
+  rows.enter()
+    .append("tr")
+    .append("td")
+    .attr("class", function(d, i) {
+      return (uiStatusEquiv[uiStatus] == i) ? "bold" : "normal";
+    })
+    .text(function(d) { return d; });
+}
 
 
 function addRandomLine() {
@@ -120,6 +213,8 @@ function updateCanvas(){
 
   createOrUpdateFace(canvas, "splitFace1", splitFaces[0], "splitFace1");
   createOrUpdateFace(canvas, "splitFace2", splitFaces[1], "splitFace2");
+
+  updateTables();
 
   createOrUpdateEdges(canvas, "searchingEdge", searchingEdges, "searchingEdge");
   createOrUpdateEdges(canvas, "foundEdge", foundEdges, "foundEdge");

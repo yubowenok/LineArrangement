@@ -3,11 +3,58 @@ html {
   line-height: 20px;
 }
 
+#vis {
+  width: 930px;
+  height: 600px;
+  border: 2px solid #D4D2D2;
+  border-radius: 10px;
+  display: inline-block;
+}
+
+#statusdiv {
+  width: 210px;
+  height: 290px;
+  border: 2px;
+  solid silver;
+  float: left;
+  padding-left: 10px;
+  padding-top: 10px;
+  position: relative;
+}
+
 #canvas {
   width: 700px;
   height: 300px;
   border: 2px;
   solid silver;
+  float: left;
+}
+
+#dcel {
+  width: 700px;
+  height: 300px;
+  border: 2px;
+  solid silver;
+}
+
+#statustable {
+  font-family:"Lucida Sans Unicode", Sans-Serif;
+  font-size: 14px;
+  border: 1px solid #e8edff;
+  padding-left: 5px;
+  padding-right: 5px;
+} 
+
+#statustable tr td.normal {
+  color: gray;
+  font-weight: normal;
+  background-color: white;
+}
+
+#statustable tr td.bold {
+  color: black;
+  font-weight: bold;
+  background-color: silver;
 }
 
 #canvas svg rect {
@@ -89,6 +136,48 @@ html {
 .currentEdgePrime {
   stroke-width: 3;
   stroke: red;
+}
+
+.dceltable{
+  float: left;
+  overflow-y: scroll;
+  display: block;
+  font-family:"Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+  font-size:12px;
+  width:480px;
+  text-align:left;
+  border-collapse:collapse;
+  border: 1px solid #e8edff;
+  margin:0px;
+}
+
+.dceltable th{
+  font-size:12px;
+  font-weight:normal;
+  color:#039;
+  text-align: center;
+  padding-left: 10px;
+}
+
+.dceltable td{
+  color:#669;
+  border-top:1px solid #e8edff;
+  text-align: center;
+  padding-left: 10px;
+}
+
+/*
+.oce-first{
+  background:#d0dafd;
+  border-right:10px solid transparent;
+  border-left:10px solid transparent;
+}
+*/
+
+.dceltable tr:hover td{
+  color:#339;
+  background:#eff2ff;
+  cursor: pointer;
 }
 
 body {

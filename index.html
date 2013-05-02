@@ -21,13 +21,86 @@
     </p>
     <h2>Summary</h2>
     <p>
-      This implementation uses a data structure similar to a DCEL (doubly-connected edge list) to maintain the line arrangement. After one line is added, its zone is traversed from the left-most intersected edge to right, and the DCEL structure is updated: faces, edges and vertices are created to incorporate the new line.
+      This implementation uses a data structure similar to a DCEL (doubly-connected edge list) to maintain a line arrangement. After one line is added, its zone is traversed from the left-most intersected edge to right, and the DCEL structure is updated: faces, edges and vertices are created to incorporate the new line.
     </p>
     <center>
-    <div id="canvas"></div>
-   <span id='Next' onclick=lineArrangementNext()>
-      <img src="imgs/forwardbutton.png" alt="Forward" width="40" height="40"></img>
-   </span> 
+    <div id="vis">
+
+      <div id="canvas"></div>
+
+      <div id="statusdiv">
+        <table id='statustable' style="width: 100%;">
+
+          <thead>
+            <tr>
+              <th>Algorithm step</th>
+            </tr>
+          </thead>
+
+          <tbody>
+          </tbody>
+
+        </table>  <!-- statustable -->
+        <span id='Next' onclick='lineArrangementNext()'>
+           <img src="imgs/forwardbutton.png" style="padding: 50px;" alt="Forward" width="40" height="40"></img>
+        </span> 
+      </div>
+      <div id="dceldiv">
+
+        <table id="verticestable" class='dceltable' style="width: 230px;height:300px;">
+
+          <thead>
+            <tr>
+              <th>Vertex</th>
+              <th>X</th>
+              <th>Y</th>
+              <th>Indicent Edge</th>
+            </tr>
+          </thead>
+
+          <tbody>
+          </tbody>
+
+        </table>  <!-- verticestable -->
+
+        <table id="facestable" class='dceltable' style="width: 290px;height:300px;">
+
+          <thead>
+            <tr>
+              <th>Face</th>
+              <th>OuterComponent</th>
+              <th>InnerComponents</th>
+            </tr>
+          </thead>
+
+          <tbody>
+          </tbody>
+
+        </table>  <!-- facestable -->
+
+        <table id="edgestable" class='dceltable' style="width: 400px;height:300px;">
+
+          <thead>
+            <tr>
+              <th>Half-edge</th>
+              <th>Origin</th>
+              <th>Twin</th>
+              <th>Indicent Face</th>
+              <th>Next</th>
+              <th>Prev</th>
+            </tr>
+          </thead>
+
+          <tbody>
+          </tbody>
+
+        </table>  <!-- edgestable -->
+
+
+      </div>
+
+    </div>
+
    </center>
 	 <!-- <button onclick=lineArrangementNext()>Next</button>-->
    <h2>Authors</h2>
