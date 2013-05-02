@@ -11,6 +11,7 @@ var edgesFinal = [];
 var searchingEdges = [];
 var foundEdges = [];
 var highlightEdges = [];
+var highlightHalfEdges = [];
 var splitFaces = [];
 
 var UI_STATUS = {
@@ -206,6 +207,7 @@ function updateCanvas(){
     if(currentFace.content.outerComponent != null)
       createOrUpdateFace(canvas, "face"+i, currentFace.content, "face");
     i++;
+
     
     currentFace = currentFace.next;
   }
@@ -220,15 +222,17 @@ function updateCanvas(){
   createOrUpdateEdges(canvas, "foundEdge", foundEdges, "foundEdge");
   createOrUpdateEdges(canvas, "highlightEdge", highlightEdges, "highlightEdge");
   
-
+  /*
   var currentEdge = linearrangement.dcel.listEdge.head;
   var addedEdges = [];
   while(currentEdge != null){
     addedEdges.push(currentEdge.content);
     currentEdge = currentEdge.next;
   }
-  createOrUpdateHalfEdges(canvas, "halfEdge", addedEdges, "halfEdge");
-
+  */
+  createOrUpdateHalfEdges(canvas, "halfEdge", highlightHalfEdges, "halfEdge");
+  console.log(highlightHalfEdges);
+  
 }
 
 function mouseup(mousePos) {
@@ -281,11 +285,30 @@ function mousemove(mousePos) {
 
 }
 
+function pushHalfEdges(halfedges){
+  console.log(halfedges);
+  if(halfedges != null){
+
+    var currentEdge = halfedges;
+    do{
+      highlightHalfEdges.push(currentEdge);
+      currentEdge = currentEdge.next;
+    }
+    while(currentEdge != halfedges)
+  }
+
+  updateCanvas();
+}
+
 function createOrUpdateFace(parentElem, polyId, face, classname){
 
   var points = [];
+  var innerComponent, outerComponent;
 
   if(face != null){
+    innerComponent = face.innerComponent;
+    outerComponent = face.outerComponent;
+
     var currentEdge = face.outerComponent;
     do{
 
@@ -301,11 +324,11 @@ function createOrUpdateFace(parentElem, polyId, face, classname){
   }
 
 
-  createOrUpdatePolygon(parentElem, polyId, points, classname);
+  createOrUpdatePolygon(parentElem, polyId, points, innerComponent, outerComponent, classname);
 
 }
 
-function createOrUpdatePolygon(parentElem, polyId, points, classname){
+function createOrUpdatePolygon(parentElem, polyId, points, innerHalfEdges, outerHalfEdges, classname){
 
 
   var line = d3.svg.line()
@@ -315,7 +338,9 @@ function createOrUpdatePolygon(parentElem, polyId, points, classname){
 
   var path = parentElem.selectAll("#"+polyId)
     .data(points)
-    .attr("d", line(points));
+    .attr("d", line(points))
+    .on("mouseover", function(d){pushHalfEdges(innerHalfEdges); pushHalfEdges(outerHalfEdges)})
+    .on("mouseout", function(d){highlightHalfEdges.length=0;});
 
   path.exit().remove();
 
@@ -323,7 +348,9 @@ function createOrUpdatePolygon(parentElem, polyId, points, classname){
     .append("path")
     .attr("class", classname)
     .attr("id", polyId)
-    .attr("d", line(points));
+    .attr("d", line(points))
+    .on("mouseover", function(d){pushHalfEdges(innerHalfEdges); pushHalfEdges(outerHalfEdges)})
+    .on("mouseout", function(d){highlightHalfEdges.length=0;});
 
 }
 
@@ -366,13 +393,27 @@ function createOrUpdateEdges(parentElem, edgesId, edgesList, classname){
     .attr("x1", function(d) { return width*d.origin.x; })
     .attr("y1", function(d) { return height*d.origin.y; })
     .attr("x2", function(d) { return width*d.next.origin.x; })
-    .attr("y2", function(d) { return height*d.next.origin.y; });
+    .attr("y2", function(d) { return height*d.next.origin.y; })
   newEdges.exit()
     .remove();
 
 }
 
 function createOrUpdateHalfEdges(parentElem, edgesId, edgesList, classname){
+
+  //marker
+  canvas.append("svg:defs").selectAll("marker")
+    .data(["arrow"])
+  .enter().append("svg:marker")
+    .attr("id", String)
+    .attr("viewBox", "0 -5 10 10")
+    .attr("refX", 10)
+    .attr("refY", 0)
+    .attr("markerWidth", 5)
+    .attr("markerHeight", 5)
+    .attr("orient", "auto")
+    .append("svg:path")
+    .attr("d", "M0,-5L10,0L0,5");
 
 
   var path = parentElem.selectAll("#"+edgesId)
@@ -391,12 +432,15 @@ function createOrUpdateHalfEdges(parentElem, edgesId, edgesList, classname){
     .attr("class", classname)
     .attr("marker-end", function(d) { return "url(#" + d.type + ")"; })
     .attr("id", edgesId)
+    .attr("marker-end", "url(#arrow)")
     .attr("d", function(d) {
       var dx = width*d.next.origin.x - width*d.origin.x,
           dy = height*d.next.origin.y - height*d.origin.y,
           dr = Math.sqrt(dx * dx + dy * dy);
       return "M" + width*d.origin.x + "," + height*d.origin.y + "A" + dr + "," + dr + " 0 0,1 " + width*d.next.origin.x + "," + height*d.next.origin.y;
     });
+
+    
 }
 
 function createOrUpdateLine(parentElem, lineId, pts, classname) {
@@ -443,8 +487,8 @@ function initializeLayout() {
 
   var widthStyle  = d3.select("#canvas").style('width');
   var heightStyle = d3.select("#canvas").style('height');
-  width  = widthStyle.substring(0, widthStyle.length-2)-10;
-  height = heightStyle.substring(0, heightStyle.length-2)-10;
+  width  = widthStyle.substring(0, widthStyle.length-2)-80;
+  height = heightStyle.substring(0, heightStyle.length-2)-80;
 
   var svg = d3.select("#canvas")
     .append("svg:svg")
@@ -452,7 +496,7 @@ function initializeLayout() {
     .attr("height", heightStyle);
 
   canvas = svg.append("svg:g")
-    .attr("transform", "translate(5,5)");
+    .attr("transform", "translate(40,40)");
 
   canvas.append("svg:rect")
         .attr("width",  width)

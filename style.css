@@ -90,6 +90,10 @@ html {
   fill: none;
 }
 
+marker#arrow {
+  fill: black;
+}
+
 .searchingEdge {
   stroke-width: 3;
   stroke: red;
