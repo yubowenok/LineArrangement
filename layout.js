@@ -352,6 +352,9 @@ function createOrUpdatePolygon(parentElem, polyId, points, innerHalfEdges, outer
     .on("mouseover", function(d){pushHalfEdges(innerHalfEdges); pushHalfEdges(outerHalfEdges)})
     .on("mouseout", function(d){highlightHalfEdges.length=0;});
 
+  //pushHalfEdges(innerHalfEdges);
+  //pushHalfEdges(outerHalfEdges);
+
 }
 
 function createOrUpdatePoint(parentElem, pointId, xy, classname) {
