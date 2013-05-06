@@ -1,3 +1,7 @@
+var indexFace = 1;
+var indexVertex = 1;
+var indexEdge = 1;
+
 // the main entry of DCEL
 function DCEL(){
 	this.unboundedFace = null;
@@ -312,17 +316,20 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 }
 
 function Face(outerComponent, innerComponent){
+	this.index = indexFace++;
 	this.outerComponent = outerComponent;
 	this.innerComponent = innerComponent;
 }
 
 function Vertex(x, y){
+	this.index = indexFace++;
 	this.x = x;
 	this.y = y;
 	//this.incidentEdge = edge;
 }
 
 function Edge(origin, face){
+	this.index = indexEdge++;
 	this.origin = origin;
 	this.incidentFace = face;
 	

@@ -25,9 +25,9 @@ var UI_STATUS = {
 
 function updateTables() {
   updateStatusTable();
-  //updateVerticesDCELTable();
-  //updateEdgesDCELTable();
-  //updateFacesDCELTable();
+  updateVerticesDCELTable();
+  updateEdgesDCELTable();
+  updateFacesDCELTable();
 }
 
 function updateVerticesDCELTable() {
@@ -38,13 +38,12 @@ function updateVerticesDCELTable() {
   while (curV != null) {
     var vertex = curV.content;
     vertices.push({
-      'vertex' : "v" + vi,
+      'vertex' : "v" + vertex.index,
       'x'      : vertex.x.toFixed(2),
       'y'      : vertex.y.toFixed(2),
       'incedge': 'enn',      // TODO
     });
     curV = curV.next;
-    vi += 1;
   }
   
   var columns = ["vertex", "x", "y", "incedge"];
@@ -73,11 +72,82 @@ function updateVerticesDCELTable() {
 }
 
 function updateEdgesDCELTable() {
-  // TODO
+  var edges = [];
+  var curE = linearrangement.dcel.listEdge.head;
+  while (curE != null) {
+    var edge = curE.content;
+    edges.push({
+      'halfedge' : "e" + edge.index,
+      'origin': "v" + edge.origin.index,
+      'twin'      : "e" + edge.twin.index,
+      'incidentface'      : "f",// + edge.incidentface.index,
+      'next'      : "e" + edge.next.index,
+      'prev'      : "e" + edge.prev.index,
+    });
+    curE = curE.next;
+  }
+  
+  var columns = ["halfedge", "origin", "twin", "incidentface", "next", "prev"];
+
+  // row for each status
+  // cell in each row
+  var rows = d3.select("#edgestable tbody")
+    .selectAll("tr")
+    .data(edges);
+  // add new rows
+  rows.enter()
+    .append("tr")
+    .selectAll("td")
+    .data(function(vertex) {
+      var cols = columns.map(function(column) {
+        return {column: column, value: vertex[column]};
+      });
+      return cols;
+    })
+    .enter()
+    .append("td")
+    .text(function(d) { return d.value; });
+  // delete missing rows
+  rows.exit().remove();
+  // TODO should redraw columns?
 }
 
 function updateFacesDCELTable() {
-  // TODO
+  var faces = [];
+  var curF = linearrangement.dcel.listFace.head;
+  while (curF != null) {
+    var face = curF.content;
+    faces.push({
+      'face' : "f" + face.index,
+      'outer': "f",// + face.innerComponent.index,
+      'inner'      : "f",// + face.outerComponent.index,
+    });
+    curF = curF.next;
+  }
+  
+  var columns = ["face", "outer", "inner"];
+
+  // row for each status
+  // cell in each row
+  var rows = d3.select("#facestable tbody")
+    .selectAll("tr")
+    .data(faces);
+  // add new rows
+  rows.enter()
+    .append("tr")
+    .selectAll("td")
+    .data(function(vertex) {
+      var cols = columns.map(function(column) {
+        return {column: column, value: vertex[column]};
+      });
+      return cols;
+    })
+    .enter()
+    .append("td")
+    .text(function(d) { return d.value; });
+  // delete missing rows
+  rows.exit().remove();
+  // TODO should redraw columns?
 }
 
 function updateStatusTable() {
@@ -231,6 +301,7 @@ function updateCanvas(){
   }
   */
   createOrUpdateHalfEdges(canvas, "halfEdge", highlightHalfEdges, "halfEdge");
+  createOrUpdatePoint(canvas, "points", highlightPoints, "points");
   console.log(highlightHalfEdges);
   
 }
