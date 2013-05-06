@@ -41,7 +41,7 @@ function updateVerticesDCELTable() {
       'vertex' : "v" + vertex.index,
       'x'      : vertex.x.toFixed(2),
       'y'      : vertex.y.toFixed(2),
-      'incedge': 'enn',      // TODO
+      'incedge': "e" + vertex.incidentEdge.index,      // TODO
     });
     curV = curV.next;
   }
@@ -80,7 +80,7 @@ function updateEdgesDCELTable() {
       'halfedge' : "e" + edge.index,
       'origin': "v" + edge.origin.index,
       'twin'      : "e" + edge.twin.index,
-      'incidentface'      : "f",// + edge.incidentface.index,
+      'incidentface'      : edge.incidentFace == null ? "null" : "f" + edge.incidentFace.index,
       'next'      : "e" + edge.next.index,
       'prev'      : "e" + edge.prev.index,
     });
@@ -119,8 +119,8 @@ function updateFacesDCELTable() {
     var face = curF.content;
     faces.push({
       'face' : "f" + face.index,
-      'outer': "f",// + face.innerComponent.index,
-      'inner'      : "f",// + face.outerComponent.index,
+      'outer': face.outerComponent == null ? "null" : "f" + face.outerComponent.index,
+      'inner'      : face.innerComponent == null ? "null" : "f" + face.innerComponent.index,
     });
     curF = curF.next;
   }
