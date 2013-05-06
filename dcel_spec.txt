@@ -19,7 +19,7 @@ function Face()
 function Vertex()
 - x: x coordinate of vertex v
 - y: y coordinate of vertex v 
-- incidentEdge: reference to an incident Edge arbitrarily chosen with v as its origin
+*[NOT USED] incidentEdge: reference to an incident Edge arbitrarily chosen with v as its origin
 *[NOT USED] isHighlighted: Whether the vertex is highlighted currently
 
 function Edge()
@@ -44,8 +44,8 @@ function leftmostEdgeBoundingBox(var line)
 The returned edge is incident to the INNER face.
 The returned edge shall be used to start a line insertion in the construction of line arrangement.
 
-function insertEdge(var edgeFront, var edgeRear, var vertexFront, var vertexRear)
-* This function insert a new edge intersecting first with edgeFront and then edgeRear at point vertexFront and vertexRear. 
+function insertEdge(var edgeFront, var edgeRear, var line)
+* This function insert a new edge intersecting first with edgeFront and then edgeRear at point vertexFront and vertexRear. The edge comes from the line.
 It updates the edge lists accordingly. Note that edgeFront and edgeRear shall be incident to the same face. Do NOT pass in their twin edges.
 
 

@@ -47,10 +47,10 @@ DCEL.prototype.constructBoundingBox = function(xmin, xmax, ymin, ymax){
 	this.setTwin(leftEdge, leftEdgeTwin);
 	
 	// set incident edges for vertices
-	//bottomLeftVertex.incidentEdge = bottomEdge;
-	//bottomRightVertex.incidentEdge = rightEdge;
-	//topRightVertex.incidentEdge = topEdge;
-	//topLeftVertex.incidentEdge = leftEdge;
+	bottomLeftVertex.incidentEdge = bottomEdge;
+	bottomRightVertex.incidentEdge = rightEdge;
+	topRightVertex.incidentEdge = topEdge;
+	topLeftVertex.incidentEdge = leftEdge;
 	
   // TODO Cesar changed order here
 	// set unbounded face for later search
@@ -147,8 +147,8 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	var edge2 = new Edge(vertex2, face2);
 	
 	// set vertex incident edge
-	//vertex1.incidentEdge = edge1;
-	//vertex2.incidentEdge = edge2;
+	vertex1.incidentEdge = edge1;
+	vertex2.incidentEdge = edge2;
 	
 	// split edgeFront and edgeRear into four new pairs of edges
 	var edgeFront1, edgeFront1Twin, edgeFront2, edgeFront2Twin;
@@ -232,6 +232,17 @@ DCEL.prototype.insertEdge = function(edgeFront, edgeRear, line){
 	}
 	this.linkEdge(edgeRear2Twin, edgeRear.twin.next);
 	
+	// set incident edge
+	if(this.firstInsertion==true){
+		edgeFront1.origin.incidentEdge = edgeFront1;
+		edgeFront2.origin.incidentEdge = edgeFront2;
+		edgeFront1Twin.origin.incidentEdge = edgeFront1Twin;
+		edgeFront2Twin.origin.incidentEdge = edgeFront2Twin;
+	}
+	edgeRear1.origin.incidentEdge = edgeRear1;
+	edgeRear2.origin.incidentEdge = edgeRear2;
+	edgeRear1Twin.origin.incidentEdge = edgeRear1Twin;
+	edgeRear2Twin.origin.incidentEdge = edgeRear2Twin;
 	
 	// set incident face, need to traverse for face1, face2!
 	currentEdge = edge1;
