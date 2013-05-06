@@ -90,8 +90,14 @@ html {
   fill: none;
 }
 
+.vertex {
+  stroke: red;
+  stroke-width: 3;
+  fill: red;
+}
+
 marker#arrow {
-  fill: blue;
+  fill: black;
 }
 
 .searchingEdge {

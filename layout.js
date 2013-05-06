@@ -12,6 +12,7 @@ var searchingEdges = [];
 var foundEdges = [];
 var highlightEdges = [];
 var highlightHalfEdges = [];
+var highlightVertices = [];
 var splitFaces = [];
 
 var UI_STATUS = {
@@ -52,22 +53,17 @@ function updateVerticesDCELTable() {
   // cell in each row
   var rows = d3.select("#verticestable tbody")
     .selectAll("tr")
-    .data(vertices)
-    .on("mouseover", function(v, i) {
-      console.log('mouseover vertex row %d', i);
-    })
-    .on("mouseout", function(v, i) {
-      console.log('mouseout vertex row %d', i);
-    })
-    ;
+    .data(vertices);
   // add new rows
   rows.enter()
     .append("tr")
     .on("mouseover", function(v, i) {
-      console.log('mouseover vertex row %d', i);
+      var vi = v.vertex.substring(1);
+      pushVertexByIndex(vi);
     })
     .on("mouseout", function(v, i) {
-      console.log('mouseout vertex row %d', i);
+      var vi = v.vertex.substring(1);
+      removeVertexByIndex(vi);
     })
     .selectAll("td")
     .data(function(vertex) {
@@ -78,13 +74,7 @@ function updateVerticesDCELTable() {
     })
     .enter()
     .append("td")
-    .text(function(d) { return d.value; })
-    .on("mouseover", function(col, i) {
-      console.log('mouseover vertex col %d', i);
-    })
-    .on("mouseout", function(col, i) {
-      console.log('mouseout vertex col %d', i);
-    });
+    .text(function(d) { return d.value; });
   // delete missing rows
   rows.exit().remove();
   // TODO should redraw columns?
@@ -116,6 +106,14 @@ function updateEdgesDCELTable() {
   // add new rows
   rows.enter()
     .append("tr")
+    .on("mouseover", function(e, i) {
+      var ei = e.halfedge.substring(1);
+      pushHalfEdgeByIndex(ei);
+    })
+    .on("mouseout", function(e, i) {
+      var ei = e.halfedge.substring(1);
+      removeHalfEdgeByIndex(ei);
+    })
     .selectAll("td")
     .data(function(vertex) {
       var cols = columns.map(function(column) {
@@ -138,8 +136,8 @@ function updateFacesDCELTable() {
     var face = curF.content;
     faces.push({
       'face' : "f" + face.index,
-      'outer': face.outerComponent == null ? "null" : "f" + face.outerComponent.index,
-      'inner'      : face.innerComponent == null ? "null" : "f" + face.innerComponent.index,
+      'outer': face.outerComponent == null ? "null" : "e" + face.outerComponent.index,
+      'inner'      : face.innerComponent == null ? "null" : "e" + face.innerComponent.index,
     });
     curF = curF.next;
   }
@@ -154,6 +152,14 @@ function updateFacesDCELTable() {
   // add new rows
   rows.enter()
     .append("tr")
+    .on("mouseover", function(f, i) {
+      var fi = f.face.substring(1);
+      pushFaceByIndex(fi);
+    })
+    .on("mouseout", function(f, i) {
+      var fi = f.face.substring(1);
+      removeFaceByIndex(fi);
+    })
     .selectAll("td")
     .data(function(vertex) {
       var cols = columns.map(function(column) {
@@ -320,7 +326,7 @@ function updateCanvas(){
   }
   */
   createOrUpdateHalfEdges(canvas, "halfEdge", highlightHalfEdges, "halfEdge");
-  //createOrUpdatePoint(canvas, "points", highlightPoints, "points");
+  createOrUpdateVertices(canvas, "vertex", highlightVertices, "vertex");
   //console.log(highlightHalfEdges);
   
 }
@@ -361,10 +367,10 @@ function mousemove(mousePos) {
   // TODO highlight faces/edges or update inserted line
   switch (uiStatus) {
     case UI_STATUS.WAIT_P1:
-      createOrUpdatePoint(canvas, "p1", mousePos, "lineextremity");
+      createOrUpdatePoint(canvas, "p1", [mousePos], "lineextremity");
       break;
     case UI_STATUS.WAIT_P2:
-      createOrUpdateLine(canvas, "newLine", [points[0], mousePos], "newLine");
+      createOrUpdateLine(canvas, "newLine", [[points[0], mousePos]], "newLine");
       break;
     case UI_STATUS.ADD_LINE:
     
@@ -373,6 +379,93 @@ function mousemove(mousePos) {
       break;
   };
 
+}
+
+function pushVertexByIndex(index){
+
+  var currentVertex = linearrangement.dcel.listVertex.head;
+  do{
+    if(currentVertex.content.index == index){
+      highlightVertices.push(currentVertex.content);
+    }
+    currentVertex = currentVertex.next;
+  }
+  while(currentVertex != null)
+
+  updateCanvas();
+}
+
+function removeVertexByIndex(index){
+
+  for(var i=0; i<highlightVertices.length; i++){
+    if(highlightVertices[i].index == index){
+      highlightVertices.splice(i, 1);
+    }
+  }
+
+  updateCanvas();
+}
+
+function pushFaceByIndex(index){
+  
+  var currentFace = linearrangement.dcel.listFace.head;
+  do{
+    if(currentFace.content.index == index){
+      pushHalfEdges(currentFace.content.outerComponent);
+      pushHalfEdges(currentFace.content.innerComponent);
+    }
+    currentFace = currentFace.next;
+  }
+  while(currentFace != null)
+  updateCanvas();
+
+}
+
+function removeFaceByIndex(index){
+  var currentFace = linearrangement.dcel.listFace.head;
+  do{
+    if(currentFace.content.index == index){
+      var currentEdge = currentFace.content.outerComponent;
+      if(currentEdge != null){
+        do{
+          removeHalfEdgeByIndex(currentEdge.index);
+          currentEdge = currentEdge.next;
+        }
+        while(currentEdge != currentFace.content.outerComponent)
+      }
+
+      currentEdge = currentFace.content.innerComponent;
+      if(currentEdge != null){
+        do{
+          removeHalfEdgeByIndex(currentEdge.index);
+          currentEdge = currentEdge.next;
+        }
+        while(currentEdge != currentFace.content.innerComponent)
+      }
+    }
+    currentFace = currentFace.next;
+  }
+  while(currentFace != null)
+  updateCanvas();
+}
+
+function pushHalfEdgeByIndex(index){
+  var currentEdge = linearrangement.dcel.listEdge.head;
+  do{
+    if(currentEdge.content.index == index)
+      highlightHalfEdges.push(currentEdge.content);
+    currentEdge = currentEdge.next;
+  }
+  while(currentEdge != null)
+  updateCanvas();
+}
+
+function removeHalfEdgeByIndex(index){
+  for(var i=0; i<highlightHalfEdges.length; i++){
+    if(highlightHalfEdges[i].index == index)
+      highlightHalfEdges.splice(i, 1);
+  }
+  updateCanvas();
 }
 
 function pushHalfEdges(halfedges){
@@ -447,11 +540,22 @@ function createOrUpdatePolygon(parentElem, polyId, points, innerHalfEdges, outer
 
 }
 
+function createOrUpdateVertices(parentElem, pointId, xy, classname){
+  var xy = [];
+  for(var i=0; i<highlightVertices.length; i++){
+    var aux = [];
+    aux[0] = highlightVertices[i].x * width;
+    aux[1] = highlightVertices[i].y * height;
+    xy.push(aux);
+  }
+  createOrUpdatePoint(parentElem, pointId, xy, classname);
+}
+
 function createOrUpdatePoint(parentElem, pointId, xy, classname) {
   var point = parentElem.selectAll("#"+pointId)
-    .data([pointId])
-    .attr("cx", function() { return xy[0]; })
-    .attr("cy", function() { return xy[1]; });
+    .data(xy)
+    .attr("cx", function(d) { return d[0]; })
+    .attr("cy", function(d) { return d[1]; });
 
   point.exit().remove();
 
@@ -460,8 +564,9 @@ function createOrUpdatePoint(parentElem, pointId, xy, classname) {
     .attr("class", classname)
     .attr("id", pointId)
     .attr("r", 2)
-    .attr("cx", function() { return xy[0]; })
-    .attr("cy", function() { return xy[1]; });
+    .data(xy)
+    .attr("cx", function(d) { return d[0]; })
+    .attr("cy", function(d) { return d[1]; });
 }
 
 function getLineFromPoints(pts) {
@@ -581,8 +686,8 @@ function initializeLayout() {
 
   var widthStyle  = d3.select("#canvas").style('width');
   var heightStyle = d3.select("#canvas").style('height');
-  width  = widthStyle.substring(0, widthStyle.length-2) - 5;
-  height = heightStyle.substring(0, heightStyle.length-2) - 5;
+  width  = widthStyle.substring(0, widthStyle.length-2) - 40;
+  height = heightStyle.substring(0, heightStyle.length-2) - 40;
 
   var svg = d3.select("#canvas")
     .append("svg:svg")
@@ -590,7 +695,7 @@ function initializeLayout() {
     .attr("height", heightStyle);
 
   canvas = svg.append("svg:g")
-    .attr("transform", "translate(2.5,2.5)");
+    .attr("transform", "translate(20, 20)");
 
   canvas.append("svg:rect")
         .attr("width",  width)
