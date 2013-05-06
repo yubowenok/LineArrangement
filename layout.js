@@ -53,13 +53,22 @@ function updateVerticesDCELTable() {
   var rows = d3.select("#verticestable tbody")
     .selectAll("tr")
     .data(vertices)
-    .on("mouseover", console.log('in'))
-    .on("mouseout", console.log('out'));
+    .on("mouseover", function(v, i) {
+      console.log('mouseover vertex row %d', i);
+    })
+    .on("mouseout", function(v, i) {
+      console.log('mouseout vertex row %d', i);
+    })
+    ;
   // add new rows
   rows.enter()
     .append("tr")
-    .on("mouseover", console.log('in'))
-    .on("mouseout", console.log('out'))
+    .on("mouseover", function(v, i) {
+      console.log('mouseover vertex row %d', i);
+    })
+    .on("mouseout", function(v, i) {
+      console.log('mouseout vertex row %d', i);
+    })
     .selectAll("td")
     .data(function(vertex) {
       var cols = columns.map(function(column) {
@@ -70,8 +79,12 @@ function updateVerticesDCELTable() {
     .enter()
     .append("td")
     .text(function(d) { return d.value; })
-    .on("mouseover", console.log('in'))
-    .on("mouseout", console.log('out'));
+    .on("mouseover", function(col, i) {
+      console.log('mouseover vertex col %d', i);
+    })
+    .on("mouseout", function(col, i) {
+      console.log('mouseout vertex col %d', i);
+    });
   // delete missing rows
   rows.exit().remove();
   // TODO should redraw columns?
@@ -210,14 +223,14 @@ function addRandomLine() {
 
 function lineArrangementNext() {
 
-  console.log(linearrangement.nextStep);
+  //console.log(linearrangement.nextStep);
 
   if (linearrangement.done()){
     updateCanvas();
     return;
   }
 
-  console.log(linearrangement.nextStep);
+  //console.log(linearrangement.nextStep);
 
   var status = linearrangement.status();
 
@@ -308,7 +321,7 @@ function updateCanvas(){
   */
   createOrUpdateHalfEdges(canvas, "halfEdge", highlightHalfEdges, "halfEdge");
   //createOrUpdatePoint(canvas, "points", highlightPoints, "points");
-  console.log(highlightHalfEdges);
+  //console.log(highlightHalfEdges);
   
 }
 
@@ -363,7 +376,7 @@ function mousemove(mousePos) {
 }
 
 function pushHalfEdges(halfedges){
-  console.log(halfedges);
+  //console.log(halfedges);
   if(halfedges != null){
 
     var currentEdge = halfedges;
