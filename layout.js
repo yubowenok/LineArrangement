@@ -52,10 +52,14 @@ function updateVerticesDCELTable() {
   // cell in each row
   var rows = d3.select("#verticestable tbody")
     .selectAll("tr")
-    .data(vertices);
+    .data(vertices)
+    .on("mouseover", console.log('in'))
+    .on("mouseout", console.log('out'));
   // add new rows
   rows.enter()
     .append("tr")
+    .on("mouseover", console.log('in'))
+    .on("mouseout", console.log('out'))
     .selectAll("td")
     .data(function(vertex) {
       var cols = columns.map(function(column) {
@@ -65,7 +69,9 @@ function updateVerticesDCELTable() {
     })
     .enter()
     .append("td")
-    .text(function(d) { return d.value; });
+    .text(function(d) { return d.value; })
+    .on("mouseover", console.log('in'))
+    .on("mouseout", console.log('out'));
   // delete missing rows
   rows.exit().remove();
   // TODO should redraw columns?
@@ -301,7 +307,7 @@ function updateCanvas(){
   }
   */
   createOrUpdateHalfEdges(canvas, "halfEdge", highlightHalfEdges, "halfEdge");
-  createOrUpdatePoint(canvas, "points", highlightPoints, "points");
+  //createOrUpdatePoint(canvas, "points", highlightPoints, "points");
   console.log(highlightHalfEdges);
   
 }
