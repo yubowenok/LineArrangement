@@ -30,12 +30,14 @@ html {
   float: left;
 }
 
+/*
 #dcel {
   width: 700px;
   height: 300px;
   border: 2px;
   solid silver;
 }
+*/
 
 #statustable {
   font-family:"Lucida Sans Unicode", Sans-Serif;
@@ -91,8 +93,8 @@ html {
 }
 
 .vertex {
-  stroke: red;
-  stroke-width: 3;
+  stroke: black;
+  stroke-width: 2;
   fill: red;
 }
 
@@ -125,15 +127,13 @@ marker#arrow {
 .splitFace1 {
   stroke-width: 1;
   stroke: black;
-  fill: red;
-  fill-opacity: 0.1;
+  fill: #FE9E9D;
 }
 
 .splitFace2 {
   stroke-width: 1;
   stroke: black;
-  fill: blue;
-  fill-opacity: 0.1;
+  fill: #A0DDFF;
 }
 
 .insertedFace {

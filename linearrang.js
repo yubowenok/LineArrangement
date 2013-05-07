@@ -54,10 +54,7 @@ LineArrangement.prototype.next = function() {
   switch (this.nextStep) {
     case this.NEXTSTEP.SEARCH_REAR_EDGE:
       if (this.E.incidentFace === this.dcel.unboundedFace) {  
-	  //  Bowen: "this.E_prime == this.dcel.unboundedFace.innerComponent" is incorrect, 
-	  //  innerComponent can be any edge incident to the unbounded face
-        
-		// reached unbounded face
+        // reached unbounded face
         this.lines.push(this.line);
         this.line     = null;
         this.E        = null;
@@ -75,8 +72,7 @@ LineArrangement.prototype.next = function() {
         // test intersection with E'
         var inters = cgutils.intersectEdge(this.E_prime, this.line);
         if (inters.hasIntersection) {
-		// && cgutils.samePoint(inters.intersection, this.E_prime.origin)==false
-          this.v_prime = inters.intersection;	// Bowen: this shall be inters.intersection?? but v_prime is not used
+          this.v_prime = inters.intersection;
           this.nextStep = this.NEXTSTEP.SPLIT_FACE;
         }
         else {
@@ -86,7 +82,6 @@ LineArrangement.prototype.next = function() {
       }
       break;
     case this.NEXTSTEP.SPLIT_FACE:
-      // TODO have steps for insertEdge like here?
       this.E_twin = this.E.twin;
       var newedgesfaces = this.dcel.insertEdge(this.E, this.E_prime, this.line);
       this.edge1 = newedgesfaces[0];
@@ -97,7 +92,7 @@ LineArrangement.prototype.next = function() {
       this.nextStep = this.NEXTSTEP.MOVE_TO_NEXT_FACE;
       break;
     case this.NEXTSTEP.MOVE_TO_NEXT_FACE:
-      this.E        = this.nextEdge; //this.E_twin;		Bowen: not wise to add this.nextEdge, but why putting E_twin here?
+      this.E        = this.nextEdge;
       this.v        = cgutils.intersectEdge(this.E, this.line).intersection;
       this.E_prime  = this.E.next;
       this.v_prime  = null;

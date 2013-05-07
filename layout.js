@@ -54,6 +54,26 @@ function updateVerticesDCELTable() {
   var rows = d3.select("#verticestable tbody")
     .selectAll("tr")
     .data(vertices);
+
+  // update existing rows
+  rows
+    .on("mouseover", function(v, i) {
+      var vi = v.vertex.substring(1);
+      pushVertexByIndex(vi);
+    })
+    .on("mouseout", function(v, i) {
+      var vi = v.vertex.substring(1);
+      removeVertexByIndex(vi);
+    })
+    .selectAll("td")
+    .data(function(vertex) {
+      var cols = columns.map(function(column) {
+        return {column: column, value: vertex[column]};
+      });
+      return cols;
+    })
+    .text(function(d) { return d.value; });
+
   // add new rows
   rows.enter()
     .append("tr")
@@ -75,9 +95,9 @@ function updateVerticesDCELTable() {
     .enter()
     .append("td")
     .text(function(d) { return d.value; });
+
   // delete missing rows
   rows.exit().remove();
-  // TODO should redraw columns?
 }
 
 function updateEdgesDCELTable() {
@@ -103,6 +123,26 @@ function updateEdgesDCELTable() {
   var rows = d3.select("#edgestable tbody")
     .selectAll("tr")
     .data(edges);
+
+  // update existing rows
+  rows
+    .on("mouseover", function(e, i) {
+      var ei = e.halfedge.substring(1);
+      pushHalfEdgeByIndex(ei);
+    })
+    .on("mouseout", function(e, i) {
+      var ei = e.halfedge.substring(1);
+      removeHalfEdgeByIndex(ei);
+    })
+    .selectAll("td")
+    .data(function(vertex) {
+      var cols = columns.map(function(column) {
+        return {column: column, value: vertex[column]};
+      });
+      return cols;
+    })
+    .text(function(d) { return d.value; });
+
   // add new rows
   rows.enter()
     .append("tr")
@@ -124,9 +164,9 @@ function updateEdgesDCELTable() {
     .enter()
     .append("td")
     .text(function(d) { return d.value; });
+
   // delete missing rows
   rows.exit().remove();
-  // TODO should redraw columns?
 }
 
 function updateFacesDCELTable() {
@@ -149,6 +189,26 @@ function updateFacesDCELTable() {
   var rows = d3.select("#facestable tbody")
     .selectAll("tr")
     .data(faces);
+
+  // update existing rows
+  rows
+    .on("mouseover", function(f, i) {
+      var fi = f.face.substring(1);
+      pushFaceByIndex(fi);
+    })
+    .on("mouseout", function(f, i) {
+      var fi = f.face.substring(1);
+      removeFaceByIndex(fi);
+    })
+    .selectAll("td")
+    .data(function(vertex) {
+      var cols = columns.map(function(column) {
+        return {column: column, value: vertex[column]};
+      });
+      return cols;
+    })
+    .text(function(d) { return d.value; });
+
   // add new rows
   rows.enter()
     .append("tr")
@@ -170,9 +230,9 @@ function updateFacesDCELTable() {
     .enter()
     .append("td")
     .text(function(d) { return d.value; });
+
   // delete missing rows
   rows.exit().remove();
-  // TODO should redraw columns?
 }
 
 function updateStatusTable() {
@@ -362,9 +422,7 @@ function mouseout(mousePos) {
 
 function mousemove(mousePos) {
 
-  //var svg = d3.select("svg");
-
-  // TODO highlight faces/edges or update inserted line
+  // highlight faces/edges or update inserted line
   switch (uiStatus) {
     case UI_STATUS.WAIT_P1:
       createOrUpdatePoint(canvas, "p1", [mousePos], "lineextremity");
@@ -469,7 +527,6 @@ function removeHalfEdgeByIndex(index){
 }
 
 function pushHalfEdges(halfedges){
-  //console.log(halfedges);
   if(halfedges != null){
 
     var currentEdge = halfedges;
@@ -563,7 +620,7 @@ function createOrUpdatePoint(parentElem, pointId, xy, classname) {
     .append("circle")
     .attr("class", classname)
     .attr("id", pointId)
-    .attr("r", 2)
+    .attr("r", 4)
     .data(xy)
     .attr("cx", function(d) { return d[0]; })
     .attr("cy", function(d) { return d[1]; });
