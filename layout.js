@@ -370,7 +370,7 @@ function mousemove(mousePos) {
       createOrUpdatePoint(canvas, "p1", [mousePos], "lineextremity");
       break;
     case UI_STATUS.WAIT_P2:
-      createOrUpdateLine(canvas, "newLine", [[points[0], mousePos]], "newLine");
+      createOrUpdateLine(canvas, "newLine", [points[0], mousePos], "newLine");
       break;
     case UI_STATUS.ADD_LINE:
     
